@@ -20,18 +20,21 @@ public class PlayerMovement : MonoBehaviour
     // Update is called once per frame
     void FixedUpdate()
     {
-        inputVector = new Vector3(Input.GetAxis("Horizontal") * speed, rb.velocity.y, Input.GetAxis("Vertical") * speed);
-        rb.velocity = inputVector;
+        rb.velocity = new Vector3(transform.right.x * (Input.GetAxis("Horizontal") * speed),rb.velocity.y, transform.forward.z * (Input.GetAxis("Vertical") * speed));
     }
 
     private void Update()
     {
-        transform.LookAt(transform.position + new Vector3(inputVector.x, 0, inputVector.z));
+        //transform.LookAt(transform.position + new Vector3(inputVector.x, 0, inputVector.z));
 
         RaycastHit hit;
         if (Physics.SphereCast(transform.position, 0.5f, -(transform.up), out hit, 1.1f))
         {
             transform.rotation = Quaternion.LookRotation(Vector3.Cross(transform.right, hit.normal));
+        }
+        else
+        {
+            transform.rotation = Quaternion.Euler(0, transform.rotation.y, transform.rotation.z);
         }
     }
 }
