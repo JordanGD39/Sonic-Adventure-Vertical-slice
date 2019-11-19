@@ -6,7 +6,8 @@ public class PlayerMovement : MonoBehaviour
 {
     //Physics
     private Rigidbody rb;
-    private Vector3 inputVector;
+    private float horVel;
+    private float verVel;
     [SerializeField] private float speed = 3;
 
     private Vector3 upright;
@@ -15,17 +16,13 @@ public class PlayerMovement : MonoBehaviour
     void Start()
     {
         rb = GetComponent<Rigidbody>();
-    }    
-
-    // Update is called once per frame
-    void FixedUpdate()
-    {
-        rb.velocity = new Vector3(transform.right.x * (Input.GetAxis("Horizontal") * speed),rb.velocity.y, transform.forward.z * (Input.GetAxis("Vertical") * speed));
     }
 
+    // Update is called once per frame
     private void Update()
     {
-        //transform.LookAt(transform.position + new Vector3(inputVector.x, 0, inputVector.z));
+        horVel = Input.GetAxis("Horizontal");
+        verVel = Input.GetAxis("Vertical");
 
         RaycastHit hit;
         if (Physics.SphereCast(transform.position, 0.5f, -(transform.up), out hit, 1.1f))
@@ -36,5 +33,10 @@ public class PlayerMovement : MonoBehaviour
         {
             transform.rotation = Quaternion.Euler(0, transform.rotation.y, transform.rotation.z);
         }
+    }
+
+    void FixedUpdate()
+    {
+        rb.AddForce(new Vector3(transform.right.x * (horVel * speed),rb.velocity.y, transform.forward.z * (verVel * speed)));
     }
 }
