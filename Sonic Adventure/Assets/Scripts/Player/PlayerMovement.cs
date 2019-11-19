@@ -28,9 +28,9 @@ public class PlayerMovement : MonoBehaviour
         if (Physics.SphereCast(transform.position, 0.5f, -transform.up, out hit, 1.1f))
         {
             Quaternion quat = Quaternion.LookRotation(Vector3.Cross(transform.right, hit.normal));
-            Debug.Log(quat);
+            Debug.Log(hit.normal);
 
-            transform.rotation = quat;
+            transform.rotation = new Quaternion(quat.x, transform.rotation.y, transform.rotation.z, quat.w);
         }
         //else
         //{
