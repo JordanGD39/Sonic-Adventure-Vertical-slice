@@ -6,8 +6,7 @@ public class PlayerMovement : MonoBehaviour
 {
     //Physics
     private Rigidbody rb;
-    private float horVel;
-    private float verVel;
+    private Vector3 movement;
     [SerializeField] private float speed = 3;
 
     private Vector3 upright;
@@ -21,22 +20,35 @@ public class PlayerMovement : MonoBehaviour
     // Update is called once per frame
     private void Update()
     {
-        horVel = Input.GetAxis("Horizontal");
-        verVel = Input.GetAxis("Vertical");
+        float moveHorizontal = Input.GetAxis("Horizontal");
+        float moveVertical = Input.GetAxis("Vertical");
+        movement = new Vector3(moveHorizontal, 0.0f, moveVertical);
 
         RaycastHit hit;
-        if (Physics.SphereCast(transform.position, 0.5f, -(transform.up), out hit, 1.1f))
+        if (Physics.SphereCast(transform.position, 0.5f, -transform.up, out hit, 1.1f))
         {
-            transform.rotation = Quaternion.LookRotation(Vector3.Cross(transform.right, hit.normal));
+            Quaternion quat = Quaternion.LookRotation(Vector3.Cross(transform.right, hit.normal));
+            Debug.Log(quat);
+
+            transform.rotation = quat;
         }
-        else
-        {
-            transform.rotation = Quaternion.Euler(0, transform.rotation.y, transform.rotation.z);
-        }
+        //else
+        //{
+        //    transform.rotation = Quaternion.Euler(0, transform.rotation.y, transform.rotation.z);
+        //}
     }
 
     void FixedUpdate()
     {
-        rb.AddForce(new Vector3(transform.right.x * (horVel * speed),rb.velocity.y, transform.forward.z * (verVel * speed)));
+        if (transform.rotation.x <= 0.6f && transform.rotation.x >= -0.6f)
+        {
+            rb.AddRelativeForce(movement * speed);
+            rb.useGravity = true;
+        }
+        else
+        {
+            rb.AddRelativeForce(movement * (speed * 0.85f));
+            rb.useGravity = false;
+        }              
     }
 }
