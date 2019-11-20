@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 705507994}
-  m_IndirectSpecularColor: {r: 0.44657898, g: 0.4964133, b: 0.5748178, a: 1}
+  m_IndirectSpecularColor: {r: 0.44657868, g: 0.49641263, b: 0.57481706, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -736,7 +736,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 987de179334135342bc57321ed696c00, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  speed: 3
+  _speed: 3
 --- !u!1 &581036124
 GameObject:
   m_ObjectHideFlags: 0
@@ -918,7 +918,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 1
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 50, y: -30, z: 0}
 --- !u!1 &727202101
 GameObject:
@@ -1346,7 +1346,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 0
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &963194229
 MonoBehaviour:
@@ -1360,9 +1360,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 823579224f8bc1c4c986710a207671b6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  target: {fileID: 388139844}
-  smoothSpeed: 0.125
-  offset: {x: 0, y: 3, z: -7}
+  _target: {fileID: 435070452}
+  _smoothSpeed: 0.125
+  _offset: {x: 0, y: 3, z: -7}
 --- !u!1 &973390132
 GameObject:
   m_ObjectHideFlags: 0
