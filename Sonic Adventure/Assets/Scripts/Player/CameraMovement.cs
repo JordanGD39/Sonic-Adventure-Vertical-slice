@@ -16,11 +16,11 @@ public class CameraMovement : MonoBehaviour
     void Start()
     {
         transform = GetComponent<Transform>();
+        difPos = new Vector3(0.0f, 2.75f, -7.0f);
     }
 
     void Update()
     {
-        difPos = new Vector3(0.0f, 2.75f, -7.0f);
         transform.position = _sonic.transform.position + difPos;
     }
 }
