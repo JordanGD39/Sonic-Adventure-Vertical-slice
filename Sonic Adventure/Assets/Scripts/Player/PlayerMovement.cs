@@ -22,7 +22,7 @@ public class PlayerMovement : MonoBehaviour
     {
         float moveHorizontal = Input.GetAxis("Horizontal");
         float moveVertical = Input.GetAxis("Vertical");
-        movement = new Vector3(moveHorizontal, 0.0f, moveVertical);
+        movement = new Vector3(moveHorizontal * speed, 0, moveVertical * speed);
 
         RaycastHit hit;
         if (Physics.SphereCast(transform.position, 0.5f, -transform.up, out hit, 1.1f))
@@ -40,14 +40,15 @@ public class PlayerMovement : MonoBehaviour
 
     void FixedUpdate()
     {
+        rb.velocity = new Vector3(movement.x, rb.velocity.y, movement.z);
+
         if (transform.rotation.x <= 0.6f && transform.rotation.x >= -0.6f)
-        {
-            rb.AddRelativeForce(movement * speed);
+        {            
             rb.useGravity = true;
         }
         else
         {
-            rb.AddRelativeForce(movement * (speed * 0.85f));
+            
             rb.useGravity = false;
         }              
     }
