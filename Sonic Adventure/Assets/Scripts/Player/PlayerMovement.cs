@@ -22,7 +22,7 @@ public class PlayerMovement : MonoBehaviour
     {
         float moveHorizontal = Input.GetAxis("Horizontal");
         float moveVertical = Input.GetAxis("Vertical");
-        movement = new Vector3(moveHorizontal * speed, 0, moveVertical * speed);
+        movement = new Vector3(Camera.main.transform.right.x * (moveHorizontal * speed), 0, Camera.main.transform.forward.z * (moveVertical * speed));
 
         RaycastHit hit;
         if (Physics.SphereCast(transform.position, 0.5f, -transform.up, out hit, 1.1f))
@@ -41,6 +41,32 @@ public class PlayerMovement : MonoBehaviour
     void FixedUpdate()
     {
         rb.velocity = new Vector3(movement.x, rb.velocity.y, movement.z);
+        
+        if (rb.velocity.magnitude > 2.6f && rb.velocity.magnitude <= 16f)
+        {
+            if (speed < 18)
+            {
+                speed += 0.5f;
+            }                   
+        }
+        else if (rb.velocity.magnitude > 16f)
+        {
+            if (speed < 20)
+            {
+                speed += 0.5f;
+            }
+        }
+        else if (rb.velocity.magnitude <= 2.6f)
+        {
+            if (speed > 3)
+            {
+                speed -= 2;
+            }
+            else if (speed < 3)
+            {
+                speed = 3;
+            }
+        }
 
         if (transform.rotation.x <= 0.6f && transform.rotation.x >= -0.6f)
         {            
