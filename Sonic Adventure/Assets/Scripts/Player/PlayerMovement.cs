@@ -24,6 +24,8 @@ public class PlayerMovement : MonoBehaviour
         float moveVertical = Input.GetAxis("Vertical");
         movement = new Vector3(Camera.main.transform.right.x * (moveHorizontal * speed), 0, Camera.main.transform.forward.z * (moveVertical * speed));
 
+        transform.LookAt(transform.position + new Vector3(movement.x, 0, movement.z));
+
         RaycastHit hit;
         if (Physics.SphereCast(transform.position, 0.5f, -transform.up, out hit, 1.1f))
         {
