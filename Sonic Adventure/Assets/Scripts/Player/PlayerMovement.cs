@@ -25,7 +25,7 @@ public class PlayerMovement : MonoBehaviour
     {
         float moveHorizontal = Input.GetAxis("Horizontal");
         float moveVertical = Input.GetAxis("Vertical");
-        movement = new Vector3(Camera.main.transform.right.x * (moveHorizontal * speed), rb.velocity.y, Camera.main.transform.forward.z * (moveVertical * speed));
+        movement = new Vector3(moveHorizontal * speed, rb.velocity.y, moveVertical * speed);
         movementForce = new Vector3(moveHorizontal, 0, moveVertical);
 
         Vector3 tempVect = transform.position + new Vector3(movement.x, 0, movement.z);
