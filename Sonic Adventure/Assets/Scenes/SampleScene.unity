@@ -736,6 +736,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 987de179334135342bc57321ed696c00, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _camera: {fileID: 963194228}
   speed: 3
   loopTime: 0
   offTheRamp: 0

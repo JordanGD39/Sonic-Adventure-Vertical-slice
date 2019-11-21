@@ -4,21 +4,30 @@ using UnityEngine;
 
 public class PlayerMovement : MonoBehaviour
 {
+    const float rotationSpeed = 3.0f;
+
+    //Camera position
+    [SerializeField]
+    private Transform _camera;
+
     //Physics
     private Rigidbody rb;
     private Vector3 movement;
     private Vector3 movementForce;
+
     [SerializeField] private float speed = 3;
     [SerializeField] private bool loopTime = false;
     [SerializeField] private bool offTheRamp = false;
     [SerializeField] private bool grounded = false;
 
     private Vector3 upright;
+    private float playerPerspective;
 
     // Start is called before the first frame update
     void Start()
     {
         rb = GetComponent<Rigidbody>();
+        playerPerspective = 0;
     }
 
     // Update is called once per frame
@@ -31,18 +40,25 @@ public class PlayerMovement : MonoBehaviour
         //Vector3 tempVect = transform.position + Camera.main.transform.TransformVector(movement);
         //transform.LookAt(new Vector3(tempVect.x, transform.position.y, tempVect.z));
 
+        if (moveHorizontal != 0 || moveVertical != 0)
+        {
+            playerPerspective = _camera.rotation.y;
+        }
+
         RaycastHit hit;
         if (Physics.SphereCast(transform.position, 0.45f, -transform.up, out hit, 1.1f))
         {
-            Quaternion quat = Quaternion.LookRotation(Vector3.Cross(transform.right, hit.normal));            
+            Quaternion quat = Quaternion.LookRotation(Vector3.Cross(transform.right, hit.normal));
 
-            transform.rotation = new Quaternion(quat.x, transform.rotation.y, transform.rotation.z, quat.w);
+            transform.rotation = new Quaternion(quat.x, playerPerspective, transform.rotation.z, quat.w);
+
             grounded = true;
         }
         else
         {
             grounded = false;
-            transform.rotation = new Quaternion(0, transform.rotation.y, transform.rotation.z, transform.rotation.w);
+
+            transform.rotation = new Quaternion(0, playerPerspective, transform.rotation.z, transform.rotation.w);
             speed -= 0.6f;
             if (speed < 7)
             {
@@ -103,9 +119,9 @@ public class PlayerMovement : MonoBehaviour
                 loopTime = true;
                 rb.useGravity = false;
                 Vector3 tempVect = transform.TransformVector(movement);
-                Debug.Log(tempVect);
+                //Debug.Log(tempVect);
                 tempVect *= speed * 0.5f;
-                Debug.Log("after speed: " + tempVect);
+                //Debug.Log("after speed: " + tempVect);
                 rb.velocity = tempVect;
             }
 

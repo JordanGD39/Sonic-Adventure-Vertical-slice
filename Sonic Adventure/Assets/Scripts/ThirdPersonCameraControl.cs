@@ -24,9 +24,9 @@ public class ThirdPersonCameraControl : MonoBehaviour
 
     void FixedUpdate()
     {
-        float moveHorizontal = Input.GetAxis("Mouse X");
+        float turnHorizontal = Input.GetAxis("Mouse X");
 
-        _offset = Quaternion.AngleAxis(moveHorizontal * rotationSpeed, Vector3.up) * _offset;
+        _offset = Quaternion.AngleAxis(turnHorizontal * rotationSpeed, Vector3.up) * _offset;
         transform.position = _target.position + _offset;
 
         /*Vector3 desiredPosition = _target.position + _offset;
