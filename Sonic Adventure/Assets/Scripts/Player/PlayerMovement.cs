@@ -79,24 +79,23 @@ public class PlayerMovement : MonoBehaviour
             }
         }        
 
-        if (transform.rotation.x <= 0.2f && transform.rotation.x >= -0.2f)
+        if (transform.rotation.x <= 0.4f && transform.rotation.x >= -0.4f)
         {
             Vector3 tempVect = Camera.main.transform.TransformVector(movement);
             tempVect *= speed;
             tempVect.y = rb.velocity.y;
             rb.velocity = tempVect;
             loopTime = false;
+            rb.useGravity = true;
         }
         else
         {
-            if (!loopTime)
-            {
-                wallSpeed = speed;
-            }
             loopTime = true;
-            wallSpeed *= 0.995f;
-            rb.AddRelativeForce(movement * wallSpeed);         
-            rb.AddForce(Physics.gravity * 0.65f * rb.mass);
+            rb.useGravity = false;
+            Vector3 tempVect = transform.TransformVector(movement);
+            tempVect *= speed * 0.5f;
+            tempVect.y = rb.velocity.y;
+            rb.velocity = tempVect;
         }              
     }
 }
