@@ -4,24 +4,34 @@ using UnityEngine;
 
 public class ThirdPersonCameraControl : MonoBehaviour
 {
-    float rotationSpeed = 1;
-    public Transform target;
+    const float rotationSpeed = 3.0f;
 
-    public float smoothSpeed = 0.125f;
-    public Vector3 offset;
+    [SerializeField]
+    private Transform _target;
+
+    [SerializeField]
+    private float _smoothSpeed = 0.125f;
+
+    [SerializeField]
+    private Vector3 _offset;
 
     void Start()
     {
         Cursor.visible = false;
         Cursor.lockState = CursorLockMode.Locked;
-    }    
+    }
 
     void FixedUpdate()
     {
-        Vector3 desiredPosition = target.position + offset;
-        Vector3 smoothedPosition = Vector3.Lerp(transform.position, desiredPosition, smoothSpeed);
-        transform.position = smoothedPosition;
+        float moveHorizontal = Input.GetAxis("Mouse X");
 
-        transform.LookAt(target);
+        _offset = Quaternion.AngleAxis(moveHorizontal * rotationSpeed, Vector3.up) * _offset;
+        transform.position = _target.position + _offset;
+
+        /*Vector3 desiredPosition = _target.position + _offset;
+        Vector3 smoothedPosition = Vector3.Lerp(transform.position, desiredPosition, _smoothSpeed);
+        transform.position = smoothedPosition;*/
+
+        transform.LookAt(_target);
     }
 }
