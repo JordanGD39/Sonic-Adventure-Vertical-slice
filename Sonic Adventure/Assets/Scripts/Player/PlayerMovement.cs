@@ -9,7 +9,7 @@ public class PlayerMovement : MonoBehaviour
     private Vector3 movement;
     [SerializeField] private float speed = 3;
     [SerializeField] private float wallSpeed = 3;
-    private bool loopTime = false;
+    [SerializeField] private bool loopTime = false;
 
     private Vector3 upright;
 
@@ -26,8 +26,8 @@ public class PlayerMovement : MonoBehaviour
         float moveVertical = Input.GetAxis("Vertical");
         movement = new Vector3(moveHorizontal, 0, moveVertical);
 
-        Vector3 tempVect = transform.position + Camera.main.transform.TransformVector(movement);
-        transform.LookAt(new Vector3(tempVect.x, transform.position.y, tempVect.z));
+        //Vector3 tempVect = transform.position + Camera.main.transform.TransformVector(movement);
+        //transform.LookAt(new Vector3(tempVect.x, transform.position.y, tempVect.z));
 
         RaycastHit hit;
         if (Physics.SphereCast(transform.position, 0.5f, -transform.up, out hit, 1.1f))
@@ -79,7 +79,7 @@ public class PlayerMovement : MonoBehaviour
             }
         }        
 
-        if (transform.rotation.x <= 0.3f && transform.rotation.x >= -0.3f)
+        if (transform.rotation.x <= 0.2f && transform.rotation.x >= -0.2f)
         {
             Vector3 tempVect = Camera.main.transform.TransformVector(movement);
             tempVect *= speed;
@@ -94,17 +94,9 @@ public class PlayerMovement : MonoBehaviour
                 wallSpeed = speed;
             }
             loopTime = true;
-            if (transform.rotation.y > 0)
-            {
-                transform.rotation = new Quaternion(transform.rotation.x, 0, transform.rotation.z, transform.rotation.w);
-            }
-            else if (transform.rotation.y < 0)
-            {
-                transform.rotation = new Quaternion(transform.rotation.x, -180, transform.rotation.z, transform.rotation.w);
-            }
             wallSpeed *= 0.995f;
-            rb.AddRelativeForce(movement * wallSpeed);            
-            rb.AddForce(Physics.gravity * 0.2f * rb.mass);
+            rb.AddRelativeForce(movement * wallSpeed);         
+            rb.AddForce(Physics.gravity * 0.65f * rb.mass);
         }              
     }
 }
