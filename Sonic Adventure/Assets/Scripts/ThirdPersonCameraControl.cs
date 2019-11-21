@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class ThirdPersonCameraControl : MonoBehaviour
 {
-    const float rotationSpeed = 30.0f;
+    const float rotationSpeed = 3.0f;
 
     [SerializeField]
     private Transform _target;
@@ -15,39 +15,27 @@ public class ThirdPersonCameraControl : MonoBehaviour
     [SerializeField]
     private Vector3 _offset;
 
-    private float turnXAxis;
-
     void Start()
     {
         Cursor.visible = false;
         Cursor.lockState = CursorLockMode.Locked;
-
-        turnXAxis = 0.0f;
     }
 
     private void Update()
     {
-        float moveHorizontal = Input.GetAxis("Mouse X");
 
-        if (turnXAxis > _offset.z || turnXAxis < -_offset.z)
-        {
-            turnXAxis -= moveHorizontal;
-        }
-        else
-        {
-            //turnXAxis -= moveHorizontal;
-        }
     }
 
     void FixedUpdate()
     {
-        //Vector3 desiredPosition = _target.position + _offset;
-        Vector3 desiredPosition = _target.position + new Vector3(turnXAxis, _offset.y, _offset.z);
-        Vector3 smoothedPosition = Vector3.Lerp(transform.position, desiredPosition, _smoothSpeed);
-        transform.position = smoothedPosition;
+        float moveHorizontal = Input.GetAxis("Mouse X");
 
-        //transform.Translate(new Vector3(-moveHorizontal, 0.0f, 0.0f) * 25.0f * Time.deltaTime);
-        //transform.Translate(Vector3.right * 25.0f * Time.deltaTime);
+        _offset = Quaternion.AngleAxis(moveHorizontal * rotationSpeed, Vector3.up) * _offset;
+        transform.position = _target.position + _offset;
+
+        /*Vector3 desiredPosition = _target.position + _offset;
+        Vector3 smoothedPosition = Vector3.Lerp(transform.position, desiredPosition, _smoothSpeed);
+        transform.position = smoothedPosition;*/
 
         transform.LookAt(_target);
     }

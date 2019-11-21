@@ -83,7 +83,7 @@ public class PlayerMovement : MonoBehaviour
 
         if (transform.rotation.x <= 0.3f && transform.rotation.x >= -0.3f)
         {
-            rb.velocity = Camera.main.transform.forward + movement;
+            rb.velocity = movement; //Camera.main.transform.forward + movement;
             loopTime = false;
         }
         else
