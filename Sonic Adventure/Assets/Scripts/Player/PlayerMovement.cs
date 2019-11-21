@@ -7,7 +7,6 @@ public class PlayerMovement : MonoBehaviour
     //Physics
     private Rigidbody rb;
     private Vector3 movement;
-    private Vector3 movementForce;
     [SerializeField] private float speed = 3;
     [SerializeField] private float wallSpeed = 3;
     private bool loopTime = false;
@@ -25,8 +24,7 @@ public class PlayerMovement : MonoBehaviour
     {
         float moveHorizontal = Input.GetAxis("Horizontal");
         float moveVertical = Input.GetAxis("Vertical");
-        movement = new Vector3(moveHorizontal * speed, rb.velocity.y, moveVertical * speed);
-        movementForce = new Vector3(moveHorizontal, 0, moveVertical);
+        movement = new Vector3(moveHorizontal, 0, moveVertical);
 
         Vector3 tempVect = transform.position + new Vector3(movement.x, 0, movement.z);
         transform.LookAt(new Vector3(tempVect.x, transform.position.y, tempVect.z));
@@ -83,8 +81,11 @@ public class PlayerMovement : MonoBehaviour
 
         if (transform.rotation.x <= 0.3f && transform.rotation.x >= -0.3f)
         {
-            rb.velocity = Camera.main.transform.forward + movement;          
-            loopTime = false;            
+            Vector3 tempVect = Camera.main.transform.TransformVector(movement);
+            tempVect *= speed;
+            tempVect.y = rb.velocity.y;
+            rb.velocity = tempVect;
+            loopTime = false;
         }
         else
         {
@@ -102,7 +103,7 @@ public class PlayerMovement : MonoBehaviour
                 transform.rotation = new Quaternion(transform.rotation.x, -180, transform.rotation.z, transform.rotation.w);
             }
             wallSpeed *= 0.995f;
-            rb.AddRelativeForce(movementForce * wallSpeed);            
+            rb.AddRelativeForce(movement * wallSpeed);            
             rb.AddForce(Physics.gravity * 0.2f * rb.mass);
         }              
     }
