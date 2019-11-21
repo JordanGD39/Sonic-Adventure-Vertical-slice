@@ -82,7 +82,7 @@ public class PlayerMovement : MonoBehaviour
             }
         }        
 
-        if (transform.rotation.x <= 0.4f && transform.rotation.x >= -0.4f)
+        if (transform.rotation.x <= 0.35f && transform.rotation.x >= -0.35f)
         {
             if (grounded)
             {

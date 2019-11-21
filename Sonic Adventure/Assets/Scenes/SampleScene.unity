@@ -737,8 +737,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   speed: 3
-  wallSpeed: 3
   loopTime: 0
+  offTheRamp: 0
+  grounded: 0
 --- !u!1 &581036124
 GameObject:
   m_ObjectHideFlags: 0
@@ -1362,9 +1363,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 823579224f8bc1c4c986710a207671b6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  target: {fileID: 388139844}
-  smoothSpeed: 0.25
-  offset: {x: 0, y: 3, z: -7}
+  _target: {fileID: 0}
+  _smoothSpeed: 0.125
+  _offset: {x: 0, y: 3, z: -7}
 --- !u!1 &973390132
 GameObject:
   m_ObjectHideFlags: 0
