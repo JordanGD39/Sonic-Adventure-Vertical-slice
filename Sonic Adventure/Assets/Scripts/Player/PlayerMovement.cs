@@ -8,8 +8,9 @@ public class PlayerMovement : MonoBehaviour
     private Rigidbody rb;
     private Vector3 movement;
     [SerializeField] private float speed = 3;
-    [SerializeField] private float wallSpeed = 3;
     [SerializeField] private bool loopTime = false;
+    [SerializeField] private bool offTheRamp = false;
+    [SerializeField] private bool grounded = false;
 
     private Vector3 upright;
 
@@ -34,10 +35,12 @@ public class PlayerMovement : MonoBehaviour
         {
             Quaternion quat = Quaternion.LookRotation(Vector3.Cross(transform.right, hit.normal));            
 
-            transform.rotation = new Quaternion(quat.x, transform.rotation.y, transform.rotation.z, quat.w);            
+            transform.rotation = new Quaternion(quat.x, transform.rotation.y, transform.rotation.z, quat.w);
+            grounded = true;
         }
         else
-        {            
+        {
+            grounded = false;
             transform.rotation = new Quaternion(0, transform.rotation.y, transform.rotation.z, transform.rotation.w);
             speed -= 0.6f;
             if (speed < 7)
@@ -81,6 +84,10 @@ public class PlayerMovement : MonoBehaviour
 
         if (transform.rotation.x <= 0.4f && transform.rotation.x >= -0.4f)
         {
+            if (grounded)
+            {
+                offTheRamp = false;
+            }
             Vector3 tempVect = Camera.main.transform.TransformVector(movement);
             tempVect *= speed;
             tempVect.y = rb.velocity.y;
@@ -90,12 +97,23 @@ public class PlayerMovement : MonoBehaviour
         }
         else
         {
-            loopTime = true;
-            rb.useGravity = false;
-            Vector3 tempVect = transform.TransformVector(movement);
-            tempVect *= speed * 0.5f;
-            tempVect.y = rb.velocity.y;
-            rb.velocity = tempVect;
+            if (!offTheRamp)
+            {
+                loopTime = true;
+                rb.useGravity = false;
+                Vector3 tempVect = transform.TransformVector(movement);
+                Debug.Log(tempVect);
+                tempVect *= speed * 0.5f;
+                Debug.Log("after speed: " + tempVect);
+                rb.velocity = tempVect;
+            }
+
+            if (speed < 12)
+            {
+                rb.useGravity = true;
+                transform.rotation = new Quaternion(0, transform.rotation.y, transform.rotation.z, transform.rotation.w);
+                offTheRamp = true;
+            }
         }              
     }
 }
