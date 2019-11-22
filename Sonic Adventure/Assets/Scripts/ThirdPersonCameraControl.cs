@@ -29,10 +29,6 @@ public class ThirdPersonCameraControl : MonoBehaviour
         _offset = Quaternion.AngleAxis(turnHorizontal * rotationSpeed, Vector3.up) * _offset;
         transform.position = _target.position + _offset;
 
-        /*Vector3 desiredPosition = _target.position + _offset;
-        Vector3 smoothedPosition = Vector3.Lerp(transform.position, desiredPosition, _smoothSpeed);
-        transform.position = smoothedPosition;*/
-
         transform.LookAt(_target);
     }
 }
