@@ -10,7 +10,7 @@ public class ThirdPersonCameraControl : MonoBehaviour
     private Transform _target;
 
     [SerializeField]
-    private float _smoothSpeed = 0.125f;
+    private float _smoothSpeed;
 
     [SerializeField]
     private Vector3 _offset;
@@ -20,6 +20,28 @@ public class ThirdPersonCameraControl : MonoBehaviour
         _target = GameObject.FindGameObjectWithTag("Player").transform;
         Cursor.visible = false;
         Cursor.lockState = CursorLockMode.Locked;
+    }
+
+    private void Update()
+    {
+        /*RaycastHit hit;
+
+        if (Physics.Raycast(transform.position, transform.forward, out hit))
+        {
+            Debug.DrawRay(transform.position, transform.forward * hit.distance, Color.blue);
+            //Debug.Log(hit.collider.tag);
+
+            float step = _smoothSpeed * Time.deltaTime;
+
+            if (hit.collider.gameObject.tag != "Player")
+            {
+                transform.position = Vector3.MoveTowards(transform.position, transform.forward, step);
+            }
+            else if (hit.collider.gameObject.tag == "Player" && hit.distance < 7.1f)
+            {
+                transform.position = Vector3.MoveTowards(transform.position, -transform.forward, step);
+            }
+        }*/
     }
 
     void FixedUpdate()

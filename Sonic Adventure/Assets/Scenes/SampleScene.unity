@@ -1365,7 +1365,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _target: {fileID: 0}
-  _smoothSpeed: 0.125
+  _smoothSpeed: 3
   _offset: {x: 0, y: 3, z: -7}
 --- !u!1 &973390132
 GameObject:
@@ -2871,7 +2871,7 @@ GameObject:
   - component: {fileID: 1956086784}
   m_Layer: 0
   m_Name: SonicJumpModel
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0

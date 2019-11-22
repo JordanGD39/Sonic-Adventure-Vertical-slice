@@ -40,17 +40,18 @@ public class PlayerMovement : MonoBehaviour
         //Vector3 tempVect = transform.position + Camera.main.transform.TransformVector(movement);
         //transform.LookAt(new Vector3(tempVect.x, transform.position.y, tempVect.z));
 
-        if (moveHorizontal != 0 || moveVertical != 0)
+        /*if (moveHorizontal != 0 || moveVertical != 0)
         {
             playerPerspective = _camera.rotation.y;
-        }
+        }*/
 
         RaycastHit hit;
         if (Physics.SphereCast(transform.position, 0.45f, -transform.up, out hit, 1.1f))
         {
             Quaternion quat = Quaternion.LookRotation(Vector3.Cross(transform.right, hit.normal));
 
-            transform.rotation = new Quaternion(quat.x, playerPerspective, transform.rotation.z, quat.w);
+            //transform.rotation = new Quaternion(quat.x, playerPerspective, transform.rotation.z, quat.w);
+            transform.rotation = new Quaternion(quat.x, transform.rotation.y, transform.rotation.z, quat.w);
 
             grounded = true;
         }
@@ -58,7 +59,8 @@ public class PlayerMovement : MonoBehaviour
         {
             grounded = false;
 
-            transform.rotation = new Quaternion(0, playerPerspective, transform.rotation.z, transform.rotation.w);
+            //transform.rotation = new Quaternion(0, playerPerspective, transform.rotation.z, transform.rotation.w);
+            transform.rotation = new Quaternion(0, transform.rotation.y, transform.rotation.z, transform.rotation.w);
             speed -= 0.6f;
             if (speed < 7)
             {
