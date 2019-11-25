@@ -4,8 +4,6 @@ using UnityEngine;
 
 public class PlayerMovement : MonoBehaviour
 {
-    const float rotationSpeed = 3.0f;
-
     //Camera position
     [SerializeField]
     private Transform _camera;
@@ -22,6 +20,7 @@ public class PlayerMovement : MonoBehaviour
 
     private Vector3 upright;
     private float playerPerspective;
+    private float rotationSpeed = 3.0f;
 
     // Start is called before the first frame update
     void Start()
@@ -37,20 +36,14 @@ public class PlayerMovement : MonoBehaviour
         float moveVertical = Input.GetAxis("Vertical");
         movement = new Vector3(moveHorizontal, 0, moveVertical);
 
-        //Vector3 tempVect = transform.position + Camera.main.transform.TransformVector(movement);
-        //transform.LookAt(new Vector3(tempVect.x, transform.position.y, tempVect.z));
-
-        /*if (moveHorizontal != 0 || moveVertical != 0)
-        {
-            playerPerspective = _camera.rotation.y;
-        }*/
+        Vector3 tempVect = transform.localPosition + Camera.main.transform.TransformVector(movement);
+        transform.LookAt(new Vector3(tempVect.x, transform.localPosition.y, tempVect.z));
 
         RaycastHit hit;
         if (Physics.SphereCast(transform.position, 0.45f, -transform.up, out hit, 1.1f))
         {
             Quaternion quat = Quaternion.LookRotation(Vector3.Cross(transform.right, hit.normal));
 
-            //transform.rotation = new Quaternion(quat.x, playerPerspective, transform.rotation.z, quat.w);
             transform.rotation = new Quaternion(quat.x, transform.rotation.y, transform.rotation.z, quat.w);
 
             grounded = true;
@@ -59,7 +52,6 @@ public class PlayerMovement : MonoBehaviour
         {
             grounded = false;
 
-            //transform.rotation = new Quaternion(0, playerPerspective, transform.rotation.z, transform.rotation.w);
             transform.rotation = new Quaternion(0, transform.rotation.y, transform.rotation.z, transform.rotation.w);
             speed -= 0.6f;
             if (speed < 7)
