@@ -17,14 +17,14 @@ public class ThirdPersonCameraControl : MonoBehaviour
 
     void Start()
     {
-        _target = GameObject.FindGameObjectWithTag("Player").transform;
+        _target = GameObject.FindGameObjectWithTag(Constants.Tags.playerTag).transform;
         Cursor.visible = false;
         Cursor.lockState = CursorLockMode.Locked;
     }
 
     void FixedUpdate()
     {
-        float moveHorizontal = Input.GetAxis("Mouse X");
+        float moveHorizontal = Input.GetAxis(Constants.Inputs.mouseX);
 
         _offset = Quaternion.AngleAxis(moveHorizontal * rotationSpeed, Vector3.up) * _offset;
         transform.position = _target.position + _offset;
