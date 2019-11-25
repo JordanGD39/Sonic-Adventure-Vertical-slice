@@ -9,7 +9,9 @@ public class PlayerMovement : MonoBehaviour
     
     private Vector3 movement;
     [SerializeField] private float speed = 3;
+    [SerializeField] private float prevRot = 0;
     [SerializeField] private bool loopTime = false;
+    [SerializeField] private bool onLoop = false;
     [SerializeField] private bool offTheRamp = false;
     [SerializeField] private bool grounded = false;
 
@@ -28,38 +30,44 @@ public class PlayerMovement : MonoBehaviour
 
         if (!loopTime)
         {
-            Vector3 tempVect = transform.localPosition + Camera.main.transform.TransformVector(movement);
+            Vector3 tempVect = transform.position + Camera.main.transform.TransformVector(movement);
             Quaternion rot;
-            rot = transform.localRotation;
+            rot = transform.rotation;
             transform.LookAt(tempVect);
-            transform.localRotation = new Quaternion(rot.x, transform.localRotation.y, 0, transform.localRotation.w);
+            transform.rotation = new Quaternion(rot.x, transform.rotation.y, 0, transform.rotation.w);
         }
-        else
-        {
-            Vector3 tempVect = transform.localPosition + transform.TransformVector(movement);
-            Quaternion rot;
-            rot = transform.localRotation;
-            transform.LookAt(tempVect);
-            transform.localRotation = new Quaternion(rot.x, transform.localRotation.y, 0, transform.localRotation.w);
-        }
+
 
         RaycastHit hit;
         if (Physics.SphereCast(transform.position, 0.3f, -transform.up, out hit, 1.1f))
         {
             Quaternion quat = Quaternion.LookRotation(Vector3.Cross(transform.right, hit.normal));
-            Debug.Log(hit.normal);
-            transform.localRotation = new Quaternion(quat.x, transform.localRotation.y, transform.localRotation.z, transform.localRotation.w);
+            //Debug.Log(hit.normal);
+            transform.rotation = new Quaternion(quat.x, transform.rotation.y, transform.rotation.z, transform.rotation.w);
             grounded = true;
         }
         else
         {
             grounded = false;
-            transform.rotation = new Quaternion(0, transform.rotation.y, transform.rotation.z, transform.rotation.w);
+            transform.rotation = new Quaternion(0, transform.rotation.y, 0, transform.rotation.w);
             speed -= 0.6f;
             if (speed < 7)
             {
                 speed += 0.6f;
             }
+        }
+
+        Vector3 rotate = new Vector3();
+
+        if (loopTime && grounded)
+        {
+            rotate = new Vector3(0, prevRot, 0);
+
+            transform.rotation = Quaternion.FromToRotation(Vector3.up, hit.normal) * Quaternion.Euler(rotate.x, rotate.y, rotate.z);
+        }
+        else
+        {
+            prevRot = transform.eulerAngles.y;
         }
     }
 
@@ -97,6 +105,7 @@ public class PlayerMovement : MonoBehaviour
 
         if (transform.rotation.x <= 0.35f && transform.rotation.x >= -0.35f)
         {
+            Camera.main.transform.GetChild(0).rotation = Camera.main.transform.localRotation;
             if (grounded)
             {
                 offTheRamp = false;
@@ -105,15 +114,26 @@ public class PlayerMovement : MonoBehaviour
             tempVect *= speed;
             tempVect.y = rb.velocity.y;
             rb.velocity = tempVect;
-            loopTime = false;
+            loopTime = false;            
             rb.useGravity = true;
         }
         else
         {
             if (!offTheRamp)
             {
+                //Debug.Log(Vector3.Dot(transform.up, Vector3.down));
+                //if (Vector3.Dot(transform.up, Vector3.down) < 0.5f)
+                //{
+                //    Camera.main.transform.GetChild(0).rotation = new Quaternion(transform.rotation.x, Camera.main.transform.rotation.y, Camera.main.transform.GetChild(0).rotation.z, Camera.main.transform.GetChild(0).rotation.w);                 
+                //}
+                //else
+                //{
+                //    Camera.main.transform.GetChild(0).rotation = new Quaternion(-transform.rotation.x, Camera.main.transform.rotation.y, Camera.main.transform.GetChild(0).rotation.z, Camera.main.transform.GetChild(0).rotation.w);
+                //}
+
                 loopTime = true;
                 rb.useGravity = false;
+                //Vector3 tempVect = Camera.main.transform.GetChild(0).TransformVector(movement);
                 Vector3 tempVect = transform.TransformVector(movement);
                 tempVect *= speed * 0.5f;
                 rb.velocity = tempVect;

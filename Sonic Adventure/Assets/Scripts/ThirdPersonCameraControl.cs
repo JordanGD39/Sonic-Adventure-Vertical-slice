@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class ThirdPersonCameraControl : MonoBehaviour
 {
-    const float rotationSpeed = 3.0f;
+    private float rotationSpeed = 3.0f;
 
     [SerializeField]
     private Transform _target;
