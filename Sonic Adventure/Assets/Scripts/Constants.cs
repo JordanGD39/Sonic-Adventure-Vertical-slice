@@ -6,7 +6,7 @@ public class Constants
 {
     public class Tags
     {
-        public const string playerTag = "Player";
+        public const string player = "Player";
     }
 
     public class Inputs

@@ -1583,6 +1583,7 @@ MonoBehaviour:
   onLoop: 0
   offTheRamp: 0
   grounded: 0
+  boosting: 0
 --- !u!1 &503936210
 GameObject:
   m_ObjectHideFlags: 0
@@ -5576,7 +5577,7 @@ GameObject:
   - component: {fileID: 1956086784}
   m_Layer: 0
   m_Name: SonicJumpModel
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -5712,6 +5713,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7489491f93f9cc040b48cc5caa812a8d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  secondsOutOfControl: 7
+  horInput: 0.1
+  verInput: 1
 --- !u!1 &2089478783
 GameObject:
   m_ObjectHideFlags: 0

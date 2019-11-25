@@ -14,6 +14,11 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] private bool onLoop = false;
     [SerializeField] private bool offTheRamp = false;
     [SerializeField] private bool grounded = false;
+    [SerializeField] private bool boosting = false;
+    private float moveHorizontalBoost = 0;
+    private float moveVerticalBoost = 0;
+
+    public float Speed { get { return speed; }  set { speed = value; } }
 
     // Start is called before the first frame update
     void Start()
@@ -26,25 +31,35 @@ public class PlayerMovement : MonoBehaviour
     {
         float moveHorizontal = Input.GetAxis(Constants.Inputs.hori);
         float moveVertical = Input.GetAxis(Constants.Inputs.vert);
-        movement = new Vector3(moveHorizontal, 0, moveVertical);
 
-        if (!loopTime)
-        {
-            Vector3 tempVect = transform.position + Camera.main.transform.TransformVector(movement);
-            Quaternion rot;
-            rot = transform.rotation;
-            transform.LookAt(tempVect);
-            transform.rotation = new Quaternion(rot.x, transform.rotation.y, 0, transform.rotation.w);
+        if (boosting)
+        {            
+            movement = new Vector3(moveHorizontalBoost, 0, moveVerticalBoost);
         }
+        else
+        {
+            movement = new Vector3(moveHorizontal, 0, moveVertical);
 
+            if (!loopTime)
+            {
+                Vector3 tempVect = transform.position + Camera.main.transform.TransformVector(movement);
+                Quaternion rot;
+                rot = transform.rotation;
+                transform.LookAt(tempVect);
+                transform.rotation = new Quaternion(rot.x, transform.rotation.y, 0, transform.rotation.w);
+            }
+        }
 
         RaycastHit hit;
         if (Physics.SphereCast(transform.position, 0.3f, -transform.up, out hit, 1.1f))
         {
-            Quaternion quat = Quaternion.LookRotation(Vector3.Cross(transform.right, hit.normal));
-            //Debug.Log(hit.normal);
-            transform.rotation = new Quaternion(quat.x, transform.rotation.y, transform.rotation.z, transform.rotation.w);
-            grounded = true;
+            if (!hit.collider.isTrigger)
+            {
+                Quaternion quat = Quaternion.LookRotation(Vector3.Cross(transform.right, hit.normal));
+                //Debug.Log(hit.normal);
+                transform.rotation = new Quaternion(quat.x, transform.rotation.y, transform.rotation.z, transform.rotation.w);
+                grounded = true;
+            }
         }
         else
         {
@@ -88,7 +103,7 @@ public class PlayerMovement : MonoBehaviour
             }
             else
             {
-                speed = 18;
+                speed -= 1;
             }
         }
         else if (rb.velocity.magnitude <= 2.6f)
@@ -110,7 +125,15 @@ public class PlayerMovement : MonoBehaviour
             {
                 offTheRamp = false;
             }
-            Vector3 tempVect = Camera.main.transform.TransformVector(movement);
+            Vector3 tempVect = new Vector3();
+            if (!boosting)
+            {
+                tempVect = Camera.main.transform.TransformVector(movement);
+            }
+            else
+            {
+                tempVect = movement;
+            }
             tempVect *= speed;
             tempVect.y = rb.velocity.y;
             rb.velocity = tempVect;
@@ -135,7 +158,7 @@ public class PlayerMovement : MonoBehaviour
                 rb.useGravity = false;
                 //Vector3 tempVect = Camera.main.transform.GetChild(0).TransformVector(movement);
                 Vector3 tempVect = transform.TransformVector(movement);
-                tempVect *= speed * 0.5f;
+                tempVect *= speed * 0.75f;
                 rb.velocity = tempVect;
             }
 
@@ -146,6 +169,16 @@ public class PlayerMovement : MonoBehaviour
                 offTheRamp = true;
             }
         }              
+    }
+
+    public IEnumerator Boost(float sec, float hor, float ver)
+    {
+        transform.LookAt(transform.position + movement);
+        boosting = true;
+        moveHorizontalBoost = hor;
+        moveVerticalBoost = ver;
+        yield return new WaitForSeconds(sec);
+        boosting = false;
     }
 }
 

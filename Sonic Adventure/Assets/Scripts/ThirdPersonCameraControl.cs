@@ -17,7 +17,7 @@ public class ThirdPersonCameraControl : MonoBehaviour
 
     void Start()
     {
-        _target = GameObject.FindGameObjectWithTag(Constants.Tags.playerTag).transform;
+        _target = GameObject.FindGameObjectWithTag(Constants.Tags.player).transform;
         Cursor.visible = false;
         Cursor.lockState = CursorLockMode.Locked;
     }
