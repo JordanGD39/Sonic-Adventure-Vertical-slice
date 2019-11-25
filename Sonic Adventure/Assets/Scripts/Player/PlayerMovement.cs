@@ -28,17 +28,17 @@ public class PlayerMovement : MonoBehaviour
 
         if (!loopTime)
         {
-            Vector3 tempVect = transform.position + Camera.main.transform.TransformVector(movement);
+            Vector3 tempVect = transform.localPosition + Camera.main.transform.TransformVector(movement);
             Quaternion rot;
-            rot = transform.rotation;
+            rot = transform.localRotation;
             transform.LookAt(tempVect);
             transform.localRotation = new Quaternion(rot.x, transform.localRotation.y, 0, transform.localRotation.w);
         }
         else
         {
-            Vector3 tempVect = transform.position + transform.TransformVector(movement);
+            Vector3 tempVect = transform.localPosition + transform.TransformVector(movement);
             Quaternion rot;
-            rot = transform.rotation;
+            rot = transform.localRotation;
             transform.LookAt(tempVect);
             transform.localRotation = new Quaternion(rot.x, transform.localRotation.y, 0, transform.localRotation.w);
         }
