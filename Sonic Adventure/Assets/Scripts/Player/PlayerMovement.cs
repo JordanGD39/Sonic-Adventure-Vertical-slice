@@ -15,8 +15,6 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] private bool offTheRamp = false;
     [SerializeField] private bool grounded = false;
     [SerializeField] private bool boosting = false;
-    private float moveHorizontalBoost = 0;
-    private float moveVerticalBoost = 0;
 
     public float Speed { get { return speed; }  set { speed = value; } }
 
@@ -34,7 +32,7 @@ public class PlayerMovement : MonoBehaviour
 
         if (boosting)
         {            
-            movement = new Vector3(moveHorizontalBoost, 0, moveVerticalBoost);
+            movement = new Vector3(0, 0, 1);
         }
         else
         {
@@ -132,7 +130,7 @@ public class PlayerMovement : MonoBehaviour
             }
             else
             {
-                tempVect = movement;
+                tempVect = transform.TransformVector(movement);
             }
             tempVect *= speed;
             tempVect.y = rb.velocity.y;
@@ -171,12 +169,10 @@ public class PlayerMovement : MonoBehaviour
         }              
     }
 
-    public IEnumerator Boost(float sec, float hor, float ver)
-    {
-        transform.LookAt(transform.position + movement);
+    public IEnumerator Boost(float sec, Transform tr)
+    {        
         boosting = true;
-        moveHorizontalBoost = hor;
-        moveVerticalBoost = ver;
+        transform.rotation = tr.rotation;
         yield return new WaitForSeconds(sec);
         boosting = false;
     }
