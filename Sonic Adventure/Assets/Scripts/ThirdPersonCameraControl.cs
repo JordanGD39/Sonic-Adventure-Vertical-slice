@@ -5,6 +5,7 @@ using UnityEngine;
 public class ThirdPersonCameraControl : MonoBehaviour
 {
     const string PLAYER_TAG = "Player";
+    const string ITEM_TAG = "Item";
 
     [SerializeField]
     private Transform _target;
@@ -43,6 +44,10 @@ public class ThirdPersonCameraControl : MonoBehaviour
         Collider[] cameraCollision = Physics.OverlapSphere(transform.position, colliderRadius);
 
         if (cameraCollision.Length <= 0)
+        {
+            transform.position = _target.position + _offset;
+        }
+        else if (cameraCollision[0].gameObject.tag == ITEM_TAG)
         {
             transform.position = _target.position + _offset;
         }
