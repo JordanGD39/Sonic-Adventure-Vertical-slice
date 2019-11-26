@@ -330,13 +330,13 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 210312914}
-  m_LocalRotation: {x: 0.008719156, y: -0.94375885, z: -0.3295753, w: -0.024967346}
-  m_LocalPosition: {x: -0.8, y: 1.1110003, z: -27.176832}
-  m_LocalScale: {x: -2.93, y: 1, z: 5.8099995}
+  m_LocalRotation: {x: 0.32968646, y: 0.0049512973, z: 0.0017292362, w: -0.94407594}
+  m_LocalPosition: {x: -15.494259, y: 1.1110003, z: 12.106243}
+  m_LocalScale: {x: 10, y: 1, z: 5.8099995}
   m_Children: []
   m_Father: {fileID: 962477816}
   m_RootOrder: 18
-  m_LocalEulerAnglesHint: {x: -38.5, y: -183.03099, z: 0}
+  m_LocalEulerAnglesHint: {x: -38.5, y: -360.601, z: 0}
 --- !u!65 &210312916
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -514,13 +514,13 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 261834204}
-  m_LocalRotation: {x: 0.011903393, y: -0.8926664, z: -0.44994152, w: -0.023615647}
-  m_LocalPosition: {x: -0.6583032, y: 3.74, z: -29.853077}
-  m_LocalScale: {x: -2.93, y: 1, z: 3}
+  m_LocalRotation: {x: 0.4500931, y: 0.0046832594, z: 0.0023606217, w: -0.8929663}
+  m_LocalPosition: {x: -15.522368, y: 3.74, z: 14.786083}
+  m_LocalScale: {x: 10, y: 1, z: 3}
   m_Children: []
   m_Father: {fileID: 962477816}
   m_RootOrder: 19
-  m_LocalEulerAnglesHint: {x: -53.500004, y: -183.03099, z: 0}
+  m_LocalEulerAnglesHint: {x: -53.500004, y: -360.601, z: 0}
 --- !u!65 &261834206
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -594,7 +594,7 @@ GameObject:
   - component: {fileID: 388139845}
   m_Layer: 0
   m_Name: SonicModel
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -621,7 +621,7 @@ CapsuleCollider:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 388139843}
-  m_Material: {fileID: 0}
+  m_Material: {fileID: 13400000, guid: dedf34428c687e04083f52c8200f6110, type: 2}
   m_IsTrigger: 0
   m_Enabled: 1
   m_Radius: 0.5
@@ -687,7 +687,7 @@ GameObject:
   - component: {fileID: 435070453}
   m_Layer: 0
   m_Name: Sonic
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -716,9 +716,9 @@ Rigidbody:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 435070451}
   serializedVersion: 2
-  m_Mass: 1.1
+  m_Mass: 1
   m_Drag: 0
-  m_AngularDrag: 12
+  m_AngularDrag: 1
   m_UseGravity: 1
   m_IsKinematic: 0
   m_Interpolate: 0
@@ -736,7 +736,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 987de179334135342bc57321ed696c00, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _speed: 20
+  _camera: {fileID: 963194228}
+  speed: 3
+  loopTime: 0
+  offTheRamp: 0
+  grounded: 0
 --- !u!1 &581036124
 GameObject:
   m_ObjectHideFlags: 0
@@ -763,13 +767,13 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 581036124}
-  m_LocalRotation: {x: 0.017367536, y: -0.75387394, z: -0.6564867, w: -0.019944314}
-  m_LocalPosition: {x: -0.58216196, y: 6.7, z: -31.29106}
-  m_LocalScale: {x: -2.93, y: 1, z: 3}
+  m_LocalRotation: {x: 0.6567074, y: 0.003955572, z: 0.00344411, w: -0.75412726}
+  m_LocalPosition: {x: -15.537482, y: 6.700001, z: 16.226006}
+  m_LocalScale: {x: 10, y: 1, z: 3}
   m_Children: []
   m_Father: {fileID: 962477816}
   m_RootOrder: 21
-  m_LocalEulerAnglesHint: {x: -82.100006, y: -183.03099, z: 0}
+  m_LocalEulerAnglesHint: {x: -82.100006, y: -360.601, z: 0}
 --- !u!65 &581036126
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -1038,13 +1042,13 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 832311852}
-  m_LocalRotation: {x: 0.01520681, y: -0.8178642, z: -0.5748033, w: -0.021636967}
-  m_LocalPosition: {x: -0.61123234, y: 5.01, z: -30.741829}
-  m_LocalScale: {x: -2.93, y: 1, z: 3}
+  m_LocalRotation: {x: 0.57499653, y: 0.004290927, z: 0.0030158677, w: -0.8181391}
+  m_LocalPosition: {x: -15.531725, y: 5.01, z: 15.676025}
+  m_LocalScale: {x: 10, y: 1, z: 3}
   m_Children: []
   m_Father: {fileID: 962477816}
   m_RootOrder: 20
-  m_LocalEulerAnglesHint: {x: -70.200005, y: -183.03099, z: 0}
+  m_LocalEulerAnglesHint: {x: -70.200005, y: -360.601, z: 0}
 --- !u!65 &832311854
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -1342,7 +1346,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 963194225}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -0.25, y: 13.75, z: -7}
+  m_LocalPosition: {x: 0, y: 5.04, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
@@ -1357,10 +1361,12 @@ MonoBehaviour:
   m_GameObject: {fileID: 963194225}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6215013f75f0d8c44b5271c10c35a2be, type: 3}
+  m_Script: {fileID: 11500000, guid: 823579224f8bc1c4c986710a207671b6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _sonic: {fileID: 435070451}
+  _target: {fileID: 0}
+  _smoothSpeed: 3
+  _offset: {x: 0, y: 3, z: -7}
 --- !u!1 &973390132
 GameObject:
   m_ObjectHideFlags: 0
@@ -2109,13 +2115,13 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1457858098}
-  m_LocalRotation: {x: 0.0033902528, y: -0.99140275, z: -0.12814501, w: -0.026228338}
-  m_LocalPosition: {x: -0.9739706, y: 0.00000023841858, z: -23.89144}
-  m_LocalScale: {x: -2.93, y: 1, z: 5.8099995}
+  m_LocalRotation: {x: 0.12818813, y: 0.0052019185, z: 0.0006724236, w: -0.991736}
+  m_LocalPosition: {x: -15.459742, y: 0.00000023841858, z: 8.81641}
+  m_LocalScale: {x: 10, y: 1, z: 5.8099995}
   m_Children: []
   m_Father: {fileID: 962477816}
   m_RootOrder: 17
-  m_LocalEulerAnglesHint: {x: -14.7300005, y: -183.03099, z: 0}
+  m_LocalEulerAnglesHint: {x: -14.7300005, y: -360.601, z: 0}
 --- !u!65 &1457858100
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -2569,13 +2575,13 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1783121576}
-  m_LocalRotation: {x: -0.018700156, y: -0.7068595, z: 0.7068595, w: -0.018700156}
-  m_LocalPosition: {x: -0.57105404, y: 27.61, z: -31.500782}
-  m_LocalScale: {x: -2.93, y: 1, z: 40}
+  m_LocalRotation: {x: -0.7070971, y: 0.0037083789, z: -0.0037083789, w: -0.7070971}
+  m_LocalPosition: {x: -15.539686, y: 27.61, z: 16.436012}
+  m_LocalScale: {x: 10, y: 1, z: 40}
   m_Children: []
   m_Father: {fileID: 962477816}
   m_RootOrder: 22
-  m_LocalEulerAnglesHint: {x: 90.00001, y: 0, z: 183.03099}
+  m_LocalEulerAnglesHint: {x: 90.00001, y: 0, z: 360.601}
 --- !u!65 &1783121578
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -2865,7 +2871,7 @@ GameObject:
   - component: {fileID: 1956086784}
   m_Layer: 0
   m_Name: SonicJumpModel
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -2891,7 +2897,7 @@ SphereCollider:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1956086782}
-  m_Material: {fileID: 0}
+  m_Material: {fileID: 13400000, guid: dedf34428c687e04083f52c8200f6110, type: 2}
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
