@@ -70,11 +70,9 @@ public class PlayerMovement : MonoBehaviour
             }
         }
 
-        Vector3 rotate = new Vector3();
-
         if (loopTime && grounded)
         {
-            rotate = new Vector3(0, prevRot, 0);
+            Vector3 rotate = new Vector3(0, prevRot, 0);
 
             transform.rotation = Quaternion.FromToRotation(Vector3.up, hit.normal) * Quaternion.Euler(rotate.x, rotate.y, rotate.z);
         }
@@ -166,7 +164,7 @@ public class PlayerMovement : MonoBehaviour
                 transform.rotation = new Quaternion(0, transform.rotation.y, transform.rotation.z, transform.rotation.w);
                 offTheRamp = true;
             }
-        }              
+        }
     }
 
     public IEnumerator Boost(float sec, Transform tr)
