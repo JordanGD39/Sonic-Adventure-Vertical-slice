@@ -209,11 +209,7 @@ public class PlayerMovement : MonoBehaviour
     {
         boostSec = sec;
         boostTransform = tr;
-    }
-
-    public void StartBoost()
-    {
-        //Not giving parameters to the IEnumerator because when i do it pauses and resumes but with a string it restarts
+        //Not giving parameters to the IEnumerator because when i do it resumes but with a string it starts over when i stop it
         StartCoroutine("Boost");
     }
 

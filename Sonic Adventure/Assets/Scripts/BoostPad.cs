@@ -25,7 +25,6 @@ public class BoostPad : MonoBehaviour
             {                
                 mov.Speed = speed;                
                 mov.BoostPad(secondsOutOfControl, transform);
-                mov.StartBoost();
                 if (addForce)
                 {
                     playerRb.AddForce(transform.forward * speed * 100);
@@ -54,7 +53,6 @@ public class BoostPad : MonoBehaviour
         
         mov.Speed = speed;
         mov.BoostPad(secondsOutOfControl, transform);
-        mov.StartBoost();
         if (other.GetComponent<SphereCollider>() != null)
         {
             other.transform.parent.GetChild(0).gameObject.SetActive(true);
