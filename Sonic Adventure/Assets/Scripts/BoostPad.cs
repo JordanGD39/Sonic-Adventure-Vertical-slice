@@ -5,15 +5,60 @@ using UnityEngine;
 public class BoostPad : MonoBehaviour
 {
     [SerializeField] private float secondsOutOfControl;
+    [SerializeField] private float speed = 50;
+    [SerializeField] private bool teleport = true;
+    [SerializeField] private bool addForce = false;
 
     private void OnTriggerEnter(Collider other)
     {
-        if (other.gameObject.CompareTag(Constants.Tags.player))
+        if (other.gameObject.CompareTag(Constants.Tags.player) && !other.transform.parent.GetComponent<PlayerMovement>().Boosting && other.transform.parent.GetComponent<PlayerJump>().enabled || other.gameObject.CompareTag(Constants.Tags.player) && teleport)
         {
-            other.transform.parent.position = transform.position;
             PlayerMovement mov = other.transform.parent.GetComponent<PlayerMovement>();
-            mov.Speed = 50;
-            StartCoroutine(mov.Boost(secondsOutOfControl, transform));
+            if (teleport)
+            {                
+                other.transform.parent.position = transform.position;
+                mov.StopBoost();
+            }
+            Rigidbody playerRb = other.transform.parent.GetComponent<Rigidbody>();
+            other.transform.parent.GetComponent<PlayerJump>().enabled = false;
+            if (mov.Grounded)
+            {                
+                mov.Speed = speed;                
+                mov.BoostPad(secondsOutOfControl, transform);
+                mov.StartBoost();
+                if (addForce)
+                {
+                    playerRb.AddForce(transform.forward * speed * 100);
+                }
+                if (other.GetComponent<SphereCollider>() != null)
+                {
+                    other.transform.parent.GetChild(0).gameObject.SetActive(true);
+                    other.gameObject.SetActive(false);
+                }
+            }
+            else
+            {
+                StartCoroutine(WaitUntilPlayerIsGrounded(mov, playerRb, other.gameObject));
+            }
+        }
+    }
+
+    private IEnumerator WaitUntilPlayerIsGrounded(PlayerMovement mov, Rigidbody playerRb, GameObject other)
+    {
+        while (!mov.Grounded)
+        {
+            mov.Movement = new Vector3(0, 0, 0);
+            playerRb.velocity = new Vector3(0, playerRb.velocity.y, 0);
+            yield return null;
+        }
+        
+        mov.Speed = speed;
+        mov.BoostPad(secondsOutOfControl, transform);
+        mov.StartBoost();
+        if (other.GetComponent<SphereCollider>() != null)
+        {
+            other.transform.parent.GetChild(0).gameObject.SetActive(true);
+            other.SetActive(false);
         }
     }
 }

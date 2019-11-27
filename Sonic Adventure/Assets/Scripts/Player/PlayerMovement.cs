@@ -6,6 +6,7 @@ public class PlayerMovement : MonoBehaviour
 {
     //Physics
     private Rigidbody rb;
+    private PlayerJump playerJump;
     
     private Vector3 movement;
     [SerializeField] private float speed = 3;
@@ -16,12 +17,19 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] private bool grounded = false;
     [SerializeField] private bool boosting = false;
 
+    private float boostSec = 0;
+    private Transform boostTransform = null;
+
     public float Speed { get { return speed; }  set { speed = value; } }
+    public bool Boosting { get { return boosting; }  set { boosting = value; } }
+    public bool Grounded { get { return grounded; } }
+    public Vector3 Movement { get { return movement; } set { movement = value; } }
 
     // Start is called before the first frame update
     void Start()
     {
         rb = GetComponent<Rigidbody>();
+        playerJump = GetComponent<PlayerJump>();
     }
 
     // Update is called once per frame
@@ -49,13 +57,18 @@ public class PlayerMovement : MonoBehaviour
         }
 
         RaycastHit hit;
-        if (Physics.SphereCast(transform.position, 0.3f, -transform.up, out hit, 1.1f))
+        if (Physics.SphereCast(transform.position, 0.3f, -transform.up, out hit, 0.8f))
         {
             if (!hit.collider.isTrigger)
             {
                 Quaternion quat = Quaternion.LookRotation(Vector3.Cross(transform.right, hit.normal));
                 //Debug.Log(hit.normal);
-                transform.rotation = new Quaternion(quat.x, transform.rotation.y, transform.rotation.z, transform.rotation.w);
+                transform.rotation = new Quaternion(quat.x, transform.rotation.y, 0, transform.rotation.w);
+                grounded = true;
+            }
+
+            if (hit.collider.gameObject.CompareTag(Constants.Tags.boostPad))
+            {
                 grounded = true;
             }
         }
@@ -72,7 +85,16 @@ public class PlayerMovement : MonoBehaviour
 
         if (loopTime && grounded)
         {
-            Vector3 rotate = new Vector3(0, prevRot, 0);
+            Vector3 rotate;
+
+            if (boosting)
+            {
+                rotate = new Vector3(0, prevRot, 0);
+            }
+            else
+            {
+                rotate = new Vector3(0, 0, 0);
+            }
 
             transform.rotation = Quaternion.FromToRotation(Vector3.up, hit.normal) * Quaternion.Euler(rotate.x, rotate.y, rotate.z);
         }
@@ -99,7 +121,14 @@ public class PlayerMovement : MonoBehaviour
             }
             else
             {
-                speed -= 1;
+                if (boosting)
+                {
+                    speed -= 1;
+                }
+                else
+                {
+                    speed = 18;
+                }                
             }
         }
         else if (rb.velocity.magnitude <= 2.6f)
@@ -140,20 +169,20 @@ public class PlayerMovement : MonoBehaviour
         {
             if (!offTheRamp)
             {
-                //Debug.Log(Vector3.Dot(transform.up, Vector3.down));
-                //if (Vector3.Dot(transform.up, Vector3.down) < 0.5f)
-                //{
-                //    Camera.main.transform.GetChild(0).rotation = new Quaternion(transform.rotation.x, Camera.main.transform.rotation.y, Camera.main.transform.GetChild(0).rotation.z, Camera.main.transform.GetChild(0).rotation.w);                 
-                //}
-                //else
-                //{
-                //    Camera.main.transform.GetChild(0).rotation = new Quaternion(-transform.rotation.x, Camera.main.transform.rotation.y, Camera.main.transform.GetChild(0).rotation.z, Camera.main.transform.GetChild(0).rotation.w);
-                //}
-
                 loopTime = true;
                 rb.useGravity = false;
-                //Vector3 tempVect = Camera.main.transform.GetChild(0).TransformVector(movement);
-                Vector3 tempVect = transform.TransformVector(movement);
+
+                Vector3 tempVect;
+                if (boosting)
+                {
+                    tempVect = transform.TransformVector(movement);
+                }
+                else
+                {
+                    Camera.main.transform.GetChild(0).rotation = new Quaternion(transform.rotation.x, Camera.main.transform.rotation.y, Camera.main.transform.GetChild(0).rotation.z, Camera.main.transform.GetChild(0).rotation.w);
+                    tempVect = Camera.main.transform.GetChild(0).TransformVector(movement);
+                }
+
                 tempVect *= speed * 0.75f;
                 rb.velocity = tempVect;
             }
@@ -167,12 +196,29 @@ public class PlayerMovement : MonoBehaviour
         }
     }
 
-    public IEnumerator Boost(float sec, Transform tr)
+    public IEnumerator Boost()
     {        
         boosting = true;
-        transform.rotation = tr.rotation;
-        yield return new WaitForSeconds(sec);
+        transform.rotation = boostTransform.rotation;
+        yield return new WaitForSeconds(boostSec);
         boosting = false;
+        playerJump.enabled = true;
+    }
+
+    public void BoostPad(float sec, Transform tr)
+    {
+        boostSec = sec;
+        boostTransform = tr;
+    }
+
+    public void StartBoost()
+    {
+        StartCoroutine("Boost");
+    }
+
+    public void StopBoost()
+    {
+        StopCoroutine("Boost");
     }
 }
 

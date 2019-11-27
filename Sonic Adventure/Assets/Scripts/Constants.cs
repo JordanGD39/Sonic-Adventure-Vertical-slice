@@ -7,6 +7,7 @@ public class Constants
     public class Tags
     {
         public const string player = "Player";
+        public const string boostPad = "BoostPad";
     }
 
     public class Inputs
