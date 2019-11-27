@@ -213,11 +213,13 @@ public class PlayerMovement : MonoBehaviour
 
     public void StartBoost()
     {
+        //Not giving parameters to the IEnumerator because when i do it pauses and resumes but with a string it restarts
         StartCoroutine("Boost");
     }
 
     public void StopBoost()
-    {
+    {        
+        //Stopping the Ienumerator with a string actually stops it and doesn't pause it
         StopCoroutine("Boost");
     }
 }
