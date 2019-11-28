@@ -8,9 +8,19 @@ public class PlayerJump : MonoBehaviour
     private PlayerMovement playerMov;
 
     [SerializeField] private float jumpHeight;
+    [SerializeField] private float homingSpeed;
     [SerializeField] private float extraJumpHeight = 1; //How long you hold the button
-    [SerializeField] private float maxJumpHeight = 2; //How long you hold the button
+    [SerializeField] private float maxJumpHeight = 2;
     [SerializeField] private bool jumping = false;
+    [SerializeField] private bool homingReady = false;
+    [SerializeField] private float homingRange = 5;
+    [SerializeField] private bool attacking = false;
+
+    [SerializeField] private Transform homingTarget = null;
+    [SerializeField] private LayerMask enemyLayer;
+
+    public bool Jumping { get { return jumping; } }
+    public bool Attacking { get { return attacking; } }
 
     // Start is called before the first frame update
     void Start()
@@ -31,10 +41,30 @@ public class PlayerJump : MonoBehaviour
             }
         }
 
+        if (playerMov.Grounded)
+        {
+            homingReady = true;
+            homingTarget = null;
+        }
+        else
+        {
+            Collider[] enemyCol = Physics.OverlapSphere(transform.position + transform.TransformVector(new Vector3(0, 0, 6)), homingRange, enemyLayer);
+            if (enemyCol.Length != 0)
+            {
+                homingTarget = GetClosestEnemy(enemyCol);
+            }
+
+            if (homingTarget != null)
+            {
+                CheckEnemyStillInRange(enemyCol);
+            }
+        }
+
         if (!Input.GetButton("Jump") && playerMov.Grounded || Input.GetButton("Jump") && playerMov.Grounded && extraJumpHeight >= maxJumpHeight)
         {
             transform.GetChild(0).gameObject.SetActive(true);
             transform.GetChild(1).gameObject.SetActive(false);
+            jumping = false;
         }
     }
 
@@ -46,6 +76,11 @@ public class PlayerJump : MonoBehaviour
             extraJumpHeight = 1;
             transform.GetChild(1).gameObject.SetActive(true);
             transform.GetChild(0).gameObject.SetActive(false);
+            jumping = true;
+        }
+        else if (Input.GetButtonDown("Jump") && !playerMov.Grounded && homingReady)
+        {
+            StartCoroutine("HomingAttack");    
         }
 
         if (Input.GetButton("Jump"))
@@ -54,6 +89,65 @@ public class PlayerJump : MonoBehaviour
             {
                 rb.AddForce(transform.up * jumpHeight, ForceMode.Acceleration);
             }
+        }        
+    }
+
+    private IEnumerator HomingAttack()
+    {
+        attacking = true;
+        if (homingTarget != null)
+        {
+            while (transform.position != homingTarget.position)
+            {
+                transform.LookAt(homingTarget);
+                rb.velocity = transform.TransformVector(new Vector3(0, 0, 1));
+                rb.useGravity = false;
+                yield return null;
+            }
+            Debug.Log("l'epic");
         }
+    }
+
+    private Transform GetClosestEnemy(Collider[] enemies)
+    {
+        Transform tMin = null;
+        float minDist = Mathf.Infinity;
+        Vector3 currentPos = transform.position;
+        foreach (Collider t in enemies)
+        {
+            float dist = Vector3.Distance(t.transform.position, currentPos);
+            if (dist < minDist)
+            {
+                tMin = t.transform;
+                minDist = dist;
+            }
+        }
+        return tMin;
+    }
+
+    private void CheckEnemyStillInRange(Collider[] enemyCol)
+    {
+        if (!attacking)
+        {
+            bool inRange = false;
+
+            for (int i = 0; i < enemyCol.Length; i++)
+            {
+                if (enemyCol[i] == homingTarget.GetComponent<BoxCollider>())
+                {
+                    inRange = true;
+                }
+            }
+
+            if (!inRange)
+            {
+                homingTarget = null;
+            }
+        }
+    }
+
+    private void OnDrawGizmos()
+    {
+        Gizmos.DrawWireSphere(transform.position + transform.TransformVector(new Vector3(0, 0, 6)), homingRange);
     }
 }

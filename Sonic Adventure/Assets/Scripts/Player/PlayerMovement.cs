@@ -75,7 +75,10 @@ public class PlayerMovement : MonoBehaviour
         else
         {
             grounded = false;
-            transform.rotation = new Quaternion(0, transform.rotation.y, 0, transform.rotation.w);
+            if (!playerJump.Jumping)
+            {
+                transform.rotation = new Quaternion(0, transform.rotation.y, 0, transform.rotation.w);
+            }      
             speed -= 0.6f;
             if (speed < 7)
             {
@@ -143,13 +146,10 @@ public class PlayerMovement : MonoBehaviour
             }
         }        
 
-        if (transform.rotation.x <= 0.35f && transform.rotation.x >= -0.35f)
+        if (transform.rotation.x <= 0.35f && transform.rotation.x >= -0.35f && grounded)
         {
             Camera.main.transform.GetChild(0).rotation = Camera.main.transform.localRotation;
-            if (grounded)
-            {
-                offTheRamp = false;
-            }
+            offTheRamp = false;
             Vector3 tempVect = new Vector3();
             if (!boosting)
             {
@@ -165,7 +165,7 @@ public class PlayerMovement : MonoBehaviour
             loopTime = false;            
             rb.useGravity = true;
         }
-        else
+        else if(transform.rotation.x >= 0.35f && transform.rotation.x <= -0.35f && grounded)
         {
             if (!offTheRamp)
             {
@@ -193,6 +193,15 @@ public class PlayerMovement : MonoBehaviour
                 transform.rotation = new Quaternion(0, transform.rotation.y, transform.rotation.z, transform.rotation.w);
                 offTheRamp = true;
             }
+        }
+        else if (!grounded && !playerJump.Attacking)
+        {
+            Vector3 tempVect = Camera.main.transform.TransformVector(movement);
+            tempVect *= speed;
+            tempVect.y = rb.velocity.y;
+            loopTime = false;
+            rb.useGravity = true;
+            rb.velocity = tempVect;
         }
     }
 
