@@ -42,11 +42,14 @@ public class PlayerMovement : MonoBehaviour
         RaycastHit hit;
         if (Physics.SphereCast(transform.position, 0.45f, -transform.up, out hit, 1.1f))
         {
-            Quaternion quat = Quaternion.LookRotation(Vector3.Cross(transform.right, hit.normal));
+            if (!hit.collider.transform.CompareTag("Item"))
+            {
+                Quaternion quat = Quaternion.LookRotation(Vector3.Cross(transform.right, hit.normal));
 
-            transform.rotation = new Quaternion(quat.x, transform.rotation.y, transform.rotation.z, quat.w);
+                transform.rotation = new Quaternion(quat.x, transform.rotation.y, transform.rotation.z, quat.w);
 
-            grounded = true;
+                grounded = true;
+            }
         }
         else
         {

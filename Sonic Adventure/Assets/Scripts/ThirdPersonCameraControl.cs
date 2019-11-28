@@ -17,10 +17,7 @@ public class ThirdPersonCameraControl : MonoBehaviour
     private Vector3 _offset;
 
     private float colliderRadius;
-
-    private RaycastHit[] hit = new RaycastHit[2];
     private float rotationSpeed = 3.0f;
-    private float playerCameraDistance;
 
     void Start()
     {
@@ -29,7 +26,6 @@ public class ThirdPersonCameraControl : MonoBehaviour
         Cursor.lockState = CursorLockMode.Locked;
 
         transform.position = _target.position + _offset;
-        playerCameraDistance = Vector3.Distance(hit[0].point, transform.position);
 
         colliderRadius = (_offset.magnitude * 0.25f);
     }
