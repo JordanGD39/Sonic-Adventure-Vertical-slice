@@ -146,7 +146,7 @@ public class PlayerMovement : MonoBehaviour
             }
         }        
 
-        if (transform.rotation.x <= 0.35f && transform.rotation.x >= -0.35f && !playerJump.Jumping)
+        if (transform.rotation.x <= 0.35f && transform.rotation.x >= -0.35f && !playerJump.Jumping && !playerJump.Attacking)
         {
             Camera.main.transform.GetChild(0).rotation = Camera.main.transform.localRotation;
             offTheRamp = false;
@@ -203,6 +203,15 @@ public class PlayerMovement : MonoBehaviour
             loopTime = false;
             rb.useGravity = true;
             rb.velocity = tempVect;
+        }
+        else if (!grounded && !boosting && playerJump.Attacking && playerJump.HomingTarget == null && rb.useGravity)
+        {
+            Debug.Log("duhskfu");
+            Vector3 tempVect = Camera.main.transform.TransformVector(movement);
+            rb.velocity = new Vector3(rb.velocity.x * 0.5f, rb.velocity.y, rb.velocity.z * 0.5f);
+            tempVect *= speed * 100;
+            tempVect.y = rb.velocity.y;
+            rb.AddForce(tempVect);
         }
     }
 

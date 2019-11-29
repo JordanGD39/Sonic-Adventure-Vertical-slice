@@ -23,6 +23,7 @@ public class PlayerJump : MonoBehaviour
     public bool Jumping { get { return jumping; } set { jumping = value; } }
     public bool Attacking { get { return attacking; } }
     public bool HitHomingTarget { get { return hitHomingTarget; } set { hitHomingTarget = value; } }
+    public Transform HomingTarget { get { return homingTarget; } }
 
     // Start is called before the first frame update
     void Start()
@@ -47,6 +48,7 @@ public class PlayerJump : MonoBehaviour
         {
             homingReady = true;
             homingTarget = null;
+            attacking = false;
         }
         else
         {
@@ -82,6 +84,8 @@ public class PlayerJump : MonoBehaviour
         }
         else if (Input.GetButtonDown("Jump") && !playerMov.Grounded && homingReady)
         {
+            transform.GetChild(0).gameObject.SetActive(false);
+            transform.GetChild(1).gameObject.SetActive(true);
             StartCoroutine("HomingAttack");    
         }
 
@@ -119,7 +123,11 @@ public class PlayerJump : MonoBehaviour
             }
             else
             {
-
+                rb.velocity = new Vector3(rb.velocity.x, 0, rb.velocity.z);
+                rb.AddForce(transform.forward * homingSpeed * 75);                
+                rb.useGravity = false;
+                yield return new WaitForSeconds(0.1f);
+                rb.useGravity = true;                
             }
         }
     }
