@@ -62,7 +62,7 @@ public class PlayerMovement : MonoBehaviour
             if (!hit.collider.isTrigger)
             {
                 Quaternion quat = Quaternion.LookRotation(Vector3.Cross(transform.right, hit.normal));
-                //Debug.Log(hit.normal);
+                //Debug.Log(transform.rotation);
                 transform.rotation = new Quaternion(quat.x, transform.rotation.y, 0, transform.rotation.w);
                 grounded = true;
             }
@@ -146,10 +146,11 @@ public class PlayerMovement : MonoBehaviour
             }
         }        
 
-        if (transform.rotation.x <= 0.35f && transform.rotation.x >= -0.35f && grounded)
+        if (transform.rotation.x <= 0.35f && transform.rotation.x >= -0.35f && !playerJump.Jumping)
         {
             Camera.main.transform.GetChild(0).rotation = Camera.main.transform.localRotation;
             offTheRamp = false;
+            //Debug.Log("Right up");
             Vector3 tempVect = new Vector3();
             if (!boosting)
             {
@@ -165,13 +166,13 @@ public class PlayerMovement : MonoBehaviour
             loopTime = false;            
             rb.useGravity = true;
         }
-        else if(transform.rotation.x >= 0.35f && transform.rotation.x <= -0.35f && grounded)
+        else if(transform.rotation.x >= 0.35f || transform.rotation.x <= -0.35f && grounded)
         {
             if (!offTheRamp)
             {
                 loopTime = true;
                 rb.useGravity = false;
-
+                //Debug.Log("Not Right up");
                 Vector3 tempVect;
                 if (boosting)
                 {
@@ -194,7 +195,7 @@ public class PlayerMovement : MonoBehaviour
                 offTheRamp = true;
             }
         }
-        else if (!grounded && !playerJump.Attacking)
+        else if (!grounded && !playerJump.Attacking && !boosting)
         {
             Vector3 tempVect = Camera.main.transform.TransformVector(movement);
             tempVect *= speed;
@@ -208,6 +209,7 @@ public class PlayerMovement : MonoBehaviour
     public IEnumerator Boost()
     {        
         boosting = true;
+        playerJump.Jumping = false;
         transform.rotation = boostTransform.rotation;
         yield return new WaitForSeconds(boostSec);
         boosting = false;
@@ -228,29 +230,3 @@ public class PlayerMovement : MonoBehaviour
         StopCoroutine("Boost");
     }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

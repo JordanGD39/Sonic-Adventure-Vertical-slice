@@ -15,12 +15,14 @@ public class PlayerJump : MonoBehaviour
     [SerializeField] private bool homingReady = false;
     [SerializeField] private float homingRange = 5;
     [SerializeField] private bool attacking = false;
+    [SerializeField] private bool hitHomingTarget = false;
 
     [SerializeField] private Transform homingTarget = null;
     [SerializeField] private LayerMask enemyLayer;
 
-    public bool Jumping { get { return jumping; } }
+    public bool Jumping { get { return jumping; } set { jumping = value; } }
     public bool Attacking { get { return attacking; } }
+    public bool HitHomingTarget { get { return hitHomingTarget; } set { hitHomingTarget = value; } }
 
     // Start is called before the first frame update
     void Start()
@@ -94,17 +96,31 @@ public class PlayerJump : MonoBehaviour
 
     private IEnumerator HomingAttack()
     {
-        attacking = true;
-        if (homingTarget != null)
+        if (homingReady)
         {
-            while (transform.position != homingTarget.position)
+            attacking = true;
+            hitHomingTarget = false;
+            homingReady = false;
+            if (homingTarget != null)
             {
-                transform.LookAt(homingTarget);
-                rb.velocity = transform.TransformVector(new Vector3(0, 0, 1));
-                rb.useGravity = false;
-                yield return null;
+                while (!hitHomingTarget)
+                {
+                    transform.LookAt(homingTarget);
+                    rb.velocity = transform.TransformVector(new Vector3(0, 0, homingSpeed));
+                    rb.useGravity = false;
+                    yield return null;
+                }
+                rb.velocity = new Vector3(0, 0, 0);
+                rb.useGravity = true;
+                attacking = false;
+                homingTarget = null;
+                homingReady = true;
+                rb.AddForce(transform.up * 500);
             }
-            Debug.Log("l'epic");
+            else
+            {
+
+            }
         }
     }
 
