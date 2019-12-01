@@ -26,15 +26,6 @@ public class RingBehaviour : MonoBehaviour
         if (colliders.Length <= 0)
         {
             transform.position -= (new Vector3(0.0f, 3.0f, 0.0f) * Time.deltaTime);
-        }
-        else if (colliders[colliders.Length - 1].gameObject.tag == PLAYER_TAG)
-        {
-            PlayerRingAmount playerRings = colliders[colliders.Length - 1].transform.parent.GetComponent<PlayerRingAmount>();
-
-            if (!playerRings.hit)
-            {
-                Destroy(gameObject);
-            }
         }*/
     }
 
@@ -46,18 +37,9 @@ public class RingBehaviour : MonoBehaviour
 
             if (!playerRings.hit)
             {
-                playerRings.ringAmount++;
+                playerRings.ringAmount[0]++;
                 Destroy(gameObject);
             }
-        }
-    }
-
-    private void OnCollisionEnter(Collision collision)
-    {
-        if (collision.gameObject.CompareTag(PLAYER_TAG))
-        {
-            Collider playerCollider = collision.gameObject.GetComponentInChildren<Collider>();
-            Physics.IgnoreCollision(playerCollider, GetComponent<BoxCollider>(), true);
         }
     }
 }
