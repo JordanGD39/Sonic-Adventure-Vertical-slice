@@ -7,6 +7,8 @@ TagManager:
   - BoostPad
   - Enemy
   - Canvas
+  - Item
+  - Hazard
   layers:
   - Default
   - TransparentFX
