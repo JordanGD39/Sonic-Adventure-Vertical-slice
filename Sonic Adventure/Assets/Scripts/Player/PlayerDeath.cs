@@ -18,8 +18,6 @@ public class PlayerDeath : MonoBehaviour
         Camera.main.GetComponent<ThirdPersonCameraControl>().Stop = true;
         fadeObject.SetActive(true);
         yield return new WaitForSeconds(2);
-        AudioManager.instance.StopPlaying(AudioManager.instance.CurrSound.name);
-        AudioManager.instance.Play(AudioManager.instance.CurrSound.name);
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
     }
 }
