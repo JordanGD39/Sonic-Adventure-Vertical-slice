@@ -148,13 +148,11 @@ public class PlayerJump : MonoBehaviour
             {
                 rb.velocity = new Vector3(rb.velocity.x, 0, rb.velocity.z);
                 rb.AddForce(transform.forward * homingSpeed, ForceMode.Impulse);                
-                rb.useGravity = false;
                 targetAttack = false;
                 for (int i = 0; i < 10; i++)
                 {
                     yield return new WaitForFixedUpdate();
-                }                
-                rb.useGravity = true;                
+                }          
             }
         }
     }

@@ -174,17 +174,17 @@ public class PlayerMovement : MonoBehaviour
             rb.velocity = tempVect;
         }
         else if (!grounded && !boosting && playerJump.Attacking && !playerJump.TargetAttack && rb.useGravity)
-        {
+        {            
+            Vector3 tempVect = Camera.main.transform.TransformVector(movement);            
+            tempVect *= speed * 80;
+            tempVect.y = rb.velocity.y;
+            rb.AddForce(tempVect);
             if (rb.velocity.magnitude > 25)
             {
                 Vector3 limitVect = rb.velocity;
                 limitVect = Vector3.ClampMagnitude(limitVect, 25);
                 rb.velocity = new Vector3(limitVect.x, rb.velocity.y, limitVect.z);
             }
-            Vector3 tempVect = Camera.main.transform.TransformVector(movement);            
-            tempVect *= speed * 80;
-            tempVect.y = rb.velocity.y;
-            rb.AddForce(tempVect);            
         }
 
         if (clingToGround && !playerJump.Jumping && grounded)
