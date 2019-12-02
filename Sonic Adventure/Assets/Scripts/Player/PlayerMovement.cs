@@ -192,9 +192,9 @@ public class PlayerMovement : MonoBehaviour
                 rb.velocity = new Vector3(limitVect.x, rb.velocity.y, limitVect.z);                
             }
 
-            if (rb.velocity.y > 15)
+            if (rb.velocity.y > 4)
             {
-                rb.velocity = new Vector3(rb.velocity.x, 15, rb.velocity.z);
+                rb.velocity = new Vector3(rb.velocity.x, 4, rb.velocity.z);
             }
         }
 
