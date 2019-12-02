@@ -15,6 +15,10 @@ public class ThirdPersonCameraControl : MonoBehaviour
     [SerializeField]
     private Vector3 _offset;
 
+    private bool stop = false;
+
+    public bool Stop { get { return stop; } set { stop = value; } }
+
     void Start()
     {
         _target = GameObject.FindGameObjectWithTag(Constants.Tags.player).transform;
@@ -27,7 +31,10 @@ public class ThirdPersonCameraControl : MonoBehaviour
         float moveHorizontal = Input.GetAxis(Constants.Inputs.mouseX);
 
         _offset = Quaternion.AngleAxis(moveHorizontal * rotationSpeed, Vector3.up) * _offset;
-        transform.position = _target.position + _offset;
+        if (!stop)
+        {
+            transform.position = _target.position + _offset;
+        }
 
         /*Vector3 desiredPosition = _target.position + _offset;
         Vector3 smoothedPosition = Vector3.Lerp(transform.position, desiredPosition, _smoothSpeed);
