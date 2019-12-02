@@ -6,6 +6,7 @@ TagManager:
   tags:
   - BoostPad
   - Enemy
+  - Canvas
   layers:
   - Default
   - TransparentFX

@@ -65,7 +65,7 @@ public class PlayerMovement : MonoBehaviour
             {
                 Quaternion quat = Quaternion.LookRotation(Vector3.Cross(transform.right, hit.normal));
                 //Debug.Log(transform.rotation);
-                transform.rotation = new Quaternion(quat.x, transform.rotation.y, 0, transform.rotation.w);
+                transform.rotation = new Quaternion(quat.x, transform.rotation.y, quat.z, transform.rotation.w);
                 grounded = true;
                 clingToGround = !boosting;
             }
@@ -175,11 +175,16 @@ public class PlayerMovement : MonoBehaviour
         }
         else if (!grounded && !boosting && playerJump.Attacking && !playerJump.TargetAttack && rb.useGravity)
         {
-            Vector3 tempVect = Camera.main.transform.TransformVector(movement);
-            rb.velocity = new Vector3(rb.velocity.x * 0.5f, rb.velocity.y, rb.velocity.z * 0.5f);
+            if (rb.velocity.magnitude > 25)
+            {
+                Vector3 limitVect = rb.velocity;
+                limitVect = Vector3.ClampMagnitude(limitVect, 25);
+                rb.velocity = new Vector3(limitVect.x, rb.velocity.y, limitVect.z);
+            }
+            Vector3 tempVect = Camera.main.transform.TransformVector(movement);            
             tempVect *= speed * 80;
             tempVect.y = rb.velocity.y;
-            rb.AddForce(tempVect);
+            rb.AddForce(tempVect);            
         }
 
         if (clingToGround && !playerJump.Jumping && grounded)
