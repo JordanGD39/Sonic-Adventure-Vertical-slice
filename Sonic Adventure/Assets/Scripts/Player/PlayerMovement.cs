@@ -5,11 +5,17 @@ using UnityEngine;
 
 public class PlayerMovement : MonoBehaviour
 {
+    //Camera position
+    [SerializeField]
+    private Transform _camera;
+
     //Physics
     private Rigidbody rb;
     private PlayerJump playerJump;
-    
+
     private Vector3 movement;
+    private Vector3 movementForce;
+
     [SerializeField] private float speed = 3;
     [SerializeField] private float prevRot = 0;
     [SerializeField] private bool loopTime = false;
@@ -41,7 +47,7 @@ public class PlayerMovement : MonoBehaviour
         float moveVertical = Input.GetAxis(Constants.Inputs.vert);
 
         if (boosting)
-        {            
+        {
             movement = new Vector3(0, 0, 1);
         }
         else
@@ -81,7 +87,7 @@ public class PlayerMovement : MonoBehaviour
             if (!playerJump.Jumping)
             {
                 transform.rotation = new Quaternion(0, transform.rotation.y, 0, transform.rotation.w);
-            }      
+            }
             speed -= 0.6f;
             if (speed < 7)
             {
@@ -112,7 +118,7 @@ public class PlayerMovement : MonoBehaviour
 
     void FixedUpdate()
     {
-        Acceleration(); 
+        Acceleration();
 
         if (transform.rotation.x <= 0.35f && transform.rotation.x >= -0.35f && !playerJump.Jumping && !playerJump.Attacking)
         {
@@ -132,7 +138,7 @@ public class PlayerMovement : MonoBehaviour
             tempVect *= speed;
             tempVect.y = rb.velocity.y;
             rb.velocity = tempVect;
-            loopTime = false;            
+            loopTime = false;
             rb.useGravity = true;
         }
         else if(transform.rotation.x >= 0.35f || transform.rotation.x <= -0.35f && grounded)
@@ -174,8 +180,8 @@ public class PlayerMovement : MonoBehaviour
             rb.velocity = tempVect;
         }
         else if (!grounded && !boosting && playerJump.Attacking && !playerJump.TargetAttack && rb.useGravity)
-        {            
-            Vector3 tempVect = Camera.main.transform.TransformVector(movement);            
+        {
+            Vector3 tempVect = Camera.main.transform.TransformVector(movement);
             tempVect *= speed * 80;
             tempVect.y = rb.velocity.y;
             rb.AddForce(tempVect);
@@ -239,7 +245,7 @@ public class PlayerMovement : MonoBehaviour
     }
 
     public IEnumerator Boost()
-    {        
+    {
         boosting = true;
         playerJump.Jumping = false;
         transform.rotation = boostTransform.rotation;
@@ -257,7 +263,7 @@ public class PlayerMovement : MonoBehaviour
     }
 
     public void StopBoost()
-    {        
+    {
         //Stopping the Ienumerator with a string actually stops it and doesn't pause it
         StopCoroutine("Boost");
     }
