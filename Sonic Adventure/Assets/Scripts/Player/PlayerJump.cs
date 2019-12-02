@@ -16,6 +16,7 @@ public class PlayerJump : MonoBehaviour
     [SerializeField] private float homingRange = 5;
     [SerializeField] private bool attacking = false;
     [SerializeField] private bool hitHomingTarget = false;
+    [SerializeField] private bool targetAttack = false;
 
     [SerializeField] private Transform homingTarget = null;
     [SerializeField] private LayerMask enemyLayer;
@@ -23,7 +24,7 @@ public class PlayerJump : MonoBehaviour
     public bool Jumping { get { return jumping; } set { jumping = value; } }
     public bool Attacking { get { return attacking; } }
     public bool HitHomingTarget { get { return hitHomingTarget; } set { hitHomingTarget = value; } }
-    public Transform HomingTarget { get { return homingTarget; } }
+    public bool TargetAttack { get { return targetAttack; } }
 
     private bool jumpPressed = false;
     private bool jumpHold = false;
@@ -139,6 +140,7 @@ public class PlayerJump : MonoBehaviour
                     transform.LookAt(homingTarget);
                     rb.velocity = transform.TransformVector(new Vector3(0, 0, homingSpeed));
                     rb.useGravity = false;
+                    targetAttack = true;
                     yield return new WaitForFixedUpdate();
                 }                
             }
@@ -147,6 +149,7 @@ public class PlayerJump : MonoBehaviour
                 rb.velocity = new Vector3(rb.velocity.x, 0, rb.velocity.z);
                 rb.AddForce(transform.forward * homingSpeed * 0.25f);                
                 rb.useGravity = false;
+                targetAttack = false;
                 yield return new WaitForFixedUpdate();
                 rb.useGravity = true;                
             }

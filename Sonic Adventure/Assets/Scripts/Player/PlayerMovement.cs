@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -58,7 +59,7 @@ public class PlayerMovement : MonoBehaviour
         }
 
         RaycastHit hit;
-        if (Physics.SphereCast(transform.position, 0.3f, -transform.up, out hit, 1f))
+        if (Physics.SphereCast(transform.position, 0.3f, -transform.up, out hit, 0.8f))
         {
             if (!hit.collider.isTrigger)
             {
@@ -110,43 +111,8 @@ public class PlayerMovement : MonoBehaviour
     }
 
     void FixedUpdate()
-    {        
-        if (rb.velocity.magnitude > 2.6f && rb.velocity.magnitude <= 14f)
-        {
-            if (speed < 16)
-            {
-                speed += 0.5f;
-            }                   
-        }
-        else if (rb.velocity.magnitude > 14f)
-        {
-            if (speed < 22)
-            {
-                speed += 0.5f;
-            }
-            else
-            {
-                if (boosting)
-                {
-                    speed -= 1;
-                }
-                else
-                {
-                    speed = 22;
-                }                
-            }
-        }
-        else if (rb.velocity.magnitude <= 2.6f)
-        {
-            if (speed > 3)
-            {
-                speed -= 2;
-            }
-            else if (speed < 3)
-            {
-                speed = 3;
-            }
-        }        
+    {
+        Acceleration(); 
 
         if (transform.rotation.x <= 0.35f && transform.rotation.x >= -0.35f && !playerJump.Jumping && !playerJump.Attacking)
         {
@@ -207,7 +173,7 @@ public class PlayerMovement : MonoBehaviour
             rb.useGravity = true;
             rb.velocity = tempVect;
         }
-        else if (!grounded && !boosting && playerJump.Attacking && playerJump.HomingTarget == null && rb.useGravity)
+        else if (!grounded && !boosting && playerJump.Attacking && !playerJump.TargetAttack && rb.useGravity)
         {
             Vector3 tempVect = Camera.main.transform.TransformVector(movement);
             rb.velocity = new Vector3(rb.velocity.x * 0.5f, rb.velocity.y, rb.velocity.z * 0.5f);
@@ -216,9 +182,49 @@ public class PlayerMovement : MonoBehaviour
             rb.AddForce(tempVect);
         }
 
-        if (clingToGround && !playerJump.Jumping)
+        if (clingToGround && !playerJump.Jumping && grounded)
         {
-            rb.AddForce(-transform.up * 10);
+            rb.AddForce(-transform.up * 50);
+        }
+    }
+
+    private void Acceleration()
+    {
+        if (rb.velocity.magnitude > 2.6f && rb.velocity.magnitude <= 14f)
+        {
+            if (speed < 16)
+            {
+                speed += 0.5f;
+            }
+        }
+        else if (rb.velocity.magnitude > 14f)
+        {
+            if (speed < 22)
+            {
+                speed += 0.5f;
+            }
+            else
+            {
+                if (boosting)
+                {
+                    speed -= 1;
+                }
+                else
+                {
+                    speed = 22;
+                }
+            }
+        }
+        else if (rb.velocity.magnitude <= 2.6f)
+        {
+            if (speed > 3)
+            {
+                speed -= 2;
+            }
+            else if (speed < 3)
+            {
+                speed = 3;
+            }
         }
     }
 
