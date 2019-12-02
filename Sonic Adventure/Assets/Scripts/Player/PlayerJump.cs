@@ -25,6 +25,10 @@ public class PlayerJump : MonoBehaviour
     public bool HitHomingTarget { get { return hitHomingTarget; } set { hitHomingTarget = value; } }
     public Transform HomingTarget { get { return homingTarget; } }
 
+    private bool jumpPressed = false;
+    private bool jumpHold = false;
+    private bool bouncing = false;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -35,13 +39,27 @@ public class PlayerJump : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if (Input.GetButtonDown("Jump"))
+        {
+            jumpPressed = true;
+        }
+        if (Input.GetButtonUp("Jump"))
+        {
+            jumpPressed = false;
+        }
+
         if (Input.GetButton("Jump"))
         {
+            jumpHold = true;
             extraJumpHeight += Input.GetAxis("Jump");
             if (extraJumpHeight > maxJumpHeight)
             {
                 extraJumpHeight = maxJumpHeight;
             }
+        }
+        else
+        {
+            jumpHold = false;
         }
 
         if (playerMov.Grounded)
@@ -66,6 +84,7 @@ public class PlayerJump : MonoBehaviour
 
         if (!Input.GetButton("Jump") && playerMov.Grounded || Input.GetButton("Jump") && playerMov.Grounded && extraJumpHeight >= maxJumpHeight)
         {
+            extraJumpHeight = 1;
             transform.GetChild(0).gameObject.SetActive(true);
             transform.GetChild(1).gameObject.SetActive(false);
             jumping = false;
@@ -74,28 +93,35 @@ public class PlayerJump : MonoBehaviour
 
     private void FixedUpdate()
     {
-        if (Input.GetButtonDown("Jump") && playerMov.Grounded)
+        if (jumpPressed && playerMov.Grounded)
         {
-            rb.AddForce(transform.up * jumpHeight, ForceMode.VelocityChange);
             extraJumpHeight = 1;
+            rb.AddForce(transform.up * jumpHeight, ForceMode.VelocityChange);
             transform.GetChild(1).gameObject.SetActive(true);
             transform.GetChild(0).gameObject.SetActive(false);
             jumping = true;
+            jumpPressed = false;
         }
-        else if (Input.GetButtonDown("Jump") && !playerMov.Grounded && homingReady)
+        else if (jumpPressed && !playerMov.Grounded && homingReady)
         {
             transform.GetChild(0).gameObject.SetActive(false);
             transform.GetChild(1).gameObject.SetActive(true);
             StartCoroutine("HomingAttack");    
         }
 
-        if (Input.GetButton("Jump"))
+        if (jumpHold)
         {
             if (extraJumpHeight < maxJumpHeight)
             {
                 rb.AddForce(transform.up * jumpHeight, ForceMode.Acceleration);
             }
-        }        
+        }
+
+        if (bouncing)
+        {
+            rb.AddForce(transform.up * 500);
+            bouncing = false;
+        }
     }
 
     private IEnumerator HomingAttack()
@@ -105,6 +131,7 @@ public class PlayerJump : MonoBehaviour
             attacking = true;
             hitHomingTarget = false;
             homingReady = false;
+            jumpPressed = false;
             if (homingTarget != null)
             {
                 while (!hitHomingTarget)
@@ -112,24 +139,28 @@ public class PlayerJump : MonoBehaviour
                     transform.LookAt(homingTarget);
                     rb.velocity = transform.TransformVector(new Vector3(0, 0, homingSpeed));
                     rb.useGravity = false;
-                    yield return null;
-                }
-                rb.velocity = new Vector3(0, 0, 0);
-                rb.useGravity = true;
-                attacking = false;
-                homingTarget = null;
-                homingReady = true;
-                rb.AddForce(transform.up * 500);
+                    yield return new WaitForFixedUpdate();
+                }                
             }
             else
             {
                 rb.velocity = new Vector3(rb.velocity.x, 0, rb.velocity.z);
-                rb.AddForce(transform.forward * homingSpeed * 75);                
+                rb.AddForce(transform.forward * homingSpeed * 0.25f);                
                 rb.useGravity = false;
-                yield return new WaitForSeconds(0.1f);
+                yield return new WaitForFixedUpdate();
                 rb.useGravity = true;                
             }
         }
+    }
+
+    public void BounceOfEnemy()
+    {
+        rb.velocity = new Vector3(0, 0, 0);
+        rb.useGravity = true;
+        attacking = false;
+        homingTarget = null;
+        homingReady = true;
+        bouncing = true;
     }
 
     private Transform GetClosestEnemy(Collider[] enemies)

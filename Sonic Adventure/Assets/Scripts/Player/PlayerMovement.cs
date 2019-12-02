@@ -16,6 +16,7 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] private bool offTheRamp = false;
     [SerializeField] private bool grounded = false;
     [SerializeField] private bool boosting = false;
+    [SerializeField] private bool clingToGround = false;
 
     private float boostSec = 0;
     private Transform boostTransform = null;
@@ -57,7 +58,7 @@ public class PlayerMovement : MonoBehaviour
         }
 
         RaycastHit hit;
-        if (Physics.SphereCast(transform.position, 0.3f, -transform.up, out hit, 0.8f))
+        if (Physics.SphereCast(transform.position, 0.3f, -transform.up, out hit, 1f))
         {
             if (!hit.collider.isTrigger)
             {
@@ -65,6 +66,7 @@ public class PlayerMovement : MonoBehaviour
                 //Debug.Log(transform.rotation);
                 transform.rotation = new Quaternion(quat.x, transform.rotation.y, 0, transform.rotation.w);
                 grounded = true;
+                clingToGround = !boosting;
             }
 
             if (hit.collider.gameObject.CompareTag(Constants.Tags.boostPad))
@@ -118,7 +120,7 @@ public class PlayerMovement : MonoBehaviour
         }
         else if (rb.velocity.magnitude > 14f)
         {
-            if (speed < 18)
+            if (speed < 22)
             {
                 speed += 0.5f;
             }
@@ -130,7 +132,7 @@ public class PlayerMovement : MonoBehaviour
                 }
                 else
                 {
-                    speed = 18;
+                    speed = 22;
                 }                
             }
         }
@@ -154,7 +156,8 @@ public class PlayerMovement : MonoBehaviour
             Vector3 tempVect = new Vector3();
             if (!boosting)
             {
-                tempVect = Camera.main.transform.TransformVector(movement);
+                Camera.main.transform.GetChild(0).rotation = new Quaternion(transform.rotation.x, Camera.main.transform.rotation.y, transform.rotation.z, Camera.main.transform.GetChild(0).rotation.w);
+                tempVect = Camera.main.transform.GetChild(0).TransformVector(movement);
             }
             else
             {
@@ -206,12 +209,16 @@ public class PlayerMovement : MonoBehaviour
         }
         else if (!grounded && !boosting && playerJump.Attacking && playerJump.HomingTarget == null && rb.useGravity)
         {
-            Debug.Log("duhskfu");
             Vector3 tempVect = Camera.main.transform.TransformVector(movement);
             rb.velocity = new Vector3(rb.velocity.x * 0.5f, rb.velocity.y, rb.velocity.z * 0.5f);
-            tempVect *= speed * 100;
+            tempVect *= speed * 80;
             tempVect.y = rb.velocity.y;
             rb.AddForce(tempVect);
+        }
+
+        if (clingToGround && !playerJump.Jumping)
+        {
+            rb.AddForce(-transform.up * 10);
         }
     }
 

@@ -16,6 +16,8 @@ public class Enemy : MonoBehaviour
 
                 playerJump.HitHomingTarget = true;
 
+                playerJump.BounceOfEnemy();
+
                 Destroy(gameObject, 0.1f);
             }
         }

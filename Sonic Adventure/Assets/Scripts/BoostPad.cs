@@ -8,6 +8,9 @@ public class BoostPad : MonoBehaviour
     [SerializeField] private float speed = 50;
     [SerializeField] private bool teleport = true;
     [SerializeField] private bool addForce = false;
+    private bool ramp = false;
+
+    private Rigidbody playerRb;
 
     private void OnTriggerEnter(Collider other)
     {
@@ -19,7 +22,7 @@ public class BoostPad : MonoBehaviour
                 other.transform.parent.position = transform.position;
                 mov.StopBoost();
             }
-            Rigidbody playerRb = other.transform.parent.GetComponent<Rigidbody>();
+            playerRb = other.transform.parent.GetComponent<Rigidbody>();
             other.transform.parent.GetComponent<PlayerJump>().enabled = false;
             if (mov.Grounded)
             {                
@@ -27,7 +30,8 @@ public class BoostPad : MonoBehaviour
                 mov.BoostPad(secondsOutOfControl, transform);
                 if (addForce)
                 {
-                    playerRb.AddForce(transform.forward * speed * 100);
+                    //playerRb.AddForce(transform.forward * speed * 100);
+                    ramp = true;
                 }
                 if (other.GetComponent<SphereCollider>() != null)
                 {
@@ -57,6 +61,15 @@ public class BoostPad : MonoBehaviour
         {
             other.transform.parent.GetChild(0).gameObject.SetActive(true);
             other.SetActive(false);
+        }
+    }
+
+    private void FixedUpdate()
+    {
+        if (ramp)
+        {
+            playerRb.AddForce(transform.forward * speed * 85);
+            ramp = false;
         }
     }
 }
