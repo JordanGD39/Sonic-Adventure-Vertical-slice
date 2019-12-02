@@ -11,33 +11,31 @@ public class ThirdPersonCameraControl : MonoBehaviour
     private Transform _target;
 
     [SerializeField]
-    private float _smoothSpeed;
-
-    [SerializeField]
     private Vector3 _offset;
 
-    private float colliderRadius;
     private float rotationSpeed = 3.0f;
 
     void Start()
     {
-        _target = GameObject.FindGameObjectWithTag("Player").transform;
+        _target = GameObject.FindGameObjectWithTag(PLAYER_TAG).transform;
         Cursor.visible = false;
         Cursor.lockState = CursorLockMode.Locked;
 
         transform.position = _target.position + _offset;
-
-        colliderRadius = (_offset.magnitude * 0.25f);
     }
 
     void FixedUpdate()
     {
         float turnHorizontal = Input.GetAxis("Mouse X");
+        //float turnVertical = Input.GetAxis("Mouse Y");
 
         _offset = Quaternion.AngleAxis(turnHorizontal * rotationSpeed, Vector3.up) * _offset;
-        //transform.position = _target.position + _offset;
+        //_offset = Quaternion.AngleAxis(turnVertical, Vector3.right) * _offset;
 
-        Collider[] cameraCollision = Physics.OverlapSphere(transform.position, colliderRadius);
+
+        transform.position = _target.position + _offset;
+
+        /*Collider[] cameraCollision = Physics.OverlapSphere(transform.position, colliderRadius);
 
         if (cameraCollision.Length <= 0)
         {
@@ -54,13 +52,13 @@ public class ThirdPersonCameraControl : MonoBehaviour
         else
         {
 
-        }
+        }*/
 
         transform.LookAt(_target);
     }
 
     private void OnDrawGizmos()
     {
-        Gizmos.DrawWireSphere(transform.position, colliderRadius);
+        //Gizmos.DrawWireSphere(transform.position, colliderRadius);
     }
 }

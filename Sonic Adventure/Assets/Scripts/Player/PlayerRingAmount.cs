@@ -113,7 +113,7 @@ public class PlayerRingAmount : MonoBehaviour
             thisRingCollider[i].enabled = false;
 
             Rigidbody ringBehaviour = thisRing.GetComponent<Rigidbody>();
-            ringBehaviour.AddRelativeForce(new Vector3(shootingAngle[1], 2.0f, shootingAngle[2]) * SHOOTING_RADIUS);
+            ringBehaviour.AddForce((itemlist.transform.up * 2 + new Vector3(shootingAngle[1], 0.0f, shootingAngle[2])) * SHOOTING_RADIUS);
             Destroy(thisRing, 8.0f);
 
             //Debug.Log("An angle of " + (shootingAngle[0]/ (2 * Mathf.PI) * 360) + " degrees. {x: " + shootingAngle[1] + ", z: " + shootingAngle[2] + "}");
