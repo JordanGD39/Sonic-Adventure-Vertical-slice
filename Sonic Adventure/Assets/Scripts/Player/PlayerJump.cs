@@ -145,9 +145,9 @@ public class PlayerJump : MonoBehaviour
                 }                
             }
             else
-            {
+            {                
+                rb.AddForce(transform.forward * homingSpeed, ForceMode.Impulse);
                 rb.velocity = new Vector3(rb.velocity.x, 0, rb.velocity.z);
-                rb.AddForce(transform.forward * homingSpeed, ForceMode.Impulse);                
                 targetAttack = false;
                 for (int i = 0; i < 10; i++)
                 {

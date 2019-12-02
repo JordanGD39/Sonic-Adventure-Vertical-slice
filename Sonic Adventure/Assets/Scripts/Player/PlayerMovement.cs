@@ -183,7 +183,12 @@ public class PlayerMovement : MonoBehaviour
             {
                 Vector3 limitVect = rb.velocity;
                 limitVect = Vector3.ClampMagnitude(limitVect, 25);
-                rb.velocity = new Vector3(limitVect.x, rb.velocity.y, limitVect.z);
+                rb.velocity = new Vector3(limitVect.x, rb.velocity.y, limitVect.z);                
+            }
+
+            if (rb.velocity.y > 15)
+            {
+                rb.velocity = new Vector3(rb.velocity.x, 15, rb.velocity.z);
             }
         }
 
