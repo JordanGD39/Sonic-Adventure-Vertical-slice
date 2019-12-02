@@ -99,11 +99,8 @@ public class PlayerRingAmount : MonoBehaviour
 
         for (int i = 0; i < maxAmount; i++)
         {
-            if (i < (maxAmount - 1))
-            {
-                shootingAngle[1] = Mathf.Cos(shootingAngle[0]);
-                shootingAngle[2] = -Mathf.Sin(shootingAngle[0]);
-            }
+            shootingAngle[1] = Mathf.Cos(shootingAngle[0]);
+            shootingAngle[2] = -Mathf.Sin(shootingAngle[0]);
 
             GameObject thisRing;
             thisRing = Instantiate(ring, transform.position, transform.rotation);
@@ -118,10 +115,7 @@ public class PlayerRingAmount : MonoBehaviour
 
             //Debug.Log("An angle of " + (shootingAngle[0]/ (2 * Mathf.PI) * 360) + " degrees. {x: " + shootingAngle[1] + ", z: " + shootingAngle[2] + "}");
 
-            if (i < (maxAmount - 1))
-            {
-                shootingAngle[0] += ((2 * Mathf.PI) / maxAmount);
-            }
+            shootingAngle[0] += ((2 * Mathf.PI) / maxAmount);
         }
 
         ringColliders = thisRingCollider;

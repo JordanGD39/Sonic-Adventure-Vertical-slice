@@ -19,7 +19,7 @@ public class BoostPad : MonoBehaviour
             PlayerMovement mov = other.transform.parent.GetComponent<PlayerMovement>();
             if (teleport)
             {                
-                other.transform.parent.position = transform.position;
+                other.transform.parent.position = new Vector3(transform.position.x, transform.position.y + 0.8f, transform.position.z);
                 mov.StopBoost();
             }
             playerRb = other.transform.parent.GetComponent<Rigidbody>();
