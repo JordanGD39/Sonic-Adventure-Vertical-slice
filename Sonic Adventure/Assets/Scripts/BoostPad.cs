@@ -23,7 +23,8 @@ public class BoostPad : MonoBehaviour
                 mov.StopBoost();
             }
             playerRb = other.transform.parent.GetComponent<Rigidbody>();
-            other.transform.parent.GetComponent<PlayerJump>().enabled = false;
+            other.transform.parent.GetComponent<PlayerJump>().Attacking = false;
+            other.transform.parent.GetComponent<PlayerJump>().enabled = false;            
             if (mov.Grounded)
             {                
                 mov.Speed = speed;                
