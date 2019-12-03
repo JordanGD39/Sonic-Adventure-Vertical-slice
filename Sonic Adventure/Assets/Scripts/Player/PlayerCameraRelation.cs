@@ -7,8 +7,11 @@ public class PlayerCameraRelation : MonoBehaviour
     [SerializeField]
     private GameObject _camera;
 
+    private RaycastHit hit;
     private bool wallHit;
     public bool WallHit { get { return wallHit; } set { wallHit = value; } }
+    public RaycastHit Hit { get { return hit; } set { hit = value; } }
+    public Transform PlayerTransform { get { return transform; }}
 
     void Start()
     {
@@ -17,21 +20,19 @@ public class PlayerCameraRelation : MonoBehaviour
 
     void Update()
     {
-        RaycastHit hit;
         Vector3 posDifference = _camera.transform.position - transform.position;
 
         if (Physics.Raycast(transform.position, posDifference, out hit))
         {
-            Debug.DrawRay(transform.position, -hit.normal * hit.distance, Color.blue);
+            Debug.DrawRay(transform.position, posDifference, Color.blue);
 
-            if (hit.collider.gameObject.tag != "MainCamera")
+            if (hit.collider.gameObject.tag == "MainCamera" || hit.collider.gameObject.tag == "Item")
             {
-                Debug.Log("Wall between!");
-                wallHit = true;
+                wallHit = false;
             }
             else
             {
-                wallHit = false;
+                wallHit = true;
             }
         }
     }

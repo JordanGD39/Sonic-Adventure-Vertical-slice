@@ -2729,6 +2729,7 @@ GameObject:
   - component: {fileID: 435070453}
   - component: {fileID: 435070456}
   - component: {fileID: 435070457}
+  - component: {fileID: 435070458}
   m_Layer: 0
   m_Name: Sonic
   m_TagString: Player
@@ -2780,7 +2781,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 987de179334135342bc57321ed696c00, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _camera: {fileID: 0}
   speed: 3
   prevRot: 0
   loopTime: 0
@@ -2843,6 +2843,19 @@ MonoBehaviour:
   itemlist: {fileID: 1735761504}
   hit: 0
   ringAmount: 1e00000000000000
+--- !u!114 &435070458
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 435070451}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ef3d592e381aab44dab1d7d7e5645ec1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _camera: {fileID: 963194225}
 --- !u!1 &449844988
 GameObject:
   m_ObjectHideFlags: 0
@@ -5293,6 +5306,7 @@ GameObject:
   - component: {fileID: 963194227}
   - component: {fileID: 963194226}
   - component: {fileID: 963194229}
+  - component: {fileID: 963194230}
   m_Layer: 0
   m_Name: Main Camera
   m_TagString: MainCamera
@@ -5380,6 +5394,21 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _target: {fileID: 0}
   _offset: {x: 0, y: 3, z: -7}
+  _player: {fileID: 435070458}
+--- !u!136 &963194230
+CapsuleCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 963194225}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  m_Radius: 0.5
+  m_Height: 1
+  m_Direction: 1
+  m_Center: {x: 0, y: 0, z: -0.5}
 --- !u!1 &983962403
 GameObject:
   m_ObjectHideFlags: 0

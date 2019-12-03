@@ -10,7 +10,11 @@ public class ThirdPersonCameraControl : MonoBehaviour
     [SerializeField]
     private Vector3 _offset;
 
+    [SerializeField]
+    private PlayerCameraRelation _player;
+
     private float rotationSpeed = 3.0f;
+    private float offsetMagnitude;
 
     private bool stop = false;
 
@@ -23,15 +27,19 @@ public class ThirdPersonCameraControl : MonoBehaviour
         Cursor.lockState = CursorLockMode.Locked;
 
         transform.position = _target.position + _offset;
+        offsetMagnitude = _offset.magnitude;
     }
 
     void FixedUpdate()
     {
         float turnHorizontal = Input.GetAxis("Mouse X");
-        //float turnVertical = Input.GetAxis("Mouse Y");
+
+        if (_player.WallHit)
+        {
+            _offset = _player.Hit.point - _player.PlayerTransform.position + (transform.forward * 0.1f);
+        }
 
         _offset = Quaternion.AngleAxis(turnHorizontal * rotationSpeed, Vector3.up) * _offset;
-        //_offset = Quaternion.AngleAxis(turnVertical, Vector3.right) * _offset;
 
         if (!stop)
         {
@@ -63,5 +71,14 @@ public class ThirdPersonCameraControl : MonoBehaviour
     private void OnDrawGizmos()
     {
         //Gizmos.DrawWireSphere(transform.position, colliderRadius);
+    }
+
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other.gameObject.tag != Constants.Tags.player)
+        {
+            Debug.Log("Leaving...");
+            //_offset -= (transform.forward * 0.1f);
+        }
     }
 }

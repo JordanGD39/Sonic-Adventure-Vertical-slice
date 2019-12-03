@@ -5,10 +5,6 @@ using UnityEngine;
 
 public class PlayerMovement : MonoBehaviour
 {
-    //Camera position
-    [SerializeField]
-    private Transform _camera;
-
     //Physics
     private Rigidbody rb;
     private PlayerJump playerJump;
