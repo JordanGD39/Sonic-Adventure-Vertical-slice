@@ -40,7 +40,7 @@ public class RingBehaviour : MonoBehaviour
 
                 if (!playerRings.hit)
                 {
-                    playerRings.ringAmount[0]++;
+                    playerRings.RingAmount[0]++;
                     Destroy(gameObject);
                     alreadyGivingPlayer = true;
                 }

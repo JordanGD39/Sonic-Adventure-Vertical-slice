@@ -14,8 +14,12 @@ public class PlayerRingAmount : MonoBehaviour
 
     private BoxCollider[] ringColliders;
 
+    [SerializeField] private Vector2 flySpeed;
+
     public bool hit;
-    public int[] ringAmount = new int[2];
+    private int[] ringAmount = new int[2];
+
+    public int[] RingAmount { get { return ringAmount; } set { ringAmount = value; } }
 
     private int count;
 
@@ -66,7 +70,7 @@ public class PlayerRingAmount : MonoBehaviour
         if (hit)
         {
             count++;
-            float step = count * Time.deltaTime;
+            float step = count * Time.deltaTime;            
 
             if (step >= 0.1f && step < 0.2f && ringAmount[1] > 0)
             {
@@ -91,6 +95,8 @@ public class PlayerRingAmount : MonoBehaviour
     private int ShootRings(int maxAmount)
     {
         BoxCollider[] thisRingCollider = new BoxCollider[maxAmount];
+
+        StartCoroutine("Damage");
 
         float[] shootingAngle = new float[3];
         shootingAngle[0] = 0; //Angle in radians
@@ -121,6 +127,25 @@ public class PlayerRingAmount : MonoBehaviour
         ringColliders = thisRingCollider;
         ringAmount[1] = maxAmount;
 
+        
         return 0;
+    }
+
+    private IEnumerator Damage()
+    {
+        GetComponent<PlayerMovement>().Boosting = true;
+        GetComponent<PlayerMovement>().Speed = 0;
+        GetComponent<PlayerJump>().enabled = false;
+        GetComponent<Rigidbody>().velocity = new Vector3(0, 0, 0);
+        GetComponent<Rigidbody>().AddForce(transform.up * flySpeed.y, ForceMode.Impulse);
+        GetComponent<Rigidbody>().AddForce(-transform.forward * flySpeed.x, ForceMode.Impulse);
+
+        for (int i = 0; i < 60; i++)
+        {
+            yield return new WaitForFixedUpdate();
+        }
+        
+        GetComponent<PlayerMovement>().Boosting = false;
+        GetComponent<PlayerJump>().enabled = true;
     }
 }
