@@ -78,7 +78,7 @@ public class PlayerMovement : MonoBehaviour
         }
 
         RaycastHit hit;
-        if (Physics.SphereCast(transform.position, 0.3f, -transform.up, out hit, 0.8f))
+        if (Physics.SphereCast(transform.position, 0.3f, -transform.up, out hit, 1f))
         {
             if (!hit.collider.isTrigger)
             {
