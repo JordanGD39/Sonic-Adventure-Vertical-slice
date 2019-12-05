@@ -2,83 +2,66 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class ThirdPersonCameraControl : MonoBehaviour
+public class ThirdPersonCameraControl : NormalCameraPosition
 {
-    [SerializeField]
-    private Transform _target;
-
-    [SerializeField]
-    private Vector3 _offset;
-
     [SerializeField]
     private PlayerCameraRelation _player;
 
-    private float rotationSpeed = 3.0f;
+    [SerializeField]
+    private Transform _cameraPositionReference;
+
     private float offsetMagnitude;
+    private float thenOffset;
+    private bool wallHit;
 
-    private bool stop = false;
-
-    public bool Stop { get { return stop; } set { stop = value;} }
-
-    void Start()
+    protected override void Start()
     {
         _target = GameObject.FindGameObjectWithTag(Constants.Tags.player).transform;
         Cursor.visible = false;
         Cursor.lockState = CursorLockMode.Locked;
 
-        transform.position = _target.position + _offset;
+        base.Start();
         offsetMagnitude = _offset.magnitude;
+
+        wallHit = false;
+        thenOffset = _offset.magnitude;
     }
 
-    void FixedUpdate()
+    protected override void FixedUpdate()
     {
-        float turnHorizontal = Input.GetAxis("Mouse X");
-
         if (_player.WallHit)
         {
             _offset = _player.Hit.point - _player.PlayerTransform.position + (transform.forward * 0.1f);
         }
 
-        _offset = Quaternion.AngleAxis(turnHorizontal * rotationSpeed, Vector3.up) * _offset;
+        base.FixedUpdate();
 
-        if (!stop)
+        if (!wallHit)
         {
-            transform.position = _target.position + _offset;
-        }
+            float currentDistance = thenOffset - Vector3.Distance(transform.position, _target.position);
 
-        /*Collider[] cameraCollision = Physics.OverlapSphere(transform.position, colliderRadius);
-
-        if (cameraCollision.Length <= 0)
-        {
-            transform.position = _target.position + _offset;
+            if (currentDistance > 0.05f || currentDistance < -0.05f)
+            {
+                _offset -= transform.forward * 3.0f * Time.deltaTime;
+            }
         }
-        else if (cameraCollision[0].gameObject.tag == ITEM_TAG)
-        {
-            transform.position = _target.position + _offset;
-        }
-        else if (Vector3.Distance(_target.position, transform.position) > _offset.magnitude)
-        {
-            transform.position = _target.position + _offset;
-        }
-        else
-        {
-
-        }*/
 
         transform.LookAt(_target);
     }
 
-    private void OnDrawGizmos()
+    private void OnTriggerEnter(Collider collision)
     {
-        //Gizmos.DrawWireSphere(transform.position, colliderRadius);
+        if (collision.gameObject.tag != Constants.Tags.player && collision.gameObject.tag != Constants.Tags.item)
+        {
+            wallHit = true;
+        }
     }
 
-    private void OnTriggerEnter(Collider other)
+    private void OnTriggerExit(Collider collision)
     {
-        if (other.gameObject.tag != Constants.Tags.player)
+        if (collision.gameObject.tag != Constants.Tags.player && collision.gameObject.tag != Constants.Tags.item)
         {
-            Debug.Log("Leaving...");
-            //_offset -= (transform.forward * 0.1f);
+            wallHit = false;
         }
     }
 }

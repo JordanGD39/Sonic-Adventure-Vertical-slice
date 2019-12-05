@@ -14,10 +14,12 @@ public class PlayerRingAmount : MonoBehaviour
 
     private BoxCollider[] ringColliders;
 
-    public bool hit;
-    public int[] ringAmount = new int[2];
-
+    private bool hit;
     private int count;
+    private int[] ringAmount = new int[2];
+
+    public bool Hit { get { return hit; } set { hit = value; } }
+    public int[] RingAmount { get { return ringAmount; } set { ringAmount = value; } }
 
     void Start()
     {
@@ -33,7 +35,7 @@ public class PlayerRingAmount : MonoBehaviour
 
     private void OnCollisionEnter(Collision collision)
     {
-        if (collision.gameObject.tag == "Hazard")
+        if (collision.gameObject.tag == Constants.Tags.hazard)
         {
             GetHit();
         }

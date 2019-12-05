@@ -13,11 +13,6 @@ public class PlayerCameraRelation : MonoBehaviour
     public RaycastHit Hit { get { return hit; } set { hit = value; } }
     public Transform PlayerTransform { get { return transform; }}
 
-    void Start()
-    {
-
-    }
-
     void Update()
     {
         Vector3 posDifference = _camera.transform.position - transform.position;
@@ -26,7 +21,7 @@ public class PlayerCameraRelation : MonoBehaviour
         {
             Debug.DrawRay(transform.position, posDifference, Color.blue);
 
-            if (hit.collider.gameObject.tag == "MainCamera" || hit.collider.gameObject.tag == "Item")
+            if (hit.collider.gameObject.tag == Constants.Tags.mainCamera || hit.collider.gameObject.tag == Constants.Tags.item)
             {
                 wallHit = false;
             }

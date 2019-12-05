@@ -9,6 +9,9 @@ public class Constants
         public const string player = "Player";
         public const string boostPad = "BoostPad";
         public const string canvas = "Canvas";
+        public const string item = "Item";
+        public const string hazard = "Hazard";
+        public const string mainCamera = "MainCamera";
     }
 
     public class Inputs

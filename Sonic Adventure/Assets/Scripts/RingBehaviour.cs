@@ -35,9 +35,9 @@ public class RingBehaviour : MonoBehaviour
         {
             PlayerRingAmount playerRings = other.gameObject.transform.parent.GetComponent<PlayerRingAmount>();
 
-            if (!playerRings.hit)
+            if (!playerRings.Hit)
             {
-                playerRings.ringAmount[0]++;
+                playerRings.RingAmount[0]++;
                 Destroy(gameObject);
             }
         }
