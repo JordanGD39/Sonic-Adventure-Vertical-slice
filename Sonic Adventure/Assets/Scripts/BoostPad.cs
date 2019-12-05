@@ -14,7 +14,7 @@ public class BoostPad : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        if (other.gameObject.CompareTag(Constants.Tags.player) && !other.transform.parent.GetComponent<PlayerMovement>().Boosting && other.transform.parent.GetComponent<PlayerJump>().enabled || other.gameObject.CompareTag(Constants.Tags.player) && teleport)
+        if (other.gameObject.CompareTag(Constants.Tags.playerCol) && !other.transform.parent.GetComponent<PlayerMovement>().Boosting && other.transform.parent.GetComponent<PlayerJump>().enabled || other.gameObject.CompareTag(Constants.Tags.playerCol) && teleport)
         {
             PlayerMovement mov = other.transform.parent.GetComponent<PlayerMovement>();
             if (teleport)

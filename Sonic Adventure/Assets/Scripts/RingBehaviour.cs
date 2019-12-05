@@ -32,13 +32,13 @@ public class RingBehaviour : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        if (other.gameObject.CompareTag(Constants.Tags.player))
+        if (other.gameObject.CompareTag(Constants.Tags.playerCol))
         {
             if (!alreadyGivingPlayer)
             {
                 PlayerRingAmount playerRings = other.gameObject.transform.parent.GetComponent<PlayerRingAmount>();
 
-                if (!playerRings.hit)
+                if (!playerRings.Hit)
                 {
                     playerRings.RingAmount[0]++;
                     Destroy(gameObject);

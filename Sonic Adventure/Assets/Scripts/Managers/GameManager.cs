@@ -8,11 +8,13 @@ public class GameManager : MonoBehaviour
 {
     public static GameManager instance;
 
-    private GameObject player;
-
-    public GameObject Player { get { return player; } set { player = value; } }
+    [SerializeField] private GameObject player;
 
     private float timer = 0;
+
+    [SerializeField] private int lives = 5;
+
+    public int Lives { get { return lives; } set { lives = value; } }
 
     void Awake()
     {
@@ -33,6 +35,8 @@ public class GameManager : MonoBehaviour
         AudioManager.instance.Play("TestBG");
         timer = 0;
         player = GameObject.FindGameObjectWithTag(Constants.Tags.player);
+        Transform ui = GameObject.FindGameObjectWithTag(Constants.Tags.canvas).transform.GetChild(1);
+        ui.GetChild(5).GetComponent<Text>().text = lives.ToString("00");
     }
 
     private void Update()
@@ -53,5 +57,11 @@ public class GameManager : MonoBehaviour
         {
             ui.GetChild(3).GetComponent<Text>().text = player.GetComponent<PlayerRingAmount>().RingAmount[0].ToString("000");
         }
+        else
+        {
+            player = GameObject.FindGameObjectWithTag(Constants.Tags.player);            
+        }
+
+        ui.GetChild(5).GetComponent<Text>().text = lives.ToString("00");
     }
 }

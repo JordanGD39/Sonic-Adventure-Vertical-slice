@@ -12,6 +12,7 @@ public class PlayerMovement : MonoBehaviour
     //Physics
     private Rigidbody rb;
     private PlayerJump playerJump;
+    private PlayerRingAmount playerRing;
 
     private Vector3 movement;
     private Vector3 movementForce;
@@ -38,6 +39,7 @@ public class PlayerMovement : MonoBehaviour
     {
         rb = GetComponent<Rigidbody>();
         playerJump = GetComponent<PlayerJump>();
+        playerRing = GetComponent<PlayerRingAmount>();
     }
 
     // Update is called once per frame
@@ -46,11 +48,22 @@ public class PlayerMovement : MonoBehaviour
         float moveHorizontal = Input.GetAxis(Constants.Inputs.hori);
         float moveVertical = Input.GetAxis(Constants.Inputs.vert);
 
-        if (boosting)
+        if (boosting && !playerRing.Hit)
         {
             movement = new Vector3(0, 0, 1);
         }
-        else
+        else if (boosting && playerRing.Hit)
+        {
+            if (!grounded)
+            {
+                movement = new Vector3(0, 0, -1);
+            }
+            else
+            {
+                movement = new Vector3(0, 0, 0);
+            }            
+        }
+        else if(!boosting && !playerRing.Hit)
         {
             movement = new Vector3(moveHorizontal, 0, moveVertical);
 
@@ -182,8 +195,8 @@ public class PlayerMovement : MonoBehaviour
         else if (!grounded && !boosting && playerJump.Attacking && !playerJump.TargetAttack && rb.useGravity)
         {
             Vector3 tempVect = Camera.main.transform.TransformVector(movement);
-            tempVect *= speed * 80;
-            tempVect.y = rb.velocity.y;
+            tempVect *= speed * 60;
+            tempVect.y = 0;
             rb.AddForce(tempVect);
             if (rb.velocity.magnitude > 25)
             {

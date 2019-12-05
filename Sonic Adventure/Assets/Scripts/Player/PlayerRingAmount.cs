@@ -16,10 +16,11 @@ public class PlayerRingAmount : MonoBehaviour
 
     [SerializeField] private Vector2 flySpeed;
 
-    public bool hit;
+    private bool hit;
     private int[] ringAmount = new int[2];
 
     public int[] RingAmount { get { return ringAmount; } set { ringAmount = value; } }
+    public bool Hit { get { return hit; } set { hit = value; } }
 
     private int count;
 
@@ -27,7 +28,7 @@ public class PlayerRingAmount : MonoBehaviour
     {
         hit = false;
         count = 0;
-        ringAmount[0] = 30;
+        ringAmount[0] = 0;
     }
 
     private void Update()
@@ -35,7 +36,7 @@ public class PlayerRingAmount : MonoBehaviour
         CheckIfHit();
     }
 
-    private void OnCollisionEnter(Collision collision)
+    private void OnCollisionStay(Collision collision)
     {
         if (collision.gameObject.CompareTag(Constants.Tags.hazard))
         {
@@ -61,6 +62,8 @@ public class PlayerRingAmount : MonoBehaviour
             else
             {
                 ringAmount[1] = 0;
+                StartCoroutine("Damage");
+                StartCoroutine(GetComponent<PlayerDeath>().Die());
             }
         }
     }
@@ -80,11 +83,10 @@ public class PlayerRingAmount : MonoBehaviour
                     ringColliders[i].enabled = true;
                 }
             }
-            else if (step >= 1.5f)
-            {
-                //The point at which the player can pick up the rings again and get hit again
-                hit = false;
-            }
+            //else if (step >= 1.5f)
+            //{
+            //    //The point at which the player can pick up the rings again and get hit again                
+            //}
         }
         else
         {
@@ -133,6 +135,8 @@ public class PlayerRingAmount : MonoBehaviour
 
     private IEnumerator Damage()
     {
+        transform.GetChild(0).gameObject.SetActive(true);
+        transform.GetChild(1).gameObject.SetActive(false);
         GetComponent<PlayerMovement>().Boosting = true;
         GetComponent<PlayerMovement>().Speed = 0;
         GetComponent<PlayerJump>().enabled = false;
@@ -140,12 +144,17 @@ public class PlayerRingAmount : MonoBehaviour
         GetComponent<Rigidbody>().AddForce(transform.up * flySpeed.y, ForceMode.Impulse);
         GetComponent<Rigidbody>().AddForce(-transform.forward * flySpeed.x, ForceMode.Impulse);
 
-        for (int i = 0; i < 60; i++)
+        yield return new WaitForSeconds(1);
+
+        while (!GetComponent<PlayerMovement>().Grounded)
         {
-            yield return new WaitForFixedUpdate();
+            yield return null;
         }
-        
+
+        yield return new WaitForSeconds(1);
+
         GetComponent<PlayerMovement>().Boosting = false;
+        hit = false;
         GetComponent<PlayerJump>().enabled = true;
     }
 }

@@ -9,6 +9,7 @@ TagManager:
   - Canvas
   - Item
   - Hazard
+  - PlayerCol
   layers:
   - Default
   - TransparentFX

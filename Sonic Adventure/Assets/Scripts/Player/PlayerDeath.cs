@@ -18,7 +18,16 @@ public class PlayerDeath : MonoBehaviour
         Camera.main.GetComponent<ThirdPersonCameraControl>().Stop = true;
         fadeObject.SetActive(true);
         yield return new WaitForSeconds(2);        
-        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
-        GameManager.instance.Player = gameObject;
+
+        if (GameManager.instance.Lives > 0)
+        {
+            GameManager.instance.Lives--;
+            SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);        
+        }
+        else if (GameManager.instance.Lives <= 0)
+        {
+            GameManager.instance.Lives = 5;
+            SceneManager.LoadScene(0);         
+        }
     }
 }
