@@ -195,7 +195,7 @@ public class PlayerMovement : MonoBehaviour
         else if (!grounded && !boosting && playerJump.Attacking && !playerJump.TargetAttack && rb.useGravity)
         {
             Vector3 tempVect = Camera.main.transform.TransformVector(movement);
-            tempVect *= speed * 60;
+            tempVect *= speed * 20;
             tempVect.y = 0;
             rb.AddForce(tempVect);
             if (rb.velocity.magnitude > 25)
