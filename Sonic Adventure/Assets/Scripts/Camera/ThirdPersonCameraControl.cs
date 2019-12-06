@@ -40,11 +40,7 @@ public class ThirdPersonCameraControl : NormalCameraPosition
         {
             float currentDistance = thenOffset - Vector3.Distance(transform.position, _target.position);
 
-            if (currentDistance > 0.05f)
-            {
-                _offset -= transform.forward * 3.0f * Time.deltaTime;
-            }
-            else if (currentDistance < -0.05f)
+            if (currentDistance > 0.05f || currentDistance < -0.05f)
             {
                 transform.position = _cameraPositionReference.position;
             }
