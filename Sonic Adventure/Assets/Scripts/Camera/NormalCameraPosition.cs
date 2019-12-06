@@ -24,7 +24,7 @@ public class NormalCameraPosition : MonoBehaviour
         stop = false;
     }
 
-    virtual protected void FixedUpdate()
+    virtual protected void Update()
     {
         float turnHorizontal = Input.GetAxis("Mouse X");
 

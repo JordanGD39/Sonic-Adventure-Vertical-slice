@@ -16,10 +16,12 @@ public class PlayerCameraRelation : MonoBehaviour
     void Update()
     {
         Vector3 posDifference = _camera.transform.position - transform.position;
+        int layermask = 1 << 9;
 
-        if (Physics.Raycast(transform.position, posDifference, out hit))
+        if (Physics.Raycast(transform.position, posDifference, out hit, layermask))
         {
             Debug.DrawRay(transform.position, posDifference, Color.blue);
+            Debug.Log(layermask);
 
             if (hit.collider.gameObject.tag == Constants.Tags.mainCamera || hit.collider.gameObject.tag == Constants.Tags.item)
             {

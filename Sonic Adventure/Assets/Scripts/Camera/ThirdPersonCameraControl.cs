@@ -27,22 +27,26 @@ public class ThirdPersonCameraControl : NormalCameraPosition
         thenOffset = _offset.magnitude;
     }
 
-    protected override void FixedUpdate()
+    protected override void Update()
     {
         if (_player.WallHit)
         {
             _offset = _player.Hit.point - _player.PlayerTransform.position + (transform.forward * 0.1f);
         }
 
-        base.FixedUpdate();
+        base.Update();
 
         if (!wallHit)
         {
             float currentDistance = thenOffset - Vector3.Distance(transform.position, _target.position);
 
-            if (currentDistance > 0.05f || currentDistance < -0.05f)
+            if (currentDistance > 0.05f)
             {
                 _offset -= transform.forward * 3.0f * Time.deltaTime;
+            }
+            else if (currentDistance < -0.05f)
+            {
+                transform.position = _cameraPositionReference.position;
             }
         }
 
