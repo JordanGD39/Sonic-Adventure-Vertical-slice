@@ -75,14 +75,14 @@ public class PlayerRingAmount : MonoBehaviour
             count++;
             float step = count * Time.deltaTime;            
 
-            if (step >= 0.1f && step < 0.2f && ringAmount[1] > 0)
-            {
-                //Give those rings their Boxcollider back
-                for (int i = 0; i < ringColliders.Length; i++)
-                {
-                    ringColliders[i].enabled = true;
-                }
-            }
+            //if (step >= 0.1f && step < 0.2f && ringAmount[1] > 0)
+            //{
+            //    //Give those rings their Boxcollider back
+            //    for (int i = 0; i < ringColliders.Length; i++)
+            //    {
+            //        ringColliders[i].enabled = true;
+            //    }
+            //}
             //else if (step >= 1.5f)
             //{
             //    //The point at which the player can pick up the rings again and get hit again                
@@ -114,8 +114,8 @@ public class PlayerRingAmount : MonoBehaviour
             thisRing = Instantiate(ring, transform.position, transform.rotation);
             thisRing.transform.parent = itemlist;
 
-            thisRingCollider[i] = thisRing.GetComponent<BoxCollider>();
-            thisRingCollider[i].enabled = false;
+            //thisRingCollider[i] = thisRing.GetComponent<BoxCollider>();
+            //thisRingCollider[i].enabled = false;
 
             Rigidbody ringBehaviour = thisRing.GetComponent<Rigidbody>();
             ringBehaviour.AddForce((itemlist.transform.up * 2 + new Vector3(shootingAngle[1], 0.0f, shootingAngle[2])) * SHOOTING_RADIUS);
