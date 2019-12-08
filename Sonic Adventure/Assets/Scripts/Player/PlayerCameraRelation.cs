@@ -22,7 +22,9 @@ public class PlayerCameraRelation : MonoBehaviour
         {
             Debug.DrawRay(transform.position, posDifference, Color.blue);
 
-            if (hit.collider.gameObject.tag == Constants.Tags.mainCamera || hit.collider.gameObject.tag == Constants.Tags.item)
+            if (hit.collider.gameObject.tag == Constants.Tags.mainCamera ||
+                hit.collider.gameObject.tag == Constants.Tags.item ||
+                hit.collider.gameObject.layer == 9)
             {
                 wallHit = false;
             }
