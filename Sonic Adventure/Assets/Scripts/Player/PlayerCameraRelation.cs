@@ -15,7 +15,7 @@ public class PlayerCameraRelation : MonoBehaviour
 
     void Update()
     {
-        Vector3 posDifference = _camera.transform.position - transform.position;
+        /*Vector3 posDifference = _camera.transform.position - transform.position;
         //int layermask = 1 << 9;
 
         if (Physics.Raycast(transform.position, posDifference, out hit))
@@ -32,6 +32,6 @@ public class PlayerCameraRelation : MonoBehaviour
             {
                 wallHit = true;
             }
-        }
+        }*/
     }
 }

@@ -51,7 +51,7 @@ public class ThirdPersonCameraControl : NormalCameraPosition
 
     private void OnTriggerEnter(Collider collision)
     {
-        if (collision.gameObject.layer != 9 && collision.gameObject.tag != Constants.Tags.item)
+        if (collision.gameObject.layer != 9 && collision.gameObject.tag != Constants.Tags.item && collision.gameObject.tag != Constants.Tags.mainCamera)
         {
             wallHit = true;
         }
@@ -59,7 +59,7 @@ public class ThirdPersonCameraControl : NormalCameraPosition
 
     private void OnTriggerExit(Collider collision)
     {
-        if (collision.gameObject.layer != 9 && collision.gameObject.tag != Constants.Tags.item)
+        if (collision.gameObject.layer != 9 && collision.gameObject.tag != Constants.Tags.item && collision.gameObject.tag != Constants.Tags.mainCamera)
         {
             wallHit = false;
         }
