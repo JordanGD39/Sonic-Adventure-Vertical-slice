@@ -29,14 +29,14 @@ public class ThirdPersonCameraControl : NormalCameraPosition
 
     protected override void Update()
     {
-        if (_player.WallHit)
+        /*if (_player.WallHit)
         {
             _offset = _player.Hit.point - _player.PlayerTransform.position + (transform.forward * 0.1f);
-        }
+        }*/
 
         base.Update();
 
-        if (!wallHit)
+        /*if (!wallHit)
         {
             float currentDistance = thenOffset - Vector3.Distance(transform.position, _target.position);
 
@@ -44,7 +44,7 @@ public class ThirdPersonCameraControl : NormalCameraPosition
             {
                 transform.position = _cameraPositionReference.position;
             }
-        }
+        }*/
 
         transform.LookAt(_target);
     }
