@@ -28,6 +28,7 @@ public class PlayerMovement : MonoBehaviour
 
     private float boostSec = 0;
     private Transform boostTransform = null;
+    private Animator anim;
 
     public float Speed { get { return speed; }  set { speed = value; } }
     public bool Boosting { get { return boosting; }  set { boosting = value; } }
@@ -40,11 +41,15 @@ public class PlayerMovement : MonoBehaviour
         rb = GetComponent<Rigidbody>();
         playerJump = GetComponent<PlayerJump>();
         playerRing = GetComponent<PlayerRingAmount>();
+        anim = transform.GetChild(0).GetChild(0).GetComponent<Animator>();
     }
 
     // Update is called once per frame
     private void Update()
     {
+        anim.SetFloat("Speed", speed);
+        anim.SetBool("Grounded", grounded);
+
         float moveHorizontal = Input.GetAxis(Constants.Inputs.hori);
         float moveVertical = Input.GetAxis(Constants.Inputs.vert);
 
