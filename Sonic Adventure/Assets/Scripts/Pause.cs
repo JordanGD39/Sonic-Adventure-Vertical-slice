@@ -46,8 +46,9 @@ public class Pause : MonoBehaviour
     public void Restart()
     {
         pauseUI.SetActive(false);
-        Time.timeScale = 1;
+        Time.timeScale = 1;        
         StartCoroutine(GameObject.FindGameObjectWithTag(Constants.Tags.player).GetComponent<PlayerDeath>().Die());
+        AudioManager.instance.UnPause(AudioManager.instance.CurrSound.name);
     }
 
     public void Quit()

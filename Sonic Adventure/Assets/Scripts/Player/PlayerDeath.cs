@@ -14,6 +14,7 @@ public class PlayerDeath : MonoBehaviour
         fadeObjectIn = GameObject.FindGameObjectWithTag(Constants.Tags.canvas).transform.GetChild(GameObject.FindGameObjectWithTag(Constants.Tags.canvas).transform.childCount - 2).gameObject;
         fadeObjectIn.SetActive(true);
         fadeObjectOut.SetActive(false);
+        GameManager.instance.Dying = false;
     }
 
     public IEnumerator Die()
