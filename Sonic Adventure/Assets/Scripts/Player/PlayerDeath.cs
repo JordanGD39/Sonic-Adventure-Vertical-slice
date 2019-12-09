@@ -5,29 +5,33 @@ using UnityEngine.SceneManagement;
 
 public class PlayerDeath : MonoBehaviour
 {
-    private GameObject fadeObject;
+    private GameObject fadeObjectOut;
+    private GameObject fadeObjectIn;
 
     private void Start()
     {
-        fadeObject = GameObject.FindGameObjectWithTag(Constants.Tags.canvas).transform.GetChild(GameObject.FindGameObjectWithTag(Constants.Tags.canvas).transform.childCount - 1).gameObject;
-        fadeObject.SetActive(false);
+        fadeObjectOut = GameObject.FindGameObjectWithTag(Constants.Tags.canvas).transform.GetChild(GameObject.FindGameObjectWithTag(Constants.Tags.canvas).transform.childCount - 1).gameObject;
+        fadeObjectIn = GameObject.FindGameObjectWithTag(Constants.Tags.canvas).transform.GetChild(GameObject.FindGameObjectWithTag(Constants.Tags.canvas).transform.childCount - 2).gameObject;
+        fadeObjectIn.SetActive(true);
+        fadeObjectOut.SetActive(false);
     }
 
     public IEnumerator Die()
     {
         Camera.main.GetComponent<ThirdPersonCameraControl>().Stop = true;
-        fadeObject.SetActive(true);
-        yield return new WaitForSeconds(2);        
+        fadeObjectOut.SetActive(true);
+        GameManager.instance.Dying = true;
+        yield return new WaitForSeconds(2);
 
         if (GameManager.instance.Lives > 0)
         {
             GameManager.instance.Lives--;
-            SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);        
+            SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
         }
         else if (GameManager.instance.Lives <= 0)
         {
             GameManager.instance.Lives = 5;
-            SceneManager.LoadScene(0);         
+            SceneManager.LoadScene(0);
         }
     }
 }

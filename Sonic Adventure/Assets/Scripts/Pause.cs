@@ -17,7 +17,7 @@ public class Pause : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (Input.GetButtonDown(Constants.Inputs.pause))
+        if (Input.GetButtonDown(Constants.Inputs.pause) && !GameManager.instance.Dying)
         {
             if (!pauseUI.activeSelf)
             {
@@ -25,7 +25,7 @@ public class Pause : MonoBehaviour
                 EventSystem.current.SetSelectedGameObject(null);
                 EventSystem.current.SetSelectedGameObject(pauseUI.transform.GetChild(1).GetChild(1).gameObject);
                 Time.timeScale = 0;
-                AudioManager.instance.StopPlaying(AudioManager.instance.CurrSound.name);
+                AudioManager.instance.Pause(AudioManager.instance.CurrSound.name);
 
             }
             else
@@ -40,11 +40,19 @@ public class Pause : MonoBehaviour
     {
         pauseUI.SetActive(false);
         Time.timeScale = 1;
-        AudioManager.instance.Play(AudioManager.instance.CurrSound.name);
+        AudioManager.instance.UnPause(AudioManager.instance.CurrSound.name);
     }
 
     public void Restart()
     {
+        pauseUI.SetActive(false);
+        Time.timeScale = 1;
         StartCoroutine(GameObject.FindGameObjectWithTag(Constants.Tags.player).GetComponent<PlayerDeath>().Die());
+    }
+
+    public void Quit()
+    {
+        Debug.Log("Quiting...");
+        Application.Quit();
     }
 }

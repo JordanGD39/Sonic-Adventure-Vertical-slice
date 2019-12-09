@@ -83,7 +83,7 @@ public class PlayerMovement : MonoBehaviour
         }
 
         RaycastHit hit;
-        if (Physics.SphereCast(transform.position, 0.3f, -transform.up, out hit, 0.9f))
+        if (Physics.SphereCast(transform.position, 0.3f, -transform.up, out hit, 1.1f))
         {
             if (!hit.collider.isTrigger)
             {
@@ -224,6 +224,24 @@ public class PlayerMovement : MonoBehaviour
 
     private void Acceleration()
     {
+        float animSpeed = speed / 10 - 1;        
+
+        if (animSpeed > 1)
+        {
+            if (grounded)
+            {
+                anim.speed = animSpeed;
+            }
+            else
+            {
+                anim.speed = 1;
+            }
+        }
+        else
+        {
+            anim.speed = 1;
+        }
+
         if (rb.velocity.magnitude > 2.6f && rb.velocity.magnitude <= 14f)
         {
             if (speed < 16)
@@ -241,7 +259,7 @@ public class PlayerMovement : MonoBehaviour
             {
                 if (boosting)
                 {
-                    speed -= 0.1f;
+                    speed -= 0.1f;                    
                 }
                 else
                 {

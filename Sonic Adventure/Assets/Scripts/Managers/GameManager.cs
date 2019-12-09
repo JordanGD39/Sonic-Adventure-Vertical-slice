@@ -15,6 +15,7 @@ public class GameManager : MonoBehaviour
     [SerializeField] private int lives = 5;
 
     public int Lives { get { return lives; } set { lives = value; } }
+    public bool Dying { get; set; } = false;
 
     void Awake()
     {

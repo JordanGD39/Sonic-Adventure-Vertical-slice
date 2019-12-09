@@ -109,7 +109,10 @@ public class PlayerJump : MonoBehaviour
             transform.GetChild(0).gameObject.SetActive(false);
             transform.GetChild(1).gameObject.SetActive(true);
             AudioManager.instance.Play("HomingAttack");
-            StartCoroutine("HomingAttack");    
+            if (homingReady)
+            {
+                StartCoroutine("HomingAttack");
+            }            
         }
 
         if (jumpHold)
@@ -129,33 +132,30 @@ public class PlayerJump : MonoBehaviour
 
     private IEnumerator HomingAttack()
     {
-        if (homingReady)
+        attacking = true;
+        hitHomingTarget = false;
+        homingReady = false;
+        jumpPressed = false;
+        if (homingTarget != null)
         {
-            attacking = true;
-            hitHomingTarget = false;
-            homingReady = false;
-            jumpPressed = false;
-            if (homingTarget != null)
+            while (!hitHomingTarget)
             {
-                while (!hitHomingTarget)
-                {
-                    transform.LookAt(homingTarget);
-                    rb.velocity = transform.TransformVector(new Vector3(0, 0, homingSpeed));
-                    rb.useGravity = false;
-                    targetAttack = true;
-                    yield return new WaitForFixedUpdate();
-                }                
-            }
-            else
-            {                
-                rb.AddForce(transform.forward * homingSpeed, ForceMode.Impulse);
-                rb.velocity = new Vector3(rb.velocity.x, 0, rb.velocity.z);
-                targetAttack = false;
-                for (int i = 0; i < 10; i++)
-                {
-                    yield return new WaitForFixedUpdate();
-                }          
-            }
+                transform.LookAt(homingTarget);
+                rb.velocity = transform.TransformVector(new Vector3(0, 0, homingSpeed));
+                rb.useGravity = false;
+                targetAttack = true;
+                yield return new WaitForFixedUpdate();
+            }                
+        }
+        else
+        {                
+            rb.AddForce(transform.forward * homingSpeed, ForceMode.Impulse);
+            rb.velocity = new Vector3(rb.velocity.x, 0, rb.velocity.z);
+            targetAttack = false;
+            for (int i = 0; i < 10; i++)
+            {
+                yield return new WaitForFixedUpdate();
+            }          
         }
     }
 
