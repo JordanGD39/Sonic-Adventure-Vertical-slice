@@ -9,7 +9,7 @@ public class PlayerDeath : MonoBehaviour
 
     private void Start()
     {
-        fadeObject = GameObject.FindGameObjectWithTag(Constants.Tags.canvas).transform.GetChild(0).gameObject;
+        fadeObject = GameObject.FindGameObjectWithTag(Constants.Tags.canvas).transform.GetChild(GameObject.FindGameObjectWithTag(Constants.Tags.canvas).transform.childCount - 1).gameObject;
         fadeObject.SetActive(false);
     }
 

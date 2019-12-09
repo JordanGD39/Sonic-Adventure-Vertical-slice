@@ -100,6 +100,8 @@ public class PlayerRingAmount : MonoBehaviour
 
         StartCoroutine("Damage");
 
+        AudioManager.instance.Play("LosingRings");
+
         float[] shootingAngle = new float[3];
         shootingAngle[0] = 0; //Angle in radians
         shootingAngle[1] = 1; //X-value based on angle

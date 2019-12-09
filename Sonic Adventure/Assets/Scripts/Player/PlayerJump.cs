@@ -40,19 +40,19 @@ public class PlayerJump : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (Input.GetButtonDown("Jump"))
+        if (Input.GetButtonDown(Constants.Inputs.jump))
         {
             jumpPressed = true;
         }
-        if (Input.GetButtonUp("Jump"))
+        if (Input.GetButtonUp(Constants.Inputs.jump))
         {
             jumpPressed = false;
         }
 
-        if (Input.GetButton("Jump"))
+        if (Input.GetButton(Constants.Inputs.jump))
         {
             jumpHold = true;
-            extraJumpHeight += Input.GetAxis("Jump");
+            extraJumpHeight += Input.GetAxis(Constants.Inputs.jump);
             if (extraJumpHeight > maxJumpHeight)
             {
                 extraJumpHeight = maxJumpHeight;
@@ -83,7 +83,7 @@ public class PlayerJump : MonoBehaviour
             }
         }
 
-        if (!Input.GetButton("Jump") && playerMov.Grounded || Input.GetButton("Jump") && playerMov.Grounded && extraJumpHeight >= maxJumpHeight)
+        if (!Input.GetButton(Constants.Inputs.jump) && playerMov.Grounded || Input.GetButton(Constants.Inputs.jump) && playerMov.Grounded && extraJumpHeight >= maxJumpHeight)
         {
             extraJumpHeight = 1;
             transform.GetChild(0).gameObject.SetActive(true);
@@ -101,12 +101,14 @@ public class PlayerJump : MonoBehaviour
             transform.GetChild(1).gameObject.SetActive(true);
             transform.GetChild(0).gameObject.SetActive(false);
             jumping = true;
+            AudioManager.instance.Play("Jump");
             jumpPressed = false;
         }
         else if (jumpPressed && !playerMov.Grounded && homingReady)
         {
             transform.GetChild(0).gameObject.SetActive(false);
             transform.GetChild(1).gameObject.SetActive(true);
+            AudioManager.instance.Play("HomingAttack");
             StartCoroutine("HomingAttack");    
         }
 

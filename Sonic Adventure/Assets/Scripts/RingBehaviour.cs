@@ -45,6 +45,7 @@ public class RingBehaviour : MonoBehaviour
                     playerRings.RingAmount[0]++;
                     GameObject part = Instantiate(fx, transform.position, transform.rotation);
                     Destroy(part, 0.1f);
+                    AudioManager.instance.Play("Ring");
                     Destroy(gameObject);
                     alreadyGivingPlayer = true;
                 }

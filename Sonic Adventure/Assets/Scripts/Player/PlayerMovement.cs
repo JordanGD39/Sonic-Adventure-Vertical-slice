@@ -78,7 +78,7 @@ public class PlayerMovement : MonoBehaviour
         }
 
         RaycastHit hit;
-        if (Physics.SphereCast(transform.position, 0.3f, -transform.up, out hit, 1f))
+        if (Physics.SphereCast(transform.position, 0.3f, -transform.up, out hit, 0.9f))
         {
             if (!hit.collider.isTrigger)
             {
@@ -172,7 +172,7 @@ public class PlayerMovement : MonoBehaviour
                     tempVect = Camera.main.transform.GetChild(0).TransformVector(movement);
                 }
 
-                tempVect *= speed * 0.75f;
+                tempVect *= speed;
                 rb.velocity = tempVect;
             }
 
@@ -236,7 +236,7 @@ public class PlayerMovement : MonoBehaviour
             {
                 if (boosting)
                 {
-                    speed -= 1;
+                    speed -= 0.1f;
                 }
                 else
                 {

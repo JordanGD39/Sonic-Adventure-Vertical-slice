@@ -32,10 +32,19 @@ public class GameManager : MonoBehaviour
 
     private void Start()
     {
-        AudioManager.instance.Play("TestBG");
+        switch (SceneManager.GetActiveScene().buildIndex)
+        {
+            case 0:
+                AudioManager.instance.Play("Stage1");
+                break;
+            case 1:
+                AudioManager.instance.Play("TestBG");
+                break;
+        }
+        
         timer = 0;
         player = GameObject.FindGameObjectWithTag(Constants.Tags.player);
-        Transform ui = GameObject.FindGameObjectWithTag(Constants.Tags.canvas).transform.GetChild(1);
+        Transform ui = GameObject.FindGameObjectWithTag(Constants.Tags.canvas).transform.GetChild(0);
         ui.GetChild(5).GetComponent<Text>().text = lives.ToString("00");
     }
 
@@ -49,7 +58,7 @@ public class GameManager : MonoBehaviour
 
         centiseconds = centiseconds % 100;
 
-        Transform ui = GameObject.FindGameObjectWithTag(Constants.Tags.canvas).transform.GetChild(1);
+        Transform ui = GameObject.FindGameObjectWithTag(Constants.Tags.canvas).transform.GetChild(0);
 
         ui.GetChild(1).GetComponent<Text>().text = minutes + ":" + seconds + ":" + centiseconds.ToString("00");
 
