@@ -24,6 +24,7 @@ public class PlayerCameraRelation : MonoBehaviour
 
             if (hit.collider.gameObject.tag == Constants.Tags.mainCamera ||
                 hit.collider.gameObject.tag == Constants.Tags.item ||
+                hit.collider.gameObject.tag == Constants.Tags.trigger ||
                 hit.collider.gameObject.layer == 9)
             {
                 wallHit = false;

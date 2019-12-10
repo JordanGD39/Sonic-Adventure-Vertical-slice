@@ -16,10 +16,6 @@ public class ThirdPersonCameraControl : NormalCameraPosition
 
     protected override void Start()
     {
-        _target = GameObject.FindGameObjectWithTag(Constants.Tags.player).transform;
-        Cursor.visible = false;
-        Cursor.lockState = CursorLockMode.Locked;
-
         base.Start();
         offsetMagnitude = _offset.magnitude;
 
@@ -31,27 +27,29 @@ public class ThirdPersonCameraControl : NormalCameraPosition
     {
         /*if (_player.WallHit)
         {
-            _offset = _player.Hit.point - _player.PlayerTransform.position + (transform.forward * 0.1f);
+            _offset = _player.Hit.point - _player.PlayerTransform.position + (transform.forward * 0.3f);
         }*/
+
+        /*if (!wallHit && !stop)
+        {
+            transform.position = _cameraPositionReference.position;
+        }*/
+
+        float turnHorizontal = Input.GetAxis("Mouse X");
+
+        _offset = Quaternion.AngleAxis(turnHorizontal * rotationSpeed, Vector3.up) * _offset;
+
+        if (!stop)
+        {
+            transform.position = _target.position + _offset;
+        }
 
         base.Update();
-
-        /*if (!wallHit)
-        {
-            float currentDistance = thenOffset - Vector3.Distance(transform.position, _target.position);
-
-            if (currentDistance > 0.05f || currentDistance < -0.05f)
-            {
-                transform.position = _cameraPositionReference.position;
-            }
-        }*/
-
-        transform.LookAt(_target);
     }
 
     private void OnTriggerEnter(Collider collision)
     {
-        if (collision.gameObject.layer != 9 && collision.gameObject.tag != Constants.Tags.item && collision.gameObject.tag != Constants.Tags.mainCamera)
+        if (collision.gameObject.layer != 9 && collision.gameObject.tag != Constants.Tags.item && collision.gameObject.tag != Constants.Tags.mainCamera && collision.gameObject.tag != Constants.Tags.trigger)
         {
             wallHit = true;
         }
@@ -59,7 +57,7 @@ public class ThirdPersonCameraControl : NormalCameraPosition
 
     private void OnTriggerExit(Collider collision)
     {
-        if (collision.gameObject.layer != 9 && collision.gameObject.tag != Constants.Tags.item && collision.gameObject.tag != Constants.Tags.mainCamera)
+        if (collision.gameObject.layer != 9 && collision.gameObject.tag != Constants.Tags.item && collision.gameObject.tag != Constants.Tags.mainCamera && collision.gameObject.tag != Constants.Tags.trigger)
         {
             wallHit = false;
         }

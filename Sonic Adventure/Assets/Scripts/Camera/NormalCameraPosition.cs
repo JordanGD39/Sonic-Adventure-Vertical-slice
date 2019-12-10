@@ -20,19 +20,19 @@ public class NormalCameraPosition : MonoBehaviour
 
     virtual protected void Start()
     {
+        _target = GameObject.FindGameObjectWithTag(Constants.Tags.player).transform;
+        Cursor.visible = false;
+        Cursor.lockState = CursorLockMode.Locked;
+
         transform.position = _target.position + _offset;
         stop = false;
     }
 
     virtual protected void Update()
     {
-        float turnHorizontal = Input.GetAxis("Mouse X");
+        //_offset = Quaternion.AngleAxis((_target.rotation.y - transform.rotation.y) * rotationSpeed, Vector3.up) * _offset;
+        //_offset = Quaternion.AngleAxis((_target.rotation.z - transform.rotation.z) * rotationSpeed, Vector3.right) * _offset;
 
-        _offset = Quaternion.AngleAxis(turnHorizontal * rotationSpeed, Vector3.up) * _offset;
-
-        if (!stop)
-        {
-            transform.position = _target.position + _offset;
-        }
+        transform.LookAt(_target);
     }
 }

@@ -10,6 +10,7 @@ TagManager:
   - Item
   - Hazard
   - PlayerCol
+  - Trigger
   layers:
   - Default
   - TransparentFX

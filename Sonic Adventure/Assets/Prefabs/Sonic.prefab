@@ -277,7 +277,6 @@ GameObject:
   - component: {fileID: 6669004646551761230}
   - component: {fileID: 6669004646551761231}
   - component: {fileID: 269848980}
-  - component: {fileID: 8630554276547802485}
   m_Layer: 9
   m_Name: Sonic
   m_TagString: Player
@@ -406,21 +405,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _camera: {fileID: 0}
---- !u!114 &8630554276547802485
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6669004646551761221}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6a26701f6c5abcb408d4beebecac2a12, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _triggers:
-  - {fileID: 0}
-  _orcaAnimator: {fileID: 0}
 --- !u!1 &6669004646779161623
 GameObject:
   m_ObjectHideFlags: 0
