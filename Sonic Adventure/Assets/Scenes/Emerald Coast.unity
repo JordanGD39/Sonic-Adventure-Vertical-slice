@@ -3216,7 +3216,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7489491f93f9cc040b48cc5caa812a8d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  secondsOutOfControl: 3
+  secondsOutOfControl: 5
   speed: 22
   teleport: 0
   addForce: 0
@@ -4930,6 +4930,11 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 1690273706}
     m_Modifications:
+    - target: {fileID: 3283546554553908029, guid: 8edaa333fd329b144aaf497b8a5f336c,
+        type: 3}
+      propertyPath: m_Name
+      value: CameraTrigger03
+      objectReference: {fileID: 0}
     - target: {fileID: -68632600891464501, guid: 8edaa333fd329b144aaf497b8a5f336c,
         type: 3}
       propertyPath: m_Size.x
@@ -4944,11 +4949,6 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Size.z
       value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 3283546554553908029, guid: 8edaa333fd329b144aaf497b8a5f336c,
-        type: 3}
-      propertyPath: m_Name
-      value: CameraTrigger03
       objectReference: {fileID: 0}
     - target: {fileID: 2160184134386939102, guid: 8edaa333fd329b144aaf497b8a5f336c,
         type: 3}

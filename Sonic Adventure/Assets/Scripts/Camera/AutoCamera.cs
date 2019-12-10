@@ -54,6 +54,10 @@ public class AutoCamera : NormalCameraPosition
             {
                 _offset = Quaternion.AngleAxis(6.5f, Vector3.up) * _offset;
             }
+            else
+            {
+                _offset = Vector3.MoveTowards(_offset, _offsetList[4], 40.0f * Time.deltaTime);
+            }
         }
         else if (collision.name == Constants.Trigger.name[2])
         {
