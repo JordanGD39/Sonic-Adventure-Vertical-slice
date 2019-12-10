@@ -22,7 +22,7 @@ public class PlayerJump : MonoBehaviour
     [SerializeField] private LayerMask enemyLayer;
 
     public bool Jumping { get { return jumping; } set { jumping = value; } }
-    public bool Attacking { get { return attacking; } }
+    public bool Attacking { get { return attacking; } set { attacking = value; } }
     public bool HitHomingTarget { get { return hitHomingTarget; } set { hitHomingTarget = value; } }
     public bool TargetAttack { get { return targetAttack; } }
 

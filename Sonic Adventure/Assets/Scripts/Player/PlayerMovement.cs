@@ -12,6 +12,7 @@ public class PlayerMovement : MonoBehaviour
     //Physics
     private Rigidbody rb;
     private PlayerJump playerJump;
+    private PlayerRingAmount playerRing;
 
     private Vector3 movement;
     private Vector3 movementForce;
@@ -38,6 +39,7 @@ public class PlayerMovement : MonoBehaviour
     {
         rb = GetComponent<Rigidbody>();
         playerJump = GetComponent<PlayerJump>();
+        playerRing = GetComponent<PlayerRingAmount>();
     }
 
     // Update is called once per frame
@@ -46,11 +48,22 @@ public class PlayerMovement : MonoBehaviour
         float moveHorizontal = Input.GetAxis(Constants.Inputs.hori);
         float moveVertical = Input.GetAxis(Constants.Inputs.vert);
 
-        if (boosting)
+        if (boosting && !playerRing.Hit)
         {
             movement = new Vector3(0, 0, 1);
         }
-        else
+        else if (boosting && playerRing.Hit)
+        {
+            if (!grounded)
+            {
+                movement = new Vector3(0, 0, -1);
+            }
+            else
+            {
+                movement = new Vector3(0, 0, 0);
+            }            
+        }
+        else if(!boosting && !playerRing.Hit)
         {
             movement = new Vector3(moveHorizontal, 0, moveVertical);
 
@@ -65,7 +78,7 @@ public class PlayerMovement : MonoBehaviour
         }
 
         RaycastHit hit;
-        if (Physics.SphereCast(transform.position, 0.3f, -transform.up, out hit, 0.8f))
+        if (Physics.SphereCast(transform.position, 0.3f, -transform.up, out hit, 1f))
         {
             if (!hit.collider.isTrigger)
             {
@@ -182,8 +195,8 @@ public class PlayerMovement : MonoBehaviour
         else if (!grounded && !boosting && playerJump.Attacking && !playerJump.TargetAttack && rb.useGravity)
         {
             Vector3 tempVect = Camera.main.transform.TransformVector(movement);
-            tempVect *= speed * 80;
-            tempVect.y = rb.velocity.y;
+            tempVect *= speed * 20;
+            tempVect.y = 0;
             rb.AddForce(tempVect);
             if (rb.velocity.magnitude > 25)
             {
@@ -192,9 +205,9 @@ public class PlayerMovement : MonoBehaviour
                 rb.velocity = new Vector3(limitVect.x, rb.velocity.y, limitVect.z);                
             }
 
-            if (rb.velocity.y > 15)
+            if (rb.velocity.y > 4)
             {
-                rb.velocity = new Vector3(rb.velocity.x, 15, rb.velocity.z);
+                rb.velocity = new Vector3(rb.velocity.x, 4, rb.velocity.z);
             }
         }
 

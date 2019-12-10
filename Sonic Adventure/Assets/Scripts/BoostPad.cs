@@ -14,16 +14,17 @@ public class BoostPad : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        if (other.gameObject.CompareTag(Constants.Tags.player) && !other.transform.parent.GetComponent<PlayerMovement>().Boosting && other.transform.parent.GetComponent<PlayerJump>().enabled || other.gameObject.CompareTag(Constants.Tags.player) && teleport)
+        if (other.gameObject.CompareTag(Constants.Tags.playerCol) && !other.transform.parent.GetComponent<PlayerMovement>().Boosting && other.transform.parent.GetComponent<PlayerJump>().enabled || other.gameObject.CompareTag(Constants.Tags.playerCol) && teleport)
         {
             PlayerMovement mov = other.transform.parent.GetComponent<PlayerMovement>();
             if (teleport)
             {                
-                other.transform.parent.position = transform.position;
+                other.transform.parent.position = new Vector3(transform.position.x, transform.position.y + 0.8f, transform.position.z);
                 mov.StopBoost();
             }
             playerRb = other.transform.parent.GetComponent<Rigidbody>();
-            other.transform.parent.GetComponent<PlayerJump>().enabled = false;
+            other.transform.parent.GetComponent<PlayerJump>().Attacking = false;
+            other.transform.parent.GetComponent<PlayerJump>().enabled = false;            
             if (mov.Grounded)
             {                
                 mov.Speed = speed;                
@@ -68,7 +69,7 @@ public class BoostPad : MonoBehaviour
     {
         if (ramp)
         {
-            playerRb.AddForce(transform.forward * speed * 85);
+            playerRb.AddForce(transform.forward * speed * 45);
             ramp = false;
         }
     }

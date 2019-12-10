@@ -4,10 +4,11 @@ using UnityEngine;
 
 public class RingBehaviour : MonoBehaviour
 {
-    const string PLAYER_TAG = "Player";
     const float ROTATION_SPEED = 10.0f;
 
     private float thisRotation = 0.0f;
+
+    private bool alreadyGivingPlayer = false;
 
     private Rigidbody rb;
 
@@ -31,14 +32,18 @@ public class RingBehaviour : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        if (other.gameObject.CompareTag(PLAYER_TAG))
+        if (other.gameObject.CompareTag(Constants.Tags.playerCol))
         {
-            PlayerRingAmount playerRings = other.gameObject.transform.parent.GetComponent<PlayerRingAmount>();
-
-            if (!playerRings.hit)
+            if (!alreadyGivingPlayer)
             {
-                playerRings.ringAmount[0]++;
-                Destroy(gameObject);
+                PlayerRingAmount playerRings = other.gameObject.transform.parent.GetComponent<PlayerRingAmount>();
+
+                if (!playerRings.Hit)
+                {
+                    playerRings.RingAmount[0]++;
+                    Destroy(gameObject);
+                    alreadyGivingPlayer = true;
+                }
             }
         }
     }

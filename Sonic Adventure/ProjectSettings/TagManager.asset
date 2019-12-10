@@ -9,6 +9,8 @@ TagManager:
   - Canvas
   - Item
   - Hazard
+  - PlayerCol
+  - Trigger
   layers:
   - Default
   - TransparentFX
@@ -19,8 +21,8 @@ TagManager:
   - 
   - 
   - Enemies
-  - 
-  - 
+  - Player
+  - Rings
   - 
   - 
   - 

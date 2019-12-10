@@ -7,8 +7,13 @@ public class Constants
     public class Tags
     {
         public const string player = "Player";
+        public const string playerCol = "PlayerCol";
         public const string boostPad = "BoostPad";
         public const string canvas = "Canvas";
+        public const string mainCamera = "MainCamera";
+        public const string hazard = "Hazard";
+        public const string item = "Item";
+        public const string trigger = "Trigger";
     }
 
     public class Inputs
