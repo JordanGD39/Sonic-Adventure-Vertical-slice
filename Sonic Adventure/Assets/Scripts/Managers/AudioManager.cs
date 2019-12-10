@@ -10,6 +10,8 @@ public class AudioManager : MonoBehaviour
 
     private Sound currSound;
 
+    private Sound currS;
+
     public Sound CurrSound { get { return currSound; } }
 
     void Awake()
@@ -37,56 +39,46 @@ public class AudioManager : MonoBehaviour
     }
 
     public void Play(string name)
-    {        
-        Sound s = Array.Find(sounds, sound => sound.name == name);
-        if (s == null)
-        {
-            Debug.LogWarning("Sound: " + name + " not found!");
-            return;
-        }
+    {
+        FindSound(name);
 
-        if (s.loop)
+        if (currS.loop)
         {
-            currSound = s;
+            currSound = currS;
             Debug.Log("Playing music " + name);
         }
 
-        s.source.Play();
+        currS.source.Play();
     }
 
     public void StopPlaying(string sound)
     {
-        Sound s = Array.Find(sounds, item => item.name == sound);
-        if (s == null)
-        {
-            Debug.LogWarning("Sound: " + sound + " not found!");
-            return;
-        }
+        FindSound(sound);
 
-        s.source.Stop();
+        currS.source.Stop();
     }
 
     public void Pause(string sound)
     {
-        Sound s = Array.Find(sounds, item => item.name == sound);
-        if (s == null)
-        {
-            Debug.LogWarning("Sound: " + sound + " not found!");
-            return;
-        }
+        FindSound(sound);
 
-        s.source.Pause();
+        currS.source.Pause();
     }
 
     public void UnPause(string sound)
     {
-        Sound s = Array.Find(sounds, item => item.name == sound);
-        if (s == null)
+        FindSound(sound);
+
+        currS.source.UnPause();
+    }
+
+    private void FindSound(string sound)
+    {
+        currS = Array.Find(sounds, item => item.name == sound);
+        if (currS == null)
         {
             Debug.LogWarning("Sound: " + sound + " not found!");
             return;
         }
-
-        s.source.UnPause();
     }
 }

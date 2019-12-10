@@ -1350,6 +1350,7 @@ GameObject:
   - component: {fileID: 6669004646551761219}
   - component: {fileID: 6669004646551761230}
   - component: {fileID: 6669004646551761231}
+  - component: {fileID: 269848980}
   m_Layer: 9
   m_Name: Sonic
   m_TagString: Player
@@ -1385,8 +1386,8 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 987de179334135342bc57321ed696c00, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
+  m_Name:
+  m_EditorClassIdentifier:
   _camera: {fileID: 0}
   speed: 3
   prevRot: 0
@@ -1406,8 +1407,8 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 6fd3bdfc2d9a9284397215390a4ce8b3, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
+  m_Name:
+  m_EditorClassIdentifier:
   jumpHeight: 9
   homingSpeed: 40
   extraJumpHeight: 1
@@ -1448,8 +1449,8 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: a4e61c5b180eb7b4095a765c66b6ead2, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
+  m_Name:
+  m_EditorClassIdentifier:
 --- !u!114 &6669004646551761231
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1460,8 +1461,8 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 481ed95a5d85ea14da8ffa56fdd87d7b, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
+  m_Name:
+  m_EditorClassIdentifier:
   ring: {fileID: 3052927613156549165, guid: b26823f6f18401149a24390c4c172889, type: 3}
   itemlist: {fileID: 0}
   flySpeed: {x: 10, y: 10}
@@ -1546,7 +1547,7 @@ Animator:
   m_UpdateMode: 0
   m_ApplyRootMotion: 0
   m_LinearVelocityBlending: 0
-  m_WarningMessage: 
+  m_WarningMessage:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorControllerStateOnDisable: 0
@@ -1991,7 +1992,7 @@ Light:
   m_BounceIntensity: 1
   m_ColorTemperature: 6570
   m_UseColorTemperature: 0
-  m_BoundingSphereOverride: {x: 0, y: 0, z: 0, w: 0}
+  m_BoundingSphereOverride: {x: 0, y: 0, z: 3e-44, w: NaN}
   m_UseBoundingSphereOverride: 0
   m_ShadowRadius: 0
   m_ShadowAngle: 0
