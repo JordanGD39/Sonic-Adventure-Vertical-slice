@@ -38,7 +38,7 @@ public class PlayerRingAmount : MonoBehaviour
 
     private void OnCollisionStay(Collision collision)
     {
-        if (collision.gameObject.CompareTag(Constants.Tags.hazard))
+        if (collision.gameObject.CompareTag(Constants.Tags.hazard) || (collision.gameObject.CompareTag(Constants.Tags.enemy) && !transform.GetChild(1).gameObject.activeSelf))
         {
             GetHit();
         }
