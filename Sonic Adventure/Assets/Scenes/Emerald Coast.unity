@@ -6411,7 +6411,7 @@ MeshRenderer:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1165563136}
-  m_Enabled: 1
+  m_Enabled: 0
   m_CastShadows: 1
   m_ReceiveShadows: 1
   m_DynamicOccludee: 1
@@ -8143,7 +8143,7 @@ Transform:
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
-  - {fileID: 2015564134}
+  - {fileID: 1988335641}
   - {fileID: 1816835825}
   m_Father: {fileID: 0}
   m_RootOrder: 8
@@ -8976,7 +8976,7 @@ CapsuleCollider:
   m_IsTrigger: 1
   m_Enabled: 1
   m_Radius: 10
-  m_Height: 10
+  m_Height: 76.05
   m_Direction: 1
   m_Center: {x: 0, y: 0, z: 0}
 --- !u!1001 &1835442542
@@ -10543,6 +10543,37 @@ Rigidbody:
     type: 3}
   m_PrefabInstance: {fileID: 1986889022}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &1988335640
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1988335641}
+  m_Layer: 0
+  m_Name: Orka
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1988335641
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1988335640}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children:
+  - {fileID: 2015564134}
+  m_Father: {fileID: 1625034725}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!4 &1993842324 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 3052927613156549169, guid: b26823f6f18401149a24390c4c172889,
@@ -10706,7 +10737,7 @@ GameObject:
   - component: {fileID: 2015564134}
   - component: {fileID: 2015564135}
   m_Layer: 0
-  m_Name: Orka
+  m_Name: OrkaModel
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -10719,14 +10750,14 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2015564133}
-  m_LocalRotation: {x: 0, y: -0.2963748, z: 0, w: 0.95507175}
-  m_LocalPosition: {x: 121.1, y: -121.8, z: 90.3}
+  m_LocalRotation: {x: -0.7071068, y: -0, z: -0, w: 0.7071068}
+  m_LocalPosition: {x: 121.1, y: -171.3, z: -108.6}
   m_LocalScale: {x: 2, y: 2, z: 2}
   m_Children:
   - {fileID: 1165563137}
-  m_Father: {fileID: 1625034725}
+  m_Father: {fileID: 1988335641}
   m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 0, y: -34.48, z: 0}
+  m_LocalEulerAnglesHint: {x: -90, y: 0, z: 0}
 --- !u!95 &2015564135
 Animator:
   serializedVersion: 3
