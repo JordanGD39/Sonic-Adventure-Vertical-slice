@@ -25,4 +25,10 @@ public class Constants
         public const string mouseY = "Mouse Y";
         public const string pause = "Pause";
     }
+
+    public class Trigger
+    {
+        public static readonly string[] name =
+        { "CameraTrigger01", "CameraTrigger02", "CameraTrigger03", "CameraTrigger04", "CameraTrigger05" };
+    }
 }

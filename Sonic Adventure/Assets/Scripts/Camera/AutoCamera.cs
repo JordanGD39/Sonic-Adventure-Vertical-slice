@@ -10,54 +10,61 @@ public class AutoCamera : NormalCameraPosition
     [SerializeField]
     private AnimationTriggers _player;
 
-    private int offsetCounter;
-    private int collisionCounter;
-
     protected override void Start()
     {
         base.Start();
-
-        offsetCounter = 0;
-        collisionCounter = 0;
     }
 
     protected override void Update()
     {
-        if (!stop)
+        //float horizontal = Input.GetAxis(Constants.Inputs.mouseX);
+        //_offset = Quaternion.AngleAxis(horizontal * rotationSpeed, Vector3.up) * _offset;
+
+        SetOffset(_player.Triggered, _player.CollidingObj);
+
+        if (!stop && _player.CollidingObj.name != Constants.Trigger.name[2])
         {
-            float horizontal = Input.GetAxis(Constants.Inputs.mouseX);
-
-            _offset = Quaternion.AngleAxis(horizontal * rotationSpeed, Vector3.up) * _offset;
-
-            /*if (offsetCounter != 3)
-            {
-                _offset = _offsetList[offsetCounter];*/
-                transform.position = _target.position + _offset;
-            /*}
-            else
-            {
-                transform.position = _offset;
-            }*/
+            transform.position = _target.position + _offset;
         }
 
         base.Update();
+    }
 
-        /*if (_player.Triggered)
+    private void SetOffset(bool trigger, Collider collision)
+    {
+        if (collision.name == Constants.Trigger.name[0])
         {
-            collisionCounter++;
-            ChangeOffset(collisionCounter);
+            //Slightly tilted camera angle when Sonic goes out of the cave
+            _offset = Vector3.MoveTowards(_offset, _offsetList[1], 40.0f * Time.deltaTime);
+        }
+        else if (collision.name == Constants.Trigger.name[1])
+        {
+            //Camera turns towards loop direction
+            _offset = Vector3.MoveTowards(_offset, _offsetList[2], 8.5f * Time.deltaTime);
+        }
+        else if (collision.name == Constants.Trigger.name[3])
+        {
+            //Camera changes back to face bridge direction
+            _offset = Vector3.MoveTowards(_offset, _offsetList[2], 60.0f * Time.deltaTime);
+        }
+        else if (collision.name == Constants.Trigger.name[4])
+        {
+            //Camera rotates and faces the other way
+            if (Vector3.Magnitude(_offsetList[4] - _offset) > 0.5f)
+            {
+                _offset = Quaternion.AngleAxis(6.5f, Vector3.up) * _offset;
+            }
+        }
+        else if (collision.name == Constants.Trigger.name[2])
+        {
+            //Camera is located outside the loop
+            _offset = _offsetList[3];
+            transform.position = _offsetList[3];
         }
         else
         {
-            collisionCounter = 0;
-        }*/
-    }
-
-    /*private void ChangeOffset(int number)
-    {
-        if (number == 1 && offsetCounter < (_offsetList.Length - 1))
-        {
-            offsetCounter++;
+            //Regular camera offset
+            _offset = _offsetList[0];
         }
-    }*/
+    }
 }
