@@ -28,6 +28,7 @@ public class PlayerMovement : MonoBehaviour
 
     private float boostSec = 0;
     private Transform boostTransform = null;
+    private Animator anim;
 
     public float Speed { get { return speed; }  set { speed = value; } }
     public bool Boosting { get { return boosting; }  set { boosting = value; } }
@@ -40,11 +41,15 @@ public class PlayerMovement : MonoBehaviour
         rb = GetComponent<Rigidbody>();
         playerJump = GetComponent<PlayerJump>();
         playerRing = GetComponent<PlayerRingAmount>();
+        anim = transform.GetChild(0).GetChild(0).GetComponent<Animator>();
     }
 
     // Update is called once per frame
     private void Update()
     {
+        anim.SetFloat("Speed", speed);
+        anim.SetBool("Grounded", grounded);
+
         float moveHorizontal = Input.GetAxis(Constants.Inputs.hori);
         float moveVertical = Input.GetAxis(Constants.Inputs.vert);
 
@@ -78,7 +83,7 @@ public class PlayerMovement : MonoBehaviour
         }
 
         RaycastHit hit;
-        if (Physics.SphereCast(transform.position, 0.3f, -transform.up, out hit, 1f))
+        if (Physics.SphereCast(transform.position, 0.3f, -transform.up, out hit, 1.1f))
         {
             if (!hit.collider.isTrigger)
             {
@@ -172,7 +177,7 @@ public class PlayerMovement : MonoBehaviour
                     tempVect = Camera.main.transform.GetChild(0).TransformVector(movement);
                 }
 
-                tempVect *= speed * 0.75f;
+                tempVect *= speed;
                 rb.velocity = tempVect;
             }
 
@@ -219,6 +224,24 @@ public class PlayerMovement : MonoBehaviour
 
     private void Acceleration()
     {
+        float animSpeed = speed / 10 - 1;        
+
+        if (animSpeed > 1)
+        {
+            if (grounded)
+            {
+                anim.speed = animSpeed;
+            }
+            else
+            {
+                anim.speed = 1;
+            }
+        }
+        else
+        {
+            anim.speed = 1;
+        }
+
         if (rb.velocity.magnitude > 2.6f && rb.velocity.magnitude <= 14f)
         {
             if (speed < 16)
@@ -236,7 +259,7 @@ public class PlayerMovement : MonoBehaviour
             {
                 if (boosting)
                 {
-                    speed -= 1;
+                    speed -= 0.1f;                    
                 }
                 else
                 {

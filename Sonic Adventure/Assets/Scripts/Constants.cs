@@ -20,7 +20,9 @@ public class Constants
     {
         public const string hori = "Horizontal";
         public const string vert = "Vertical";
+        public const string jump = "Jump";
         public const string mouseX = "Mouse X";
         public const string mouseY = "Mouse Y";
+        public const string pause = "Pause";
     }
 }

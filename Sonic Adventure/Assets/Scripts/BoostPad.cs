@@ -29,6 +29,7 @@ public class BoostPad : MonoBehaviour
             {                
                 mov.Speed = speed;                
                 mov.BoostPad(secondsOutOfControl, transform);
+                AudioManager.instance.Play("BoostPad");
                 if (addForce)
                 {
                     //playerRb.AddForce(transform.forward * speed * 100);
@@ -58,6 +59,7 @@ public class BoostPad : MonoBehaviour
         
         mov.Speed = speed;
         mov.BoostPad(secondsOutOfControl, transform);
+        AudioManager.instance.Play("BoostPad");
         if (other.GetComponent<SphereCollider>() != null)
         {
             other.transform.parent.GetChild(0).gameObject.SetActive(true);

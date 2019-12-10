@@ -1,14 +1,12 @@
 fileFormatVersion: 2
-guid: 45ee9e3252bcd684897a2e5e06fc4b4d
+guid: ee20993bd32f5ff4a8f759fb5cc9828a
 ModelImporter:
   serializedVersion: 26
-  internalIDToNameTable: []
-  externalObjects:
+  internalIDToNameTable:
   - first:
-      type: UnityEngine:Material
-      assembly: UnityEngine.CoreModule
-      name: lambert2SG
-    second: {fileID: 2100000, guid: 3dab2a1a81b406b44b66026c0cfb642e, type: 2}
+      74: 1827226128182048838
+    second: Take 001
+  externalObjects: {}
   materials:
     importMaterials: 1
     materialName: 0
@@ -28,7 +26,7 @@ ModelImporter:
     animationDoRetargetingWarnings: 0
     importAnimatedCustomProperties: 0
     importConstraints: 0
-    animationCompression: 3
+    animationCompression: 1
     animationRotationError: 0.5
     animationPositionError: 0.5
     animationScaleError: 0.5

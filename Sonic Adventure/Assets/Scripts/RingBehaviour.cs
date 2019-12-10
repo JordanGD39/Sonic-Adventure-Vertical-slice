@@ -12,6 +12,8 @@ public class RingBehaviour : MonoBehaviour
 
     private Rigidbody rb;
 
+    [SerializeField] private GameObject fx;
+
     private void Start()
     {
         rb = GetComponent<Rigidbody>();
@@ -41,6 +43,9 @@ public class RingBehaviour : MonoBehaviour
                 if (!playerRings.Hit)
                 {
                     playerRings.RingAmount[0]++;
+                    GameObject part = Instantiate(fx, transform.position, transform.rotation);
+                    Destroy(part, 0.1f);
+                    AudioManager.instance.Play("Ring");
                     Destroy(gameObject);
                     alreadyGivingPlayer = true;
                 }

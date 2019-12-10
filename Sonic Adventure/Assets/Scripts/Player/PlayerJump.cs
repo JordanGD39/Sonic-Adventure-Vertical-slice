@@ -40,19 +40,19 @@ public class PlayerJump : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (Input.GetButtonDown("Jump"))
+        if (Input.GetButtonDown(Constants.Inputs.jump))
         {
             jumpPressed = true;
         }
-        if (Input.GetButtonUp("Jump"))
+        if (Input.GetButtonUp(Constants.Inputs.jump))
         {
             jumpPressed = false;
         }
 
-        if (Input.GetButton("Jump"))
+        if (Input.GetButton(Constants.Inputs.jump))
         {
             jumpHold = true;
-            extraJumpHeight += Input.GetAxis("Jump");
+            extraJumpHeight += Input.GetAxis(Constants.Inputs.jump);
             if (extraJumpHeight > maxJumpHeight)
             {
                 extraJumpHeight = maxJumpHeight;
@@ -83,7 +83,7 @@ public class PlayerJump : MonoBehaviour
             }
         }
 
-        if (!Input.GetButton("Jump") && playerMov.Grounded || Input.GetButton("Jump") && playerMov.Grounded && extraJumpHeight >= maxJumpHeight)
+        if (!Input.GetButton(Constants.Inputs.jump) && playerMov.Grounded || Input.GetButton(Constants.Inputs.jump) && playerMov.Grounded && extraJumpHeight >= maxJumpHeight)
         {
             extraJumpHeight = 1;
             transform.GetChild(0).gameObject.SetActive(true);
@@ -101,13 +101,18 @@ public class PlayerJump : MonoBehaviour
             transform.GetChild(1).gameObject.SetActive(true);
             transform.GetChild(0).gameObject.SetActive(false);
             jumping = true;
+            AudioManager.instance.Play("Jump");
             jumpPressed = false;
         }
         else if (jumpPressed && !playerMov.Grounded && homingReady)
         {
             transform.GetChild(0).gameObject.SetActive(false);
             transform.GetChild(1).gameObject.SetActive(true);
-            StartCoroutine("HomingAttack");    
+            AudioManager.instance.Play("HomingAttack");
+            if (homingReady)
+            {
+                StartCoroutine("HomingAttack");
+            }            
         }
 
         if (jumpHold)
@@ -127,33 +132,30 @@ public class PlayerJump : MonoBehaviour
 
     private IEnumerator HomingAttack()
     {
-        if (homingReady)
+        attacking = true;
+        hitHomingTarget = false;
+        homingReady = false;
+        jumpPressed = false;
+        if (homingTarget != null)
         {
-            attacking = true;
-            hitHomingTarget = false;
-            homingReady = false;
-            jumpPressed = false;
-            if (homingTarget != null)
+            while (!hitHomingTarget)
             {
-                while (!hitHomingTarget)
-                {
-                    transform.LookAt(homingTarget);
-                    rb.velocity = transform.TransformVector(new Vector3(0, 0, homingSpeed));
-                    rb.useGravity = false;
-                    targetAttack = true;
-                    yield return new WaitForFixedUpdate();
-                }                
-            }
-            else
-            {                
-                rb.AddForce(transform.forward * homingSpeed, ForceMode.Impulse);
-                rb.velocity = new Vector3(rb.velocity.x, 0, rb.velocity.z);
-                targetAttack = false;
-                for (int i = 0; i < 10; i++)
-                {
-                    yield return new WaitForFixedUpdate();
-                }          
-            }
+                transform.LookAt(homingTarget);
+                rb.velocity = transform.TransformVector(new Vector3(0, 0, homingSpeed));
+                rb.useGravity = false;
+                targetAttack = true;
+                yield return new WaitForFixedUpdate();
+            }                
+        }
+        else
+        {                
+            rb.AddForce(transform.forward * homingSpeed, ForceMode.Impulse);
+            rb.velocity = new Vector3(rb.velocity.x, 0, rb.velocity.z);
+            targetAttack = false;
+            for (int i = 0; i < 10; i++)
+            {
+                yield return new WaitForFixedUpdate();
+            }          
         }
     }
 
