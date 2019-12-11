@@ -9,14 +9,22 @@ public class RingBehaviour : MonoBehaviour
     private float thisRotation = 0.0f;
 
     private bool alreadyGivingPlayer = false;
+    public bool droppedItem;
+
+    private int[] count = new int[2];
 
     private Rigidbody rb;
+    private MeshRenderer mRend;
 
     [SerializeField] private GameObject fx;
 
     private void Start()
     {
         rb = GetComponent<Rigidbody>();
+        mRend = GetComponent<MeshRenderer>();
+
+        count[0] = 0;
+        count[1] = 0;
     }
 
     private void Update()
@@ -24,12 +32,42 @@ public class RingBehaviour : MonoBehaviour
         thisRotation += ROTATION_SPEED;
         transform.rotation = Quaternion.Euler(0.0f, thisRotation, 0.0f);
 
-        /*Collider[] colliders = Physics.OverlapSphere(transform.position, transform.localScale.y);
-
-        if (colliders.Length <= 0)
+        if (droppedItem)
         {
-            transform.position -= (new Vector3(0.0f, 3.0f, 0.0f) * Time.deltaTime);
-        }*/
+            count[0]++;
+        }
+        else
+        {
+            count[0] = 0;
+        }
+
+        SetMeshVisibility(count[0], count[1]);
+    }
+
+    private void SetMeshVisibility(int coun, int t)
+    {
+        float step = coun * Time.deltaTime;
+        float flip = t * Time.deltaTime;
+
+        if (step >= (Constants.Value.ringSeconds - 1.0f))
+        {
+            count[1]++;
+        }
+
+        if (flip >= 0.07f && flip < 0.14f)
+        {
+            Debug.Log("Off");
+            mRend.enabled = false;
+        }
+        else if (flip >= 0.14f && flip < 0.21f)
+        {
+            Debug.Log("On");
+            mRend.enabled = true;
+        }
+        else if(flip >= 0.21f)
+        {
+            count[1] = 0;
+        }
     }
 
     private void OnTriggerEnter(Collider other)

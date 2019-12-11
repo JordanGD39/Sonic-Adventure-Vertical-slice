@@ -31,4 +31,9 @@ public class Constants
         public static readonly string[] name =
         { "CameraTrigger01", "CameraTrigger02", "CameraTrigger03", "CameraTrigger04"};
     }
+
+    public class Value
+    {
+        public const float ringSeconds = 8.0f;
+    }
 }
