@@ -12,6 +12,6 @@ public class WaveExpander : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        GetComponent<SphereCollider>().radius += 0.5f;
+        GetComponent<SphereCollider>().radius += 2;
     }
 }

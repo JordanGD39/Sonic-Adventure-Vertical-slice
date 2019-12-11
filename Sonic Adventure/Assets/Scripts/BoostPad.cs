@@ -71,7 +71,7 @@ public class BoostPad : MonoBehaviour
     {
         if (ramp)
         {
-            playerRb.AddForce(transform.forward * speed * 45);
+            playerRb.AddForce(transform.forward * (speed * 45));
             ramp = false;
         }
     }

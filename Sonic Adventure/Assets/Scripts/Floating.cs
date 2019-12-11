@@ -7,6 +7,7 @@ public class Floating : MonoBehaviour
     private Vector3 targetPos;
 
     private bool wave = false;
+    private bool goingUp = false;
 
     // Start is called before the first frame update
     void Start()
@@ -17,13 +18,20 @@ public class Floating : MonoBehaviour
     // Update is called once per frame
     void FixedUpdate()
     {
-        if (transform.position.y < targetPos.y || wave)
+        if (transform.position.y < targetPos.y && !goingUp || wave)
         {
-            GetComponent<Rigidbody>().velocity = Vector3.up;
+            if (!wave)
+            {
+                GetComponent<Rigidbody>().velocity = Vector3.up;
+            }
+            else
+            {
+                GetComponent<Rigidbody>().velocity = -Vector3.up * 50;                
+            }
         }
-        else if (transform.position.y > targetPos.y && !wave)
+        else if (goingUp)
         {
-            GetComponent<Rigidbody>().velocity = -Vector3.up;
+            GetComponent<Rigidbody>().velocity = Vector3.up * 55;
         }
     }
 
@@ -31,6 +39,7 @@ public class Floating : MonoBehaviour
     {
         if (other.CompareTag(Constants.Tags.wave))
         {
+            StopCoroutine("WaveDetected");
             StartCoroutine("WaveDetected");
         }
     }
@@ -38,7 +47,10 @@ public class Floating : MonoBehaviour
     private IEnumerator WaveDetected()
     {
         wave = true;
-        yield return new WaitForSeconds(1);
+        yield return new WaitForSeconds(0.15f);
         wave = false;
+        goingUp = true;
+        yield return new WaitForSeconds(0.118f);
+        goingUp = false;
     }
 }
