@@ -19,13 +19,15 @@ public class AutoCamera : NormalCameraPosition
     {
         //float horizontal = Input.GetAxis(Constants.Inputs.mouseX);
         //_offset = Quaternion.AngleAxis(horizontal * rotationSpeed, Vector3.up) * _offset;
-
-        SetOffset(_player.Triggered, _player.CollidingObj);
-
-        if (!stop && _player.CollidingObj.name != Constants.Trigger.name[2])
+        if (!stop)
         {
-            transform.position = _target.position + _offset;
-        }
+            SetOffset(_player.Triggered, _player.CollidingObj);
+
+            if (_player.CollidingObj.name != Constants.Trigger.name[2])
+            {
+                transform.position = _target.position + _offset;
+            }
+        }       
 
         base.Update();
     }

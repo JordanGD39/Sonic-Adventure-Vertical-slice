@@ -13,6 +13,8 @@ public class NormalCameraPosition : MonoBehaviour
     [SerializeField]
     protected Vector3 _offset;
 
+    public Vector3 Offset { get { return _offset; } set { _offset = value; } }
+
     protected float rotationSpeed = 3.0f;
     protected bool stop;
 
@@ -30,9 +32,10 @@ public class NormalCameraPosition : MonoBehaviour
 
     virtual protected void Update()
     {
-        //_offset = Quaternion.AngleAxis((_target.rotation.y - transform.rotation.y) * rotationSpeed, Vector3.up) * _offset;
-        //_offset = Quaternion.AngleAxis((_target.rotation.z - transform.rotation.z) * rotationSpeed, Vector3.right) * _offset;
-
-        transform.LookAt(_target);
+        //Preventing Gimbal lock when dying
+        if (transform.rotation.eulerAngles.x < 89 || !GameManager.instance.Dying)
+        {
+            transform.LookAt(_target);
+        }
     }
 }

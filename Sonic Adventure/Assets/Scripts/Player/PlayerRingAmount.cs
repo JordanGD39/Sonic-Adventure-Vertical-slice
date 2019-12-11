@@ -29,6 +29,7 @@ public class PlayerRingAmount : MonoBehaviour
         hit = false;
         count = 0;
         ringAmount[0] = 0;        
+        StartCoroutine(GameManager.instance.RingBlink());
     }
 
     private void Update()

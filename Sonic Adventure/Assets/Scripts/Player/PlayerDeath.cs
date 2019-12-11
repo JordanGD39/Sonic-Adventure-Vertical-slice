@@ -17,7 +17,7 @@ public class PlayerDeath : MonoBehaviour
         fadeObjectOut.SetActive(false);
         GameManager.instance.Dying = false;
         anim = transform.GetChild(0).GetChild(0).GetComponent<Animator>();
-        anim.SetBool("Dead", false);
+        anim.SetBool("Dead", false);        
     }
 
     public IEnumerator Die()
@@ -25,8 +25,8 @@ public class PlayerDeath : MonoBehaviour
         anim.SetBool("Dead", true);
         Camera.main.GetComponent<AutoCamera>().Stop = true;
         fadeObjectOut.SetActive(true);
-        GameManager.instance.Dying = true;
-        yield return new WaitForSeconds(8);
+        GameManager.instance.Dying = true;        
+        yield return new WaitForSeconds(5);
 
         if (GameManager.instance.Lives > 0)
         {

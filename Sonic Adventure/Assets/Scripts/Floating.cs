@@ -26,12 +26,18 @@ public class Floating : MonoBehaviour
             }
             else
             {
-                GetComponent<Rigidbody>().velocity = -Vector3.up * 50;                
+                if (transform.position.y > targetPos.y - 4)
+                {
+                    GetComponent<Rigidbody>().velocity = -Vector3.up * 50;
+                }                              
             }
         }
         else if (goingUp)
         {
-            GetComponent<Rigidbody>().velocity = Vector3.up * 55;
+            if (transform.position.y < targetPos.y + 4)
+            {
+                GetComponent<Rigidbody>().velocity = Vector3.up * 55;
+            }            
         }
     }
 

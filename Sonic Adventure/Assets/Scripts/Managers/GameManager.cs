@@ -13,6 +13,10 @@ public class GameManager : MonoBehaviour
 
     private float timer = 0;
 
+    public enum mode {AUTO, FREE}
+
+    public mode cameraMode;
+
     [SerializeField] private int lives = 5;
 
     public int Lives { get { return lives; } set { lives = value; } }
@@ -45,11 +49,9 @@ public class GameManager : MonoBehaviour
                 break;
         }
         
-        timer = 0;
-        player = GameObject.FindGameObjectWithTag(Constants.Tags.player);
+        timer = 0;        
         ui = GameObject.FindGameObjectWithTag(Constants.Tags.canvas).transform.GetChild(0);
-        ui.GetChild(5).GetComponent<Text>().text = lives.ToString("00");
-        StartCoroutine(RingBlink());
+        ui.GetChild(5).GetComponent<Text>().text = lives.ToString("00");        
     }
 
     private void Update()
@@ -85,6 +87,11 @@ public class GameManager : MonoBehaviour
 
     public IEnumerator RingBlink()
     {
+        if (player == null)
+        {
+            player = GameObject.FindGameObjectWithTag(Constants.Tags.player);
+        }
+
         while (player.GetComponent<PlayerRingAmount>().RingAmount[0] == 0)
         {
             yield return new WaitForSeconds(0.5f);

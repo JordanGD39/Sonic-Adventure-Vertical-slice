@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
+using UnityEngine.UI;
 
 public class Pause : MonoBehaviour
 {
@@ -12,6 +13,14 @@ public class Pause : MonoBehaviour
     private void Start()
     {
         pauseUI.SetActive(false);
+        if (GameManager.instance.cameraMode == GameManager.mode.AUTO)
+        {
+            transform.GetChild(1).GetChild(1).GetChild(0).GetChild(0).GetComponent<Text>().text = "Auto camera";
+        }
+        else
+        {
+            transform.GetChild(1).GetChild(1).GetChild(0).GetChild(0).GetComponent<Text>().text = "Free camera";
+        }
     }
 
     // Update is called once per frame
@@ -27,6 +36,7 @@ public class Pause : MonoBehaviour
                 Time.timeScale = 0;
                 AudioManager.instance.Pause(AudioManager.instance.CurrSound.name);
                 Camera.main.GetComponent<AutoCamera>().enabled = false;
+                Camera.main.GetComponent<ThirdPersonCameraControl>().enabled = false;
 
             }
             else
@@ -37,11 +47,32 @@ public class Pause : MonoBehaviour
         
     }
 
+    public void CameraChange()
+    {
+        if (GameManager.instance.cameraMode == GameManager.mode.AUTO)
+        {
+            GameManager.instance.cameraMode = GameManager.mode.FREE;
+            transform.GetChild(1).GetChild(1).GetChild(0).GetChild(0).GetComponent<Text>().text = "Free camera";
+        }
+        else
+        {
+            GameManager.instance.cameraMode = GameManager.mode.AUTO;
+            transform.GetChild(1).GetChild(1).GetChild(0).GetChild(0).GetComponent<Text>().text = "Auto camera";
+        }
+    }
+
     public void Continue()
     {
         pauseUI.SetActive(false);
         Time.timeScale = 1;
-        Camera.main.GetComponent<AutoCamera>().enabled = true;
+        if (GameManager.instance.cameraMode == GameManager.mode.AUTO)
+        {
+            Camera.main.GetComponent<AutoCamera>().enabled = true;
+        }
+        else
+        {
+            Camera.main.GetComponent<ThirdPersonCameraControl>().enabled = true;
+        }        
         AudioManager.instance.UnPause(AudioManager.instance.CurrSound.name);
     }
 
