@@ -50,7 +50,7 @@ public class Floating : MonoBehaviour
         yield return new WaitForSeconds(0.15f);
         wave = false;
         goingUp = true;
-        yield return new WaitForSeconds(0.118f);
+        yield return new WaitForSeconds(0.1167f);
         goingUp = false;
     }
 }
