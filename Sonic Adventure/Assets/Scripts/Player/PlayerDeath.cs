@@ -19,7 +19,7 @@ public class PlayerDeath : MonoBehaviour
 
     public IEnumerator Die()
     {
-        Camera.main.GetComponent<ThirdPersonCameraControl>().Stop = true;
+        Camera.main.GetComponent<AutoCamera>().Stop = true;
         fadeObjectOut.SetActive(true);
         GameManager.instance.Dying = true;
         yield return new WaitForSeconds(2);

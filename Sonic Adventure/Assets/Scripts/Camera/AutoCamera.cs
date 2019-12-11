@@ -34,30 +34,35 @@ public class AutoCamera : NormalCameraPosition
     {
         if (collision.name == Constants.Trigger.name[0])
         {
-            //Slightly tilted camera angle when Sonic goes out of the cave
-            _offset = Vector3.MoveTowards(_offset, _offsetList[1], 40.0f * Time.deltaTime);
+            if (_player.CurrentVel.z >= 0.0f)
+            {
+                //Slightly tilted camera angle when Sonic goes out of the cave
+                _offset = Vector3.MoveTowards(_offset, _offsetList[1], 40.0f * Time.deltaTime);
+            }
+            else if (_player.CurrentVel.z < 0.0f)
+            {
+                //Camera angle goes back to normal
+                _offset = Vector3.MoveTowards(_offset, _offsetList[0], 40.0f * Time.deltaTime);
+            }
         }
         else if (collision.name == Constants.Trigger.name[1])
         {
-            //Camera turns towards loop direction
-            _offset = Vector3.MoveTowards(_offset, _offsetList[2], 8.5f * Time.deltaTime);
+            if (_player.CurrentVel.z > 0.0f)
+            {
+                //Camera turns towards loop direction
+                _offset = Vector3.MoveTowards(_offset, _offsetList[2], 8.5f * Time.deltaTime);
+            }
+
+            if (_player.CurrentVel.x < 0.0f)
+            {
+                //Camera angle goes back to before
+                _offset = Vector3.MoveTowards(_offset, _offsetList[1], 8.5f * Time.deltaTime);
+            }
         }
         else if (collision.name == Constants.Trigger.name[3])
         {
             //Camera changes back to face bridge direction
             _offset = Vector3.MoveTowards(_offset, _offsetList[2], 60.0f * Time.deltaTime);
-        }
-        else if (collision.name == Constants.Trigger.name[4])
-        {
-            //Camera rotates and faces the other way
-            if (Vector3.Magnitude(_offsetList[4] - _offset) > 0.5f)
-            {
-                _offset = Quaternion.AngleAxis(6.5f, Vector3.up) * _offset;
-            }
-            else
-            {
-                _offset = Vector3.MoveTowards(_offset, _offsetList[4], 40.0f * Time.deltaTime);
-            }
         }
         else if (collision.name == Constants.Trigger.name[2])
         {

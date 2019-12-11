@@ -29,6 +29,6 @@ public class Constants
     public class Trigger
     {
         public static readonly string[] name =
-        { "CameraTrigger01", "CameraTrigger02", "CameraTrigger03", "CameraTrigger04", "CameraTrigger05" };
+        { "CameraTrigger01", "CameraTrigger02", "CameraTrigger03", "CameraTrigger04"};
     }
 }

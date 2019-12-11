@@ -26,7 +26,7 @@ public class Pause : MonoBehaviour
                 EventSystem.current.SetSelectedGameObject(pauseUI.transform.GetChild(1).GetChild(1).gameObject);
                 Time.timeScale = 0;
                 AudioManager.instance.Pause(AudioManager.instance.CurrSound.name);
-                Camera.main.GetComponent<ThirdPersonCameraControl>().enabled = false;
+                Camera.main.GetComponent<AutoCamera>().enabled = false;
 
             }
             else
@@ -41,7 +41,7 @@ public class Pause : MonoBehaviour
     {
         pauseUI.SetActive(false);
         Time.timeScale = 1;
-        Camera.main.GetComponent<ThirdPersonCameraControl>().enabled = true;
+        Camera.main.GetComponent<AutoCamera>().enabled = true;
         AudioManager.instance.UnPause(AudioManager.instance.CurrSound.name);
     }
 
@@ -49,7 +49,7 @@ public class Pause : MonoBehaviour
     {
         pauseUI.SetActive(false);
         Time.timeScale = 1;
-        Camera.main.GetComponent<ThirdPersonCameraControl>().enabled = true;
+        Camera.main.GetComponent<AutoCamera>().enabled = true;
         StartCoroutine(GameObject.FindGameObjectWithTag(Constants.Tags.player).GetComponent<PlayerDeath>().Die());
         AudioManager.instance.UnPause(AudioManager.instance.CurrSound.name);
     }
