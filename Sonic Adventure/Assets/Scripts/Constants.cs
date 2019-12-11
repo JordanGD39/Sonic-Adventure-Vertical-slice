@@ -14,6 +14,8 @@ public class Constants
         public const string hazard = "Hazard";
         public const string item = "Item";
         public const string trigger = "Trigger";
+        public const string enemy = "Enemy";
+        public const string wave = "Wave";
     }
 
     public class Inputs

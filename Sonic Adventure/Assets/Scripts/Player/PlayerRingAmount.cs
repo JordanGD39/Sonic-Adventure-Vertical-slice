@@ -28,7 +28,7 @@ public class PlayerRingAmount : MonoBehaviour
     {
         hit = false;
         count = 0;
-        ringAmount[0] = 0;
+        ringAmount[0] = 0;        
     }
 
     private void Update()
@@ -38,7 +38,7 @@ public class PlayerRingAmount : MonoBehaviour
 
     private void OnCollisionStay(Collision collision)
     {
-        if (collision.gameObject.CompareTag(Constants.Tags.hazard))
+        if (collision.gameObject.CompareTag(Constants.Tags.hazard) || (collision.gameObject.CompareTag(Constants.Tags.enemy) && !transform.GetChild(1).gameObject.activeSelf))
         {
             GetHit();
         }
@@ -58,6 +58,7 @@ public class PlayerRingAmount : MonoBehaviour
             else if (ringAmount[0] != 0)
             {
                 ringAmount[0] = ShootRings(ringAmount[0]);
+                StartCoroutine(GameManager.instance.RingBlink());
             }
             else
             {
