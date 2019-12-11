@@ -11,6 +11,7 @@ TagManager:
   - Hazard
   - PlayerCol
   - Trigger
+  - Wave
   layers:
   - Default
   - TransparentFX
@@ -23,7 +24,7 @@ TagManager:
   - Enemies
   - Player
   - Rings
-  - 
+  - Floater
   - 
   - 
   - 

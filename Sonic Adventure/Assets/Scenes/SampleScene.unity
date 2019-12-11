@@ -3324,6 +3324,42 @@ MonoBehaviour:
     pitch: 1
     loop: 1
     source: {fileID: 0}
+  - name: Stage1
+    clip: {fileID: 8300000, guid: 2da956a0cbb00054e9f2d276775ef6cf, type: 3}
+    volume: 0.5
+    pitch: 1
+    loop: 1
+    source: {fileID: 0}
+  - name: Jump
+    clip: {fileID: 8300000, guid: c66c0fe23728d3f45817831c5675cf5f, type: 3}
+    volume: 1
+    pitch: 1
+    loop: 0
+    source: {fileID: 0}
+  - name: HomingAttack
+    clip: {fileID: 8300000, guid: 10fd1773bdcc77140b751f5bc370872a, type: 3}
+    volume: 1
+    pitch: 1
+    loop: 0
+    source: {fileID: 0}
+  - name: Ring
+    clip: {fileID: 8300000, guid: bb8fae62dd2e30f4faaa24681f652826, type: 3}
+    volume: 1
+    pitch: 1
+    loop: 0
+    source: {fileID: 0}
+  - name: LosingRings
+    clip: {fileID: 8300000, guid: f3022c233740cc244b9fa7b4c11cc97f, type: 3}
+    volume: 1
+    pitch: 1
+    loop: 0
+    source: {fileID: 0}
+  - name: BoostPad
+    clip: {fileID: 8300000, guid: 80aee32048cbb15469db0a3492013b04, type: 3}
+    volume: 1
+    pitch: 1
+    loop: 0
+    source: {fileID: 0}
 --- !u!1 &503936210
 GameObject:
   m_ObjectHideFlags: 0

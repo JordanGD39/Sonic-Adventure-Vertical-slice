@@ -49,6 +49,7 @@ public class PlayerMovement : MonoBehaviour
     {
         anim.SetFloat("Speed", speed);
         anim.SetBool("Grounded", grounded);
+        anim.SetBool("Hit", playerRing.Hit);
 
         float moveHorizontal = Input.GetAxis(Constants.Inputs.hori);
         float moveVertical = Input.GetAxis(Constants.Inputs.vert);
@@ -242,7 +243,7 @@ public class PlayerMovement : MonoBehaviour
             anim.speed = 1;
         }
 
-        if (rb.velocity.magnitude > 2.6f && rb.velocity.magnitude <= 14f)
+        if (rb.velocity.magnitude > 0.5f && rb.velocity.magnitude <= 14f)
         {
             if (speed < 16)
             {
@@ -251,23 +252,26 @@ public class PlayerMovement : MonoBehaviour
         }
         else if (rb.velocity.magnitude > 14f)
         {
-            if (speed < 22)
+            if (movement.z == 1 || movement.z == -1 || movement.x == 1 || movement.x == -1)
             {
-                speed += 0.5f;
-            }
-            else
-            {
-                if (boosting)
+                if (speed < 22)
                 {
-                    speed -= 0.1f;                    
+                    speed += 0.5f;
                 }
                 else
                 {
-                    speed = 22;
+                    if (boosting)
+                    {
+                        speed -= 0.1f;
+                    }
+                    else
+                    {
+                        speed = 22;
+                    }
                 }
             }
         }
-        else if (rb.velocity.magnitude <= 2.6f)
+        else if (rb.velocity.magnitude <= 0.5f)
         {
             if (speed > 3)
             {

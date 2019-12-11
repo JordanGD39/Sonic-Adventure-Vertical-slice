@@ -9,6 +9,7 @@ public class GameManager : MonoBehaviour
     public static GameManager instance;
 
     [SerializeField] private GameObject player;
+    [SerializeField] private Transform ui;
 
     private float timer = 0;
 
@@ -16,6 +17,7 @@ public class GameManager : MonoBehaviour
 
     public int Lives { get { return lives; } set { lives = value; } }
     public bool Dying { get; set; } = false;
+    public bool AlreadyBlinking { get; set; } = false;
 
     void Awake()
     {
@@ -45,8 +47,9 @@ public class GameManager : MonoBehaviour
         
         timer = 0;
         player = GameObject.FindGameObjectWithTag(Constants.Tags.player);
-        Transform ui = GameObject.FindGameObjectWithTag(Constants.Tags.canvas).transform.GetChild(0);
+        ui = GameObject.FindGameObjectWithTag(Constants.Tags.canvas).transform.GetChild(0);
         ui.GetChild(5).GetComponent<Text>().text = lives.ToString("00");
+        StartCoroutine(RingBlink());
     }
 
     private void Update()
@@ -59,9 +62,14 @@ public class GameManager : MonoBehaviour
 
         centiseconds = centiseconds % 100;
 
-        Transform ui = GameObject.FindGameObjectWithTag(Constants.Tags.canvas).transform.GetChild(0);
-
-        ui.GetChild(1).GetComponent<Text>().text = minutes + ":" + seconds + ":" + centiseconds.ToString("00");
+        if (ui != null)
+        {
+            ui.GetChild(1).GetComponent<Text>().text = minutes + ":" + seconds + ":" + centiseconds.ToString("00");
+        }
+        else
+        {
+            ui = GameObject.FindGameObjectWithTag(Constants.Tags.canvas).transform.GetChild(0);
+        }
 
         if (player != null)
         {
@@ -73,5 +81,18 @@ public class GameManager : MonoBehaviour
         }
 
         ui.GetChild(5).GetComponent<Text>().text = lives.ToString("00");
+    }
+
+    public IEnumerator RingBlink()
+    {
+        while (player.GetComponent<PlayerRingAmount>().RingAmount[0] == 0)
+        {
+            yield return new WaitForSeconds(0.5f);
+            ui.GetChild(3).GetComponent<Text>().color = Color.red;
+            yield return new WaitForSeconds(0.5f);
+            ui.GetChild(3).GetComponent<Text>().color = Color.white;
+        }
+
+        ui.GetChild(3).GetComponent<Text>().color = Color.white;
     }
 }
