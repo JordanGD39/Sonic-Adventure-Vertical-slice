@@ -49,6 +49,7 @@ public class PlayerMovement : MonoBehaviour
     {
         anim.SetFloat("Speed", speed);
         anim.SetBool("Grounded", grounded);
+        anim.SetBool("Hit", playerRing.Hit);
 
         float moveHorizontal = Input.GetAxis(Constants.Inputs.hori);
         float moveVertical = Input.GetAxis(Constants.Inputs.vert);

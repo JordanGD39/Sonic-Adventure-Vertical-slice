@@ -28,7 +28,7 @@ public class PlayerRingAmount : MonoBehaviour
     {
         hit = false;
         count = 0;
-        ringAmount[0] = 0;
+        ringAmount[0] = 0;        
     }
 
     private void Update()
@@ -58,6 +58,7 @@ public class PlayerRingAmount : MonoBehaviour
             else if (ringAmount[0] != 0)
             {
                 ringAmount[0] = ShootRings(ringAmount[0]);
+                StartCoroutine(GameManager.instance.RingBlink());
             }
             else
             {
