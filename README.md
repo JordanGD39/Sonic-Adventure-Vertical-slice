@@ -2,11 +2,11 @@
 _Team 12, 2GD & 2GA, Media College Amsterdam_
 
 ```Members:```
-- Alain _(Game Artist)_
-- Ali _(Game Artist)_
-- Jordan _(Game Programmer)_
-- Rey _(Game Artist)_
-- Wayne _(Game Programmer)_
+- Alain de Boer _(Game Artist)_
+- Ali Ramazanian-Bajgiran _(Game Artist)_
+- Jordan Pignato _(Game Programmer)_
+- Rey van Hilten _(Game Artist)_
+- Wayne Hofstra _(Game Programmer)_
 
 ```Link to Trello-board:```
 
