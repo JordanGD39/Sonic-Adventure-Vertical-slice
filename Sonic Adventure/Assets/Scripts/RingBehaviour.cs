@@ -56,12 +56,10 @@ public class RingBehaviour : MonoBehaviour
 
         if (flip >= 0.07f && flip < 0.14f)
         {
-            Debug.Log("Off");
             mRend.enabled = false;
         }
         else if (flip >= 0.14f && flip < 0.21f)
         {
-            Debug.Log("On");
             mRend.enabled = true;
         }
         else if(flip >= 0.21f)
