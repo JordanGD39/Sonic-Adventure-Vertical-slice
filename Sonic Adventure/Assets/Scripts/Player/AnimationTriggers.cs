@@ -10,9 +10,6 @@ public class AnimationTriggers : MonoBehaviour
     [SerializeField]
     private Animator _orcaAnimator;
 
-    [SerializeField]
-    private Animator _waveAnimator;
-
     private Collider collidingObj;
     private Vector3 currentVel;
     private bool triggered;
@@ -40,10 +37,6 @@ public class AnimationTriggers : MonoBehaviour
         else if (collision.gameObject.name == _triggers[0].name)
         {
             _orcaAnimator.SetTrigger("Player Arrival");
-        }
-        else if (collision.gameObject.name == _triggers[1].name)
-        {
-            _waveAnimator.SetTrigger("Player Arrival");
         }
     }
 
