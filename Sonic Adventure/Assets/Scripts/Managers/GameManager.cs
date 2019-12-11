@@ -13,6 +13,9 @@ public class GameManager : MonoBehaviour
 
     private float timer = 0;
 
+    public bool StopTimer { get; set; } = false;
+    public float Timer { get { return timer; } }
+
     public enum mode {AUTO, FREE}
 
     public mode cameraMode;
@@ -56,7 +59,10 @@ public class GameManager : MonoBehaviour
 
     private void Update()
     {
-        timer += Time.deltaTime;
+        if (!StopTimer)
+        {
+            timer += Time.deltaTime;
+        }
 
         string minutes = Mathf.Floor(timer / 60).ToString("00");
         string seconds = (timer % 60).ToString("00");

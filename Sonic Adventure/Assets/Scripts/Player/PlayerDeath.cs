@@ -16,6 +16,7 @@ public class PlayerDeath : MonoBehaviour
         fadeObjectIn.SetActive(true);
         fadeObjectOut.SetActive(false);
         GameManager.instance.Dying = false;
+        GameManager.instance.StopTimer = false;
         anim = transform.GetChild(0).GetChild(0).GetComponent<Animator>();
         anim.SetBool("Dead", false);        
     }
@@ -26,7 +27,7 @@ public class PlayerDeath : MonoBehaviour
         Camera.main.GetComponent<AutoCamera>().Stop = true;
         fadeObjectOut.SetActive(true);
         GameManager.instance.Dying = true;        
-        yield return new WaitForSeconds(5);
+        yield return new WaitForSeconds(3);
 
         if (GameManager.instance.Lives > 0)
         {
