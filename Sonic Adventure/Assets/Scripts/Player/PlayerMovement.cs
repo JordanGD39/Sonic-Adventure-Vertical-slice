@@ -58,7 +58,7 @@ public class PlayerMovement : MonoBehaviour
         {
             movement = new Vector3(0, 0, 1);
         }
-        else if (boosting && playerRing.Hit)
+        else if (boosting && playerRing.Hit || GameManager.instance.Dying)
         {
             if (!grounded)
             {
