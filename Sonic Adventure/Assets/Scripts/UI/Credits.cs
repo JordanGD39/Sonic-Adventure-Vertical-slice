@@ -44,6 +44,7 @@ public class Credits : MonoBehaviour
     {
         AudioManager.instance.StopPlaying("Credits");
         transform.parent.GetComponent<Pause>().AudioGo = false;
+        GameManager.instance.Score = 0;
         SceneManager.LoadScene(0);        
         GameManager.instance.ChangeMusicOkay = true;
     }
