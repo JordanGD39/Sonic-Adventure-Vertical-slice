@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public class Pause : MonoBehaviour
@@ -10,61 +11,71 @@ public class Pause : MonoBehaviour
 
     private bool selected = false;
 
+    public bool AudioGo { get; set; } = false;
+
     private void Start()
     {
-        pauseUI.SetActive(false);
-        if (GameManager.instance.cameraMode == GameManager.mode.AUTO)
+        if (SceneManager.GetActiveScene().buildIndex != 2)
         {
-            if (Camera.main.GetComponent<AutoCamera>() != null)
+            pauseUI.SetActive(false);
+            if (GameManager.instance.cameraMode == GameManager.mode.AUTO)
             {
-                Camera.main.GetComponent<AutoCamera>().enabled = true;
+                if (Camera.main.GetComponent<AutoCamera>() != null)
+                {
+                    Camera.main.GetComponent<AutoCamera>().enabled = true;
+                }
+                else
+                {
+                    Camera.main.GetComponent<ThirdPersonCameraControl>().enabled = true;
+                    transform.GetChild(1).GetChild(1).GetChild(0).GetChild(0).GetComponent<Text>().text = "Free camera";
+                    GameManager.instance.cameraMode = GameManager.mode.FREE;
+                }
+                transform.GetChild(1).GetChild(1).GetChild(0).GetChild(0).GetComponent<Text>().text = "Auto camera";
             }
             else
             {
                 Camera.main.GetComponent<ThirdPersonCameraControl>().enabled = true;
                 transform.GetChild(1).GetChild(1).GetChild(0).GetChild(0).GetComponent<Text>().text = "Free camera";
-                GameManager.instance.cameraMode = GameManager.mode.FREE;
             }
-            transform.GetChild(1).GetChild(1).GetChild(0).GetChild(0).GetComponent<Text>().text = "Auto camera";
         }
-        else
-        {
-            Camera.main.GetComponent<ThirdPersonCameraControl>().enabled = true;
-            transform.GetChild(1).GetChild(1).GetChild(0).GetChild(0).GetComponent<Text>().text = "Free camera";
-        }
+
+        AudioGo = true;
     }
 
     // Update is called once per frame
     void Update()
     {
-        if (Input.GetButtonDown(Constants.Inputs.pause) && !GameManager.instance.Dying)
+        if (SceneManager.GetActiveScene().buildIndex != 2)
         {
-            if (!pauseUI.activeSelf)
+            if (Input.GetButtonDown(Constants.Inputs.pause) && !GameManager.instance.Dying)
             {
-                pauseUI.SetActive(true);                
-                EventSystem.current.SetSelectedGameObject(null);
-                EventSystem.current.SetSelectedGameObject(pauseUI.transform.GetChild(1).GetChild(1).gameObject);
-                Time.timeScale = 0;
-                AudioManager.instance.Pause(AudioManager.instance.CurrSound.name);
-                if (Camera.main.GetComponent<AutoCamera>() != null)
+                if (!pauseUI.activeSelf)
                 {
-                    Camera.main.GetComponent<AutoCamera>().enabled = false;
-                }                
-                Camera.main.GetComponent<ThirdPersonCameraControl>().enabled = false;
+                    pauseUI.SetActive(true);
+                    EventSystem.current.SetSelectedGameObject(null);
+                    EventSystem.current.SetSelectedGameObject(pauseUI.transform.GetChild(1).GetChild(1).gameObject);
+                    Time.timeScale = 0;
+                    AudioManager.instance.Pause(AudioManager.instance.CurrSound.name);
+                    if (Camera.main.GetComponent<AutoCamera>() != null)
+                    {
+                        Camera.main.GetComponent<AutoCamera>().enabled = false;
+                    }
+                    Camera.main.GetComponent<ThirdPersonCameraControl>().enabled = false;
 
-                if (GameManager.instance.cameraMode == GameManager.mode.AUTO)
-                {
-                    transform.GetChild(1).GetChild(1).GetChild(0).GetChild(0).GetComponent<Text>().text = "Auto camera";
+                    if (GameManager.instance.cameraMode == GameManager.mode.AUTO)
+                    {
+                        transform.GetChild(1).GetChild(1).GetChild(0).GetChild(0).GetComponent<Text>().text = "Auto camera";
+                    }
+                    else
+                    {
+                        transform.GetChild(1).GetChild(1).GetChild(0).GetChild(0).GetComponent<Text>().text = "Free camera";
+                    }
+
                 }
                 else
                 {
-                    transform.GetChild(1).GetChild(1).GetChild(0).GetChild(0).GetComponent<Text>().text = "Free camera";
+                    Continue();
                 }
-
-            }
-            else
-            {
-                Continue();
             }
         }
         

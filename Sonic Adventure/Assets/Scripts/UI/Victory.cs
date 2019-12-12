@@ -6,6 +6,7 @@ using UnityEngine.UI;
 
 public class Victory : MonoBehaviour
 {
+    private GameObject fadeObjectOut;
     private Transform ui;
 
     [SerializeField]
@@ -14,6 +15,7 @@ public class Victory : MonoBehaviour
     private void Start()
     {
         ui = GameObject.FindGameObjectWithTag(Constants.Tags.canvas).transform.GetChild(2).GetChild(2);
+        fadeObjectOut = GameObject.FindGameObjectWithTag(Constants.Tags.canvas).transform.GetChild(GameObject.FindGameObjectWithTag(Constants.Tags.canvas).transform.childCount - 1).gameObject;
         ui.parent.gameObject.SetActive(false);
         for (int i = 0; i < ui.childCount; i++)
         {
@@ -169,10 +171,13 @@ public class Victory : MonoBehaviour
         ui.GetChild(4).GetComponent<Text>().text = rings.ToString();
         ui.GetChild(5).GetComponent<Text>().text = totalScore.ToString();
 
-        GameManager.instance.Score = totalScore;
+        GameManager.instance.Score += totalScore;
+
+        fadeObjectOut.SetActive(true);
 
         yield return new WaitForSeconds(3);
         SceneManager.LoadScene(levelIndex);
-        GameManager.instance.ChangeMusicOkay = true;        
+        GameObject.FindGameObjectWithTag(Constants.Tags.canvas).GetComponent<Pause>().AudioGo = false;
+        GameManager.instance.ChangeMusicOkay = true;   
     }
 }

@@ -49,9 +49,11 @@ public class GameManager : MonoBehaviour
         ChangeMusic();     
         
         timer = 0;
+        
+        ui = GameObject.FindGameObjectWithTag(Constants.Tags.canvas).transform.GetChild(0);
+
         if (SceneManager.GetActiveScene().buildIndex != 2)
         {
-            ui = GameObject.FindGameObjectWithTag(Constants.Tags.canvas).transform.GetChild(0);
             ui.GetChild(5).GetComponent<Text>().text = lives.ToString("00");
         }
     }
@@ -70,25 +72,25 @@ public class GameManager : MonoBehaviour
         centiseconds = centiseconds % 100;
 
         if (ui != null)
-        {
-            ui.GetChild(1).GetComponent<Text>().text = minutes + ":" + seconds + ":" + centiseconds.ToString("00");
+        {            
+            if (SceneManager.GetActiveScene().buildIndex != 2)
+            {
+                ui.GetChild(1).GetComponent<Text>().text = minutes + ":" + seconds + ":" + centiseconds.ToString("00");
+            }
+
+            if (ChangeMusicOkay && ui.parent.GetComponent<Pause>().AudioGo)
+            {
+                ChangeMusic();
+            }
         }
         else
         {
-            if (SceneManager.GetActiveScene().buildIndex != 2)
-            {
-                ui = GameObject.FindGameObjectWithTag(Constants.Tags.canvas).transform.GetChild(0);
-            }
+            ui = GameObject.FindGameObjectWithTag(Constants.Tags.canvas).transform.GetChild(0);
         }
 
         if (player != null)
         {
-            ui.GetChild(3).GetComponent<Text>().text = player.GetComponent<PlayerRingAmount>().RingAmount[0].ToString("000");
-
-            if (ChangeMusicOkay)
-            {
-                ChangeMusic();
-            }
+            ui.GetChild(3).GetComponent<Text>().text = player.GetComponent<PlayerRingAmount>().RingAmount[0].ToString("000");            
         }
         else
         {
