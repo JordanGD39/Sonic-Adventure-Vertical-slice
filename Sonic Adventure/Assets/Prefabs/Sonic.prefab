@@ -1240,13 +1240,13 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6159952152371085077}
-  m_LocalRotation: {x: -0, y: -0, z: 0.7071068, w: 0.7071068}
+  m_LocalRotation: {x: -0.040567826, y: 0, z: 0, w: 0.9991768}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 1108286885490679014}
   m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 90}
+  m_LocalEulerAnglesHint: {x: -4.65, y: 0, z: 0}
 --- !u!33 &6928985729338026824
 MeshFilter:
   m_ObjectHideFlags: 0
@@ -2316,11 +2316,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: SONIC_HALFBALL (1)
       objectReference: {fileID: 0}
-    - target: {fileID: -7078581854405578231, guid: c683f063f0e6b804da03a4b3d2e3962e,
-        type: 3}
-      propertyPath: m_Materials.Array.data[0]
-      value: 
-      objectReference: {fileID: 2100000, guid: 3dab2a1a81b406b44b66026c0cfb642e, type: 2}
     - target: {fileID: -4216859302048453862, guid: c683f063f0e6b804da03a4b3d2e3962e,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -2391,6 +2386,11 @@ PrefabInstance:
       propertyPath: m_LocalScale.z
       value: 15
       objectReference: {fileID: 0}
+    - target: {fileID: -7078581854405578231, guid: c683f063f0e6b804da03a4b3d2e3962e,
+        type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: 3dab2a1a81b406b44b66026c0cfb642e, type: 2}
     m_RemovedComponents:
     - {fileID: -6057140222963153312, guid: c683f063f0e6b804da03a4b3d2e3962e, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: c683f063f0e6b804da03a4b3d2e3962e, type: 3}

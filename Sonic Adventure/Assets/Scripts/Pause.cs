@@ -15,10 +15,21 @@ public class Pause : MonoBehaviour
         pauseUI.SetActive(false);
         if (GameManager.instance.cameraMode == GameManager.mode.AUTO)
         {
+            if (Camera.main.GetComponent<AutoCamera>() != null)
+            {
+                Camera.main.GetComponent<AutoCamera>().enabled = true;
+            }
+            else
+            {
+                Camera.main.GetComponent<ThirdPersonCameraControl>().enabled = true;
+                transform.GetChild(1).GetChild(1).GetChild(0).GetChild(0).GetComponent<Text>().text = "Free camera";
+                GameManager.instance.cameraMode = GameManager.mode.FREE;
+            }
             transform.GetChild(1).GetChild(1).GetChild(0).GetChild(0).GetComponent<Text>().text = "Auto camera";
         }
         else
         {
+            Camera.main.GetComponent<ThirdPersonCameraControl>().enabled = true;
             transform.GetChild(1).GetChild(1).GetChild(0).GetChild(0).GetComponent<Text>().text = "Free camera";
         }
     }
@@ -35,8 +46,20 @@ public class Pause : MonoBehaviour
                 EventSystem.current.SetSelectedGameObject(pauseUI.transform.GetChild(1).GetChild(1).gameObject);
                 Time.timeScale = 0;
                 AudioManager.instance.Pause(AudioManager.instance.CurrSound.name);
-                Camera.main.GetComponent<AutoCamera>().enabled = false;
+                if (Camera.main.GetComponent<AutoCamera>() != null)
+                {
+                    Camera.main.GetComponent<AutoCamera>().enabled = false;
+                }                
                 Camera.main.GetComponent<ThirdPersonCameraControl>().enabled = false;
+
+                if (GameManager.instance.cameraMode == GameManager.mode.AUTO)
+                {
+                    transform.GetChild(1).GetChild(1).GetChild(0).GetChild(0).GetComponent<Text>().text = "Auto camera";
+                }
+                else
+                {
+                    transform.GetChild(1).GetChild(1).GetChild(0).GetChild(0).GetComponent<Text>().text = "Free camera";
+                }
 
             }
             else
@@ -67,7 +90,16 @@ public class Pause : MonoBehaviour
         Time.timeScale = 1;
         if (GameManager.instance.cameraMode == GameManager.mode.AUTO)
         {
-            Camera.main.GetComponent<AutoCamera>().enabled = true;
+            if (Camera.main.GetComponent<AutoCamera>() != null)
+            {
+                Camera.main.GetComponent<AutoCamera>().enabled = true;
+            }
+            else
+            {
+                Camera.main.GetComponent<ThirdPersonCameraControl>().enabled = true;
+                transform.GetChild(1).GetChild(1).GetChild(0).GetChild(0).GetComponent<Text>().text = "Free camera";
+                GameManager.instance.cameraMode = GameManager.mode.FREE;
+            }
         }
         else
         {

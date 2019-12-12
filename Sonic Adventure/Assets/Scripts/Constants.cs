@@ -26,6 +26,7 @@ public class Constants
         public const string mouseX = "Mouse X";
         public const string mouseY = "Mouse Y";
         public const string pause = "Pause";
+        public const string submit = "Submit";
     }
 
     public class Trigger

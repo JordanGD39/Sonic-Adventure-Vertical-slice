@@ -41,8 +41,11 @@ public class Victory : MonoBehaviour
             yield return null;
         }
 
-        other.transform.GetComponentInChildren<Animator>().SetBool("Win", true);        
+        other.transform.GetComponentInChildren<Animator>().SetBool("Win", true);
+        other.transform.parent.GetChild(0).gameObject.SetActive(true);
+        other.transform.parent.GetChild(1).gameObject.SetActive(false);
         other.GetComponentInParent<PlayerMovement>().enabled = false;
+        other.GetComponentInParent<PlayerJump>().enabled = false;
         other.transform.GetComponentInChildren<Animator>().SetBool("Grounded", true);
         other.GetComponentInParent<Rigidbody>().velocity = new Vector3(0, 0, 0);
         Camera.main.GetComponent<AutoCamera>().Stop = true;
@@ -86,6 +89,8 @@ public class Victory : MonoBehaviour
             timeScore += seconds * 10;
         }
 
+        timeScore = Mathf.Round(timeScore);
+
         ui.GetChild(3).GetComponent<Text>().text = timeScore.ToString();
         yield return new WaitForSeconds(0.5f);
         ui.GetChild(4).gameObject.SetActive(true);
@@ -99,11 +104,16 @@ public class Victory : MonoBehaviour
         int potentialTotalScore = Mathf.RoundToInt(timeScore);
 
         while (timeScore > 0)
-        {
+        {            
             timeScore -= 9;
             ui.GetChild(3).GetComponent<Text>().text = timeScore.ToString();
             totalScore += 9;
             ui.GetChild(5).GetComponent<Text>().text = totalScore.ToString();
+            if (Input.GetButtonDown(Constants.Inputs.submit))
+            {
+                timeScore = 0;
+                totalScore = potentialTotalScore;
+            }
             yield return null;
         }
 
@@ -123,11 +133,16 @@ public class Victory : MonoBehaviour
         potentialTotalScore += rings;
 
         while (rings > 0)
-        {
+        {            
             rings -= 3;
             ui.GetChild(4).GetComponent<Text>().text = rings.ToString();
             totalScore += 3;
             ui.GetChild(5).GetComponent<Text>().text = totalScore.ToString();
+            if (Input.GetButtonDown(Constants.Inputs.submit))
+            {
+                rings = 0;
+                totalScore = potentialTotalScore;
+            }
             yield return null;
         }
 

@@ -103,10 +103,7 @@ public class PlayerMovement : MonoBehaviour
         else
         {
             grounded = false;
-            if (!playerJump.Jumping)
-            {
-                transform.rotation = new Quaternion(0, transform.rotation.y, 0, transform.rotation.w);
-            }
+            transform.rotation = new Quaternion(0, transform.rotation.y, 0, transform.rotation.w);
             speed -= 0.6f;
             if (speed < 7)
             {

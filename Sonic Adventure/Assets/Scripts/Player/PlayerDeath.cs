@@ -25,7 +25,12 @@ public class PlayerDeath : MonoBehaviour
     {
         GameManager.instance.StopTimer = true;
         anim.SetBool("Dead", true);
-        Camera.main.GetComponent<AutoCamera>().Stop = true;
+        GetComponent<PlayerJump>().enabled = false;
+        if (Camera.main.GetComponent<AutoCamera>() != null)
+        {
+            Camera.main.GetComponent<AutoCamera>().Stop = true;
+        }        
+        Camera.main.GetComponent<ThirdPersonCameraControl>().Stop = true;
         fadeObjectOut.SetActive(true);
         GameManager.instance.Dying = true;        
         yield return new WaitForSeconds(3);

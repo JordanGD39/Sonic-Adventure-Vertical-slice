@@ -31,8 +31,7 @@ public class BoostPad : MonoBehaviour
                 mov.BoostPad(secondsOutOfControl, transform);
                 AudioManager.instance.Play("BoostPad");
                 if (addForce)
-                {
-                    //playerRb.AddForce(transform.forward * speed * 100);
+                {                    
                     ramp = true;
                 }
                 if (other.GetComponent<SphereCollider>() != null)
@@ -71,7 +70,7 @@ public class BoostPad : MonoBehaviour
     {
         if (ramp)
         {
-            playerRb.AddForce(transform.forward * (speed * 45));
+            playerRb.AddForce(transform.forward * speed, ForceMode.Impulse);
             ramp = false;
         }
     }
