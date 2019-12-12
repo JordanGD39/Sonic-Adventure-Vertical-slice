@@ -90,6 +90,11 @@ public class PlayerJump : MonoBehaviour
             transform.GetChild(1).gameObject.SetActive(false);
             jumping = false;
         }
+
+        if (jumping || attacking)
+        {
+            transform.GetChild(1).GetChild(0).Rotate(20, 0, 0);
+        }
     }
 
     private void FixedUpdate()
@@ -102,6 +107,7 @@ public class PlayerJump : MonoBehaviour
             transform.GetChild(0).gameObject.SetActive(false);
             jumping = true;
             AudioManager.instance.Play("Jump");
+            StartCoroutine("BallBlink");
             jumpPressed = false;
         }
         else if (jumpPressed && !playerMov.Grounded && homingReady)
@@ -111,6 +117,7 @@ public class PlayerJump : MonoBehaviour
             AudioManager.instance.Play("HomingAttack");
             if (homingReady)
             {
+                StartCoroutine(BallBlink());
                 StartCoroutine("HomingAttack");
             }            
         }
@@ -127,7 +134,7 @@ public class PlayerJump : MonoBehaviour
         {
             rb.AddForce(transform.up * 500);
             bouncing = false;
-        }
+        }        
     }
 
     private IEnumerator HomingAttack()
@@ -155,7 +162,9 @@ public class PlayerJump : MonoBehaviour
             for (int i = 0; i < 10; i++)
             {
                 yield return new WaitForFixedUpdate();
-            }          
+            }
+            transform.GetChild(0).gameObject.SetActive(true);
+            transform.GetChild(1).gameObject.SetActive(false);
         }
     }
 
@@ -204,6 +213,22 @@ public class PlayerJump : MonoBehaviour
             {
                 homingTarget = null;
             }
+        }
+    }
+
+    private IEnumerator BallBlink()
+    {
+        GameObject ball = transform.GetChild(1).GetChild(0).GetChild(0).gameObject;
+        GameObject sonicBallPose = transform.GetChild(1).GetChild(0).GetChild(1).gameObject;
+
+        while (jumping)
+        {
+            sonicBallPose.SetActive(false);
+            ball.SetActive(true);
+            yield return new WaitForSeconds(0.5f);
+            ball.SetActive(false);
+            sonicBallPose.SetActive(true);
+            yield return new WaitForSeconds(0.05f);
         }
     }
 
