@@ -11,9 +11,12 @@ public class GameManager : MonoBehaviour
     [SerializeField] private GameObject player;
     [SerializeField] private Transform ui;
 
+
+
     private float timer = 0;
 
     public bool StopTimer { get; set; } = false;
+    public bool ChangeMusicOkay { get; set; } = false;
     public float Timer { get { return timer; } set { timer = value; } }
 
     public enum mode {AUTO, FREE}
@@ -42,15 +45,7 @@ public class GameManager : MonoBehaviour
 
     private void Start()
     {
-        switch (SceneManager.GetActiveScene().buildIndex)
-        {
-            case 0:
-                AudioManager.instance.Play("Stage1");
-                break;
-            case 1:
-                AudioManager.instance.Play("TestBG");
-                break;
-        }
+        ChangeMusic();     
         
         timer = 0;        
         ui = GameObject.FindGameObjectWithTag(Constants.Tags.canvas).transform.GetChild(0);
@@ -82,6 +77,11 @@ public class GameManager : MonoBehaviour
         if (player != null)
         {
             ui.GetChild(3).GetComponent<Text>().text = player.GetComponent<PlayerRingAmount>().RingAmount[0].ToString("000");
+
+            if (ChangeMusicOkay)
+            {
+                ChangeMusic();
+            }
         }
         else
         {
@@ -107,5 +107,21 @@ public class GameManager : MonoBehaviour
         }
 
         ui.GetChild(3).GetComponent<Text>().color = Color.white;
+    }
+
+    private void ChangeMusic()
+    {
+        timer = 0;
+        switch (SceneManager.GetActiveScene().buildIndex)
+        {
+            case 0:
+                AudioManager.instance.Play("Stage1");
+                break;
+            case 1:
+                AudioManager.instance.Play("TestBG");
+                break;
+        }
+
+        ChangeMusicOkay = false;
     }
 }

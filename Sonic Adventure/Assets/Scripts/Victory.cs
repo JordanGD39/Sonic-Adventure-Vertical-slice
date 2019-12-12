@@ -1,11 +1,15 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public class Victory : MonoBehaviour
 {
     private Transform ui;
+
+    [SerializeField]
+    private int levelIndex = 0;
 
     private void Start()
     {
@@ -29,6 +33,10 @@ public class Victory : MonoBehaviour
 
     private IEnumerator WaitUntilPlayerIsGrounded(Collider other)
     {
+        other.GetComponentInParent<PlayerJump>().enabled = false;
+        other.transform.parent.GetChild(0).gameObject.SetActive(true);
+        other.transform.parent.GetChild(1).gameObject.SetActive(false);
+
         if (other.GetComponent<SphereCollider>() != null)
         {
             other = other.transform.parent.GetChild(0).GetComponent<BoxCollider>();
@@ -41,14 +49,14 @@ public class Victory : MonoBehaviour
             yield return null;
         }
 
-        other.transform.GetComponentInChildren<Animator>().SetBool("Win", true);
-        other.transform.parent.GetChild(0).gameObject.SetActive(true);
-        other.transform.parent.GetChild(1).gameObject.SetActive(false);
-        other.GetComponentInParent<PlayerMovement>().enabled = false;
-        other.GetComponentInParent<PlayerJump>().enabled = false;
+        other.transform.GetComponentInChildren<Animator>().SetBool("Win", true);        
+        other.GetComponentInParent<PlayerMovement>().enabled = false;        
         other.transform.GetComponentInChildren<Animator>().SetBool("Grounded", true);
         other.GetComponentInParent<Rigidbody>().velocity = new Vector3(0, 0, 0);
-        Camera.main.GetComponent<AutoCamera>().Stop = true;
+        if (Camera.main.GetComponent<AutoCamera>() != null)
+        {
+            Camera.main.GetComponent<AutoCamera>().Stop = true;
+        }
         Camera.main.GetComponent<ThirdPersonCameraControl>().Stop = true;
         other.transform.parent.LookAt(new Vector3(0, Camera.main.transform.position.y, 0));
         AudioManager.instance.StopPlaying(AudioManager.instance.CurrSound.name);
@@ -56,6 +64,7 @@ public class Victory : MonoBehaviour
         yield return new WaitForSeconds(4.5f);
         ui.parent.gameObject.SetActive(true);
         yield return new WaitForSeconds(0.5f);
+        other.GetComponentInParent<Rigidbody>().velocity = new Vector3(0, 0, 0);
         StartCoroutine("ShowResults");
     }
 
@@ -160,6 +169,7 @@ public class Victory : MonoBehaviour
         ui.GetChild(5).GetComponent<Text>().text = totalScore.ToString();
 
         yield return new WaitForSeconds(3);
-        Application.Quit();
+        SceneManager.LoadScene(levelIndex);
+        GameManager.instance.ChangeMusicOkay = true;        
     }
 }
