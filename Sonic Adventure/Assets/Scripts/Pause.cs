@@ -79,10 +79,11 @@ public class Pause : MonoBehaviour
     public void Restart()
     {
         pauseUI.SetActive(false);
-        Time.timeScale = 1;
+        Time.timeScale = 1;        
         Camera.main.GetComponent<AutoCamera>().enabled = true;
         StartCoroutine(GameObject.FindGameObjectWithTag(Constants.Tags.player).GetComponent<PlayerDeath>().Die());
         AudioManager.instance.UnPause(AudioManager.instance.CurrSound.name);
+        GameManager.instance.Timer = 0;
     }
 
     public void Quit()

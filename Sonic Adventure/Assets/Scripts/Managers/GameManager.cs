@@ -14,7 +14,7 @@ public class GameManager : MonoBehaviour
     private float timer = 0;
 
     public bool StopTimer { get; set; } = false;
-    public float Timer { get { return timer; } }
+    public float Timer { get { return timer; } set { timer = value; } }
 
     public enum mode {AUTO, FREE}
 

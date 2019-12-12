@@ -23,6 +23,7 @@ public class PlayerDeath : MonoBehaviour
 
     public IEnumerator Die()
     {
+        GameManager.instance.StopTimer = true;
         anim.SetBool("Dead", true);
         Camera.main.GetComponent<AutoCamera>().Stop = true;
         fadeObjectOut.SetActive(true);
@@ -33,11 +34,11 @@ public class PlayerDeath : MonoBehaviour
         {
             GameManager.instance.Lives--;
             SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+            GameManager.instance.StopTimer = false;
         }
         else if (GameManager.instance.Lives <= 0)
         {
-            GameManager.instance.Lives = 5;
-            SceneManager.LoadScene(0);
+            Application.Quit();
         }
     }
 }
