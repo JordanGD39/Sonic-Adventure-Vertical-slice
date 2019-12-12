@@ -61,6 +61,7 @@ public class Victory : MonoBehaviour
         other.transform.parent.LookAt(new Vector3(0, Camera.main.transform.position.y, 0));
         AudioManager.instance.StopPlaying(AudioManager.instance.CurrSound.name);
         AudioManager.instance.Play("Victory");        
+        AudioManager.instance.Play("Yes");        
         yield return new WaitForSeconds(4.5f);
         ui.parent.gameObject.SetActive(true);
         yield return new WaitForSeconds(0.5f);
@@ -167,6 +168,8 @@ public class Victory : MonoBehaviour
 
         ui.GetChild(4).GetComponent<Text>().text = rings.ToString();
         ui.GetChild(5).GetComponent<Text>().text = totalScore.ToString();
+
+        GameManager.instance.Score = totalScore;
 
         yield return new WaitForSeconds(3);
         SceneManager.LoadScene(levelIndex);

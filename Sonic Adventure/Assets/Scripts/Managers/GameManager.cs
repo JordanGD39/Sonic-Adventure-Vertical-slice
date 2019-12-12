@@ -17,6 +17,7 @@ public class GameManager : MonoBehaviour
 
     public bool StopTimer { get; set; } = false;
     public bool ChangeMusicOkay { get; set; } = false;
+    public int Score { get; set; } = 0;
     public float Timer { get { return timer; } set { timer = value; } }
 
     public enum mode {AUTO, FREE}
@@ -47,9 +48,12 @@ public class GameManager : MonoBehaviour
     {
         ChangeMusic();     
         
-        timer = 0;        
-        ui = GameObject.FindGameObjectWithTag(Constants.Tags.canvas).transform.GetChild(0);
-        ui.GetChild(5).GetComponent<Text>().text = lives.ToString("00");        
+        timer = 0;
+        if (SceneManager.GetActiveScene().buildIndex != 2)
+        {
+            ui = GameObject.FindGameObjectWithTag(Constants.Tags.canvas).transform.GetChild(0);
+            ui.GetChild(5).GetComponent<Text>().text = lives.ToString("00");
+        }
     }
 
     private void Update()
@@ -71,7 +75,10 @@ public class GameManager : MonoBehaviour
         }
         else
         {
-            ui = GameObject.FindGameObjectWithTag(Constants.Tags.canvas).transform.GetChild(0);
+            if (SceneManager.GetActiveScene().buildIndex != 2)
+            {
+                ui = GameObject.FindGameObjectWithTag(Constants.Tags.canvas).transform.GetChild(0);
+            }
         }
 
         if (player != null)
@@ -88,7 +95,10 @@ public class GameManager : MonoBehaviour
             player = GameObject.FindGameObjectWithTag(Constants.Tags.player);            
         }
 
-        ui.GetChild(5).GetComponent<Text>().text = lives.ToString("00");
+        if (SceneManager.GetActiveScene().buildIndex != 2)
+        {
+            ui.GetChild(5).GetComponent<Text>().text = lives.ToString("00");
+        }        
     }
 
     public IEnumerator RingBlink()
@@ -119,6 +129,9 @@ public class GameManager : MonoBehaviour
                 break;
             case 1:
                 AudioManager.instance.Play("TestBG");
+                break;
+            case 2:
+                AudioManager.instance.Play("Credits");
                 break;
         }
 

@@ -23,6 +23,7 @@ public class PlayerDeath : MonoBehaviour
 
     public IEnumerator Die()
     {
+        AudioManager.instance.Play("No");
         GameManager.instance.StopTimer = true;
         anim.SetBool("Dead", true);
         GetComponent<PlayerJump>().enabled = false;
