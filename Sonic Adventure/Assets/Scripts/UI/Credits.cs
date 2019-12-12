@@ -35,9 +35,9 @@ public class Credits : MonoBehaviour
         EventSystem.current.SetSelectedGameObject(transform.parent.GetChild(0).gameObject);
         if (GameManager.instance.Score >= 5380)
         {
-            transform.parent.GetChild(2).GetComponent<Text>().text = "You're too cool!";
-            transform.parent.GetChild(3).GetComponent<Text>().text = "Score: " + GameManager.instance.Score;
+            transform.parent.GetChild(2).GetComponent<Text>().text = "You're too cool!";            
         }
+        transform.parent.GetChild(3).GetComponent<Text>().text = "Score: " + GameManager.instance.Score;
     }
 
     public void Restart()
