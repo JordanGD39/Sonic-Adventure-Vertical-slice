@@ -111,9 +111,9 @@ public class Victory : MonoBehaviour
         ui.GetChild(4).GetComponent<Text>().text = rings.ToString();
         yield return new WaitForSeconds(0.5f);
         ui.GetChild(5).gameObject.SetActive(true);
-        int totalScore = 0;
+        int totalScore = GameManager.instance.Score;
 
-        int potentialTotalScore = Mathf.RoundToInt(timeScore);
+        int potentialTotalScore = Mathf.RoundToInt(timeScore) + totalScore;
 
         while (timeScore > 0)
         {            
@@ -171,7 +171,7 @@ public class Victory : MonoBehaviour
         ui.GetChild(4).GetComponent<Text>().text = rings.ToString();
         ui.GetChild(5).GetComponent<Text>().text = totalScore.ToString();
 
-        GameManager.instance.Score += totalScore;
+        GameManager.instance.Score = totalScore;
 
         fadeObjectOut.SetActive(true);
 
