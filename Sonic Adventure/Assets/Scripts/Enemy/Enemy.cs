@@ -20,6 +20,12 @@ public class Enemy : MonoBehaviour
 
                 Destroy(gameObject, 0.1f);
             }
+            else
+            {
+                PlayerRingAmount playerRing = other.GetComponentInParent<PlayerRingAmount>();
+
+                playerRing.GetHit();
+            }
         }
     }
 }

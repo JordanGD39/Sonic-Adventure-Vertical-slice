@@ -66,7 +66,7 @@ public class GameManager : MonoBehaviour
         }
 
         string minutes = Mathf.Floor(timer / 60).ToString("00");
-        string seconds = (timer % 60).ToString("00");
+        string seconds = Mathf.Floor(timer % 60).ToString("00");
         float centiseconds = timer * 100;
 
         centiseconds = centiseconds % 100;

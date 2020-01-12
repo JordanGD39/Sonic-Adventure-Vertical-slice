@@ -91,7 +91,7 @@ public class PlayerJump : MonoBehaviour
             jumping = false;
         }
 
-        if (jumping || attacking)
+        if (transform.GetChild(1).gameObject.activeSelf)
         {
             transform.GetChild(1).GetChild(0).Rotate(20, 0, 0);
         }

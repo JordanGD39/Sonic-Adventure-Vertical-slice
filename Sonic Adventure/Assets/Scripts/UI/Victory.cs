@@ -48,6 +48,10 @@ public class Victory : MonoBehaviour
         {
             other.GetComponentInParent<PlayerMovement>().Movement = new Vector3(0, 0, 0);
             other.GetComponentInParent<Rigidbody>().velocity = new Vector3(0, other.GetComponentInParent<Rigidbody>().velocity.y, 0);
+            if (other.GetComponent<SphereCollider>() != null)
+            {
+                other.transform.GetChild(0).Rotate(20, 0, 0);
+            }
             yield return null;
         }
 

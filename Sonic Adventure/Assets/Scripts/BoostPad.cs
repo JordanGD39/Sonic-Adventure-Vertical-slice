@@ -53,6 +53,10 @@ public class BoostPad : MonoBehaviour
         {
             mov.Movement = new Vector3(0, 0, 0);
             playerRb.velocity = new Vector3(0, playerRb.velocity.y, 0);
+            if (other.GetComponent<SphereCollider>() != null)
+            {
+                other.transform.GetChild(0).Rotate(20, 0, 0);
+            }
             yield return null;
         }
         
