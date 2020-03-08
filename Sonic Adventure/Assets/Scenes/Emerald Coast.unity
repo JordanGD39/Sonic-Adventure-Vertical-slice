@@ -97,7 +97,7 @@ LightmapSettings:
     m_ExportTrainingData: 0
     m_TrainingDataDestination: TrainingData
   m_LightingDataAsset: {fileID: 0}
-  m_UseShadowmask: 1
+  m_UseShadowmask: 0
 --- !u!196 &4
 NavMeshSettings:
   serializedVersion: 2
@@ -24690,21 +24690,6 @@ PrefabInstance:
       propertyPath: flySpeed.y
       value: 5
       objectReference: {fileID: 0}
-    - target: {fileID: 9051679792022067389, guid: f49ff7983f526fb4ba143d39b691ed26,
-        type: 3}
-      propertyPath: m_IsActive
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 2760097026466761597, guid: f49ff7983f526fb4ba143d39b691ed26,
-        type: 3}
-      propertyPath: m_IsActive
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 122723247779011519, guid: f49ff7983f526fb4ba143d39b691ed26,
-        type: 3}
-      propertyPath: m_Materials.Array.data[0]
-      value: 
-      objectReference: {fileID: 2100000, guid: 3dab2a1a81b406b44b66026c0cfb642e, type: 2}
     - target: {fileID: 6669004645129295688, guid: f49ff7983f526fb4ba143d39b691ed26,
         type: 3}
       propertyPath: m_Layer
@@ -24715,11 +24700,6 @@ PrefabInstance:
       propertyPath: m_IsActive
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 6669004646779161623, guid: f49ff7983f526fb4ba143d39b691ed26,
-        type: 3}
-      propertyPath: m_Layer
-      value: 9
-      objectReference: {fileID: 0}
     - target: {fileID: 7572569899771734361, guid: f49ff7983f526fb4ba143d39b691ed26,
         type: 3}
       propertyPath: m_IsActive
@@ -24729,6 +24709,26 @@ PrefabInstance:
         type: 3}
       propertyPath: m_IsActive
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 122723247779011519, guid: f49ff7983f526fb4ba143d39b691ed26,
+        type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: 3dab2a1a81b406b44b66026c0cfb642e, type: 2}
+    - target: {fileID: 9051679792022067389, guid: f49ff7983f526fb4ba143d39b691ed26,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2760097026466761597, guid: f49ff7983f526fb4ba143d39b691ed26,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6669004646779161623, guid: f49ff7983f526fb4ba143d39b691ed26,
+        type: 3}
+      propertyPath: m_Layer
+      value: 9
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: f49ff7983f526fb4ba143d39b691ed26, type: 3}
@@ -25850,7 +25850,7 @@ GameObject:
   - component: {fileID: 2623896912063637474}
   - component: {fileID: 2623896912063637475}
   m_Layer: 0
-  m_Name: BoostPad (2)
+  m_Name: BoostPad (Ramp)
   m_TagString: BoostPad
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -25864,8 +25864,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2623896912063637472}
   m_LocalRotation: {x: -0.061444048, y: 0.70443213, z: 0.061444048, w: 0.70443213}
-  m_LocalPosition: {x: 42.25, y: 1.58, z: 26.2}
-  m_LocalScale: {x: 13.8, y: 1, z: 6}
+  m_LocalPosition: {x: 42.19, y: 1.7, z: 26.2}
+  m_LocalScale: {x: 13.8, y: 1, z: 8.8}
   m_Children: []
   m_Father: {fileID: 1791843646}
   m_RootOrder: 3
@@ -25896,7 +25896,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   secondsOutOfControl: 5.4
-  speed: 60
+  speed: 55
   teleport: 1
   addForce: 1
 --- !u!4 &2636797423360394388

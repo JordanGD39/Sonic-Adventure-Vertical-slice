@@ -18,6 +18,7 @@ public class PlayerMovement : MonoBehaviour
     private Vector3 movementForce;
 
     [SerializeField] private float speed = 3;
+    [SerializeField] private float maxSpeed = 35;
     [SerializeField] private float prevRot = 0;
     [SerializeField] private bool loopTime = false;
     [SerializeField] private bool onLoop = false;
@@ -31,6 +32,7 @@ public class PlayerMovement : MonoBehaviour
     private Animator anim;
 
     public float Speed { get { return speed; }  set { speed = value; } }
+    public float MaxSpeed { get { return maxSpeed; } }
     public bool Boosting { get { return boosting; }  set { boosting = value; } }
     public bool Grounded { get { return grounded; } }
     public Vector3 Movement { get { return movement; } set { movement = value; } }
@@ -179,7 +181,7 @@ public class PlayerMovement : MonoBehaviour
                 rb.velocity = tempVect;
             }
 
-            if (speed < 12)
+            if (speed < maxSpeed * 0.4f)
             {
                 rb.useGravity = true;
                 transform.rotation = new Quaternion(0, transform.rotation.y, transform.rotation.z, transform.rotation.w);
@@ -216,13 +218,13 @@ public class PlayerMovement : MonoBehaviour
 
         if (clingToGround && !playerJump.Jumping && grounded)
         {
-            rb.AddForce(-transform.up * 50);
+            rb.AddForce(-transform.up * (100 * (speed / (maxSpeed / 2))));
         }
     }
 
     private void Acceleration()
     {
-        float animSpeed = speed / 10 - 1;        
+        float animSpeed = speed / (maxSpeed / 2) - 1;        
 
         if (animSpeed > 1)
         {
@@ -240,43 +242,41 @@ public class PlayerMovement : MonoBehaviour
             anim.speed = 1;
         }
 
-        if (rb.velocity.magnitude > 0.5f && rb.velocity.magnitude <= 14f)
+        if (speed <= maxSpeed)
         {
-            if (speed < 16)
+            float acc = Mathf.Abs(movement.z) + Mathf.Abs(movement.x);
+
+            if (acc > 1)
             {
-                speed += 0.5f;
+                acc = 1;
             }
-        }
-        else if (rb.velocity.magnitude > 14f)
-        {
-            if (movement.z == 1 || movement.z == -1 || movement.x == 1 || movement.x == -1)
+            float accSpeed = 0.5f;
+            if (speed > 15)
             {
-                if (speed < 22)
+                accSpeed = 0.1f;
+            }
+
+            if (acc > 0.01f)
+            {                
+                speed += accSpeed * acc;
+            }
+            else
+            {
+                if (speed > 0)
                 {
-                    speed += 0.5f;
-                }
-                else
-                {
-                    if (boosting)
-                    {
-                        speed -= 0.1f;
-                    }
-                    else
-                    {
-                        speed = 22;
-                    }
+                    speed = 0;
                 }
             }
         }
-        else if (rb.velocity.magnitude <= 0.5f)
+        else
         {
-            if (speed > 3)
+            if (boosting)
             {
-                speed -= 2;
+                speed -= 0.1f;
             }
-            else if (speed < 3)
+            else
             {
-                speed = 3;
+                speed = maxSpeed;
             }
         }
     }

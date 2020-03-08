@@ -10,9 +10,12 @@ public class AutoCamera : NormalCameraPosition
     [SerializeField]
     private AnimationTriggers _player;
 
+    private PlayerMovement playerMovement;
+
     protected override void Start()
     {
         base.Start();
+        playerMovement = _target.GetComponent<PlayerMovement>();
     }
 
     protected override void Update()
@@ -52,13 +55,13 @@ public class AutoCamera : NormalCameraPosition
             if (_player.CurrentVel.z > 0.0f)
             {
                 //Camera turns towards loop direction
-                _offset = Vector3.MoveTowards(_offset, _offsetList[2], 8.5f * Time.deltaTime);
+                _offset = Vector3.MoveTowards(_offset, _offsetList[2], 12.5f * (playerMovement.Speed / playerMovement.MaxSpeed) * Time.deltaTime);
             }
 
             if (_player.CurrentVel.x < 0.0f)
             {
                 //Camera angle goes back to before
-                _offset = Vector3.MoveTowards(_offset, _offsetList[1], 8.5f * Time.deltaTime);
+                _offset = Vector3.MoveTowards(_offset, _offsetList[1], 12.5f * (playerMovement.Speed / playerMovement.MaxSpeed) * Time.deltaTime);
             }
         }
         else if (collision.name == Constants.Trigger.name[3])
