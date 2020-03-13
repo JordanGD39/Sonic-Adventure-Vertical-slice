@@ -1,5 +1,5 @@
 # Sonic-Adventure-Vertical-slice
-_Team 12, 2GD & 2GA, Media College Amsterdam_
+_Team 12, GD2B & GA2B, Media College Amsterdam_
 
 ```Members:```
 - Alain de Boer _(Game Artist)_
