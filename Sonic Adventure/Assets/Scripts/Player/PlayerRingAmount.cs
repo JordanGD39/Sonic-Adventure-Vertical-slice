@@ -23,6 +23,7 @@ public class PlayerRingAmount : MonoBehaviour
     public bool Hit { get { return hit; } set { hit = value; } }
 
     private int count;
+    private bool invincible = false;
 
     void Start()
     {
@@ -47,10 +48,11 @@ public class PlayerRingAmount : MonoBehaviour
 
     public void GetHit() //A function which plays only once per collision
     {
-        if (!hit)
+        if (!hit && !invincible)
         {
             //Only if the player is not already hit
             hit = true;
+            invincible = true;
 
             if (ringAmount[0] >= 20)
             {
@@ -63,9 +65,12 @@ public class PlayerRingAmount : MonoBehaviour
             }
             else
             {
-                ringAmount[1] = 0;
-                StartCoroutine("Damage");
-                StartCoroutine(GetComponent<PlayerDeath>().Die());
+                if (!GameManager.instance.Dying)
+                {
+                    ringAmount[1] = 0;
+                    StartCoroutine("Damage");
+                    StartCoroutine(GetComponent<PlayerDeath>().Die());
+                }                
             }
         }
     }
@@ -142,5 +147,9 @@ public class PlayerRingAmount : MonoBehaviour
         GetComponent<PlayerMovement>().Boosting = false;
         hit = false;
         GetComponent<PlayerJump>().enabled = true;
+
+        yield return new WaitForSeconds(1);
+
+        invincible = false;        
     }
 }

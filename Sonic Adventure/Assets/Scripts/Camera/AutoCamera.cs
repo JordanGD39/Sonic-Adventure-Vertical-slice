@@ -55,13 +55,13 @@ public class AutoCamera : NormalCameraPosition
             if (_player.CurrentVel.z > 0.0f)
             {
                 //Camera turns towards loop direction
-                _offset = Vector3.MoveTowards(_offset, _offsetList[2], 12.5f * (playerMovement.Speed / playerMovement.MaxSpeed) * Time.deltaTime);
+                _offset = Vector3.MoveTowards(_offset, _offsetList[2], 16.5f * (playerMovement.Speed / playerMovement.MaxSpeed) * Time.deltaTime);
             }
 
             if (_player.CurrentVel.x < 0.0f)
             {
                 //Camera angle goes back to before
-                _offset = Vector3.MoveTowards(_offset, _offsetList[1], 12.5f * (playerMovement.Speed / playerMovement.MaxSpeed) * Time.deltaTime);
+                _offset = Vector3.MoveTowards(_offset, _offsetList[1], 16.5f * (playerMovement.Speed / playerMovement.MaxSpeed) * Time.deltaTime);
             }
         }
         else if (collision.name == Constants.Trigger.name[3])

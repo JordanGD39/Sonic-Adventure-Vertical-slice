@@ -1545,7 +1545,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _camera: {fileID: 0}
   speed: 3
-  maxSpeed: 35
+  maxSpeed: 50
   prevRot: 0
   loopTime: 0
   onLoop: 0

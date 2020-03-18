@@ -20,6 +20,7 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] private float speed = 3;
     [SerializeField] private float maxSpeed = 35;
     [SerializeField] private float prevRot = 0;
+    [SerializeField] private float maxAnimSpeed = 30;
     [SerializeField] private bool loopTime = false;
     [SerializeField] private bool onLoop = false;
     [SerializeField] private bool offTheRamp = false;
@@ -74,6 +75,7 @@ public class PlayerMovement : MonoBehaviour
         else if(!boosting && !playerRing.Hit)
         {
             movement = new Vector3(moveHorizontal, 0, moveVertical);
+            movement.Normalize();
 
             if (!loopTime)
             {
@@ -224,7 +226,7 @@ public class PlayerMovement : MonoBehaviour
 
     private void Acceleration()
     {
-        float animSpeed = speed / (maxSpeed / 2) - 1;        
+        float animSpeed = speed / maxAnimSpeed - 1;        
 
         if (animSpeed > 1)
         {
@@ -251,7 +253,7 @@ public class PlayerMovement : MonoBehaviour
                 acc = 1;
             }
             float accSpeed = 0.5f;
-            if (speed > 15)
+            if (speed > 20)
             {
                 accSpeed = 0.1f;
             }

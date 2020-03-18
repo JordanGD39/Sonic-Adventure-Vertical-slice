@@ -5327,7 +5327,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   secondsOutOfControl: 4.2
-  speed: 25
+  speed: 35
   teleport: 1
   addForce: 1
 --- !u!65 &667326373
@@ -18270,7 +18270,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   secondsOutOfControl: 4.2
-  speed: 37
+  speed: 27
   teleport: 1
   addForce: 1
 --- !u!65 &1812305984
@@ -19010,7 +19010,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   secondsOutOfControl: 5
-  speed: 25
+  speed: 35
   teleport: 1
   addForce: 1
 --- !u!65 &1890668492
