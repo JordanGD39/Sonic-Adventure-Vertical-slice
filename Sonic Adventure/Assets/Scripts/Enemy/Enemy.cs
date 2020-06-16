@@ -8,7 +8,7 @@ public class Enemy : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        if (other.CompareTag("Player"))
+        if (other.CompareTag(Constants.Tags.playerCol))
         {
             if (other.GetComponent<SphereCollider>() != null)
             {
@@ -19,6 +19,12 @@ public class Enemy : MonoBehaviour
                 playerJump.BounceOfEnemy();
 
                 Destroy(gameObject, 0.1f);
+            }
+            else
+            {
+                PlayerRingAmount playerRing = other.GetComponentInParent<PlayerRingAmount>();
+
+                playerRing.GetHit();
             }
         }
     }

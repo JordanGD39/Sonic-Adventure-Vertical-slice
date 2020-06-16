@@ -14,18 +14,23 @@ public class PlayerRingAmount : MonoBehaviour
 
     private BoxCollider[] ringColliders;
 
+    [SerializeField] private Vector2 flySpeed;
+
     private bool hit;
-    private int count;
     private int[] ringAmount = new int[2];
 
-    public bool Hit { get { return hit; } set { hit = value; } }
     public int[] RingAmount { get { return ringAmount; } set { ringAmount = value; } }
+    public bool Hit { get { return hit; } set { hit = value; } }
+
+    private int count;
+    private bool invincible = false;
 
     void Start()
     {
         hit = false;
         count = 0;
-        ringAmount[0] = 30;
+        ringAmount[0] = 0;        
+        StartCoroutine(GameManager.instance.RingBlink());
     }
 
     private void Update()
@@ -33,20 +38,21 @@ public class PlayerRingAmount : MonoBehaviour
         CheckIfHit();
     }
 
-    private void OnCollisionEnter(Collision collision)
+    private void OnCollisionStay(Collision collision)
     {
-        if (collision.gameObject.tag == Constants.Tags.hazard)
+        if (collision.gameObject.CompareTag(Constants.Tags.hazard))
         {
             GetHit();
         }
     }
 
-    private void GetHit() //A function which plays only once per collision
+    public void GetHit() //A function which plays only once per collision
     {
-        if (!hit)
+        if (!hit && !invincible)
         {
             //Only if the player is not already hit
             hit = true;
+            invincible = true;
 
             if (ringAmount[0] >= 20)
             {
@@ -55,10 +61,16 @@ public class PlayerRingAmount : MonoBehaviour
             else if (ringAmount[0] != 0)
             {
                 ringAmount[0] = ShootRings(ringAmount[0]);
+                StartCoroutine(GameManager.instance.RingBlink());
             }
             else
             {
-                ringAmount[1] = 0;
+                if (!GameManager.instance.Dying)
+                {
+                    ringAmount[1] = 0;
+                    StartCoroutine("Damage");
+                    StartCoroutine(GetComponent<PlayerDeath>().Die());
+                }                
             }
         }
     }
@@ -68,21 +80,6 @@ public class PlayerRingAmount : MonoBehaviour
         if (hit)
         {
             count++;
-            float step = count * Time.deltaTime;
-
-            if (step >= 0.1f && step < 0.2f && ringAmount[1] > 0)
-            {
-                //Give those rings their Boxcollider back
-                for (int i = 0; i < ringColliders.Length; i++)
-                {
-                    ringColliders[i].enabled = true;
-                }
-            }
-            else if (step >= 1.5f)
-            {
-                //The point at which the player can pick up the rings again and get hit again
-                hit = false;
-            }
         }
         else
         {
@@ -93,6 +90,10 @@ public class PlayerRingAmount : MonoBehaviour
     private int ShootRings(int maxAmount)
     {
         BoxCollider[] thisRingCollider = new BoxCollider[maxAmount];
+
+        StartCoroutine("Damage");
+
+        AudioManager.instance.Play("LosingRings");
 
         float[] shootingAngle = new float[3];
         shootingAngle[0] = 0; //Angle in radians
@@ -107,15 +108,11 @@ public class PlayerRingAmount : MonoBehaviour
             GameObject thisRing;
             thisRing = Instantiate(ring, transform.position, transform.rotation);
             thisRing.transform.parent = itemlist;
-
-            thisRingCollider[i] = thisRing.GetComponent<BoxCollider>();
-            thisRingCollider[i].enabled = false;
+            thisRing.GetComponent<RingBehaviour>().droppedItem = true;
 
             Rigidbody ringBehaviour = thisRing.GetComponent<Rigidbody>();
             ringBehaviour.AddForce((itemlist.transform.up * 2 + new Vector3(shootingAngle[1], 0.0f, shootingAngle[2])) * SHOOTING_RADIUS);
-            Destroy(thisRing, 8.0f);
-
-            //Debug.Log("An angle of " + (shootingAngle[0]/ (2 * Mathf.PI) * 360) + " degrees. {x: " + shootingAngle[1] + ", z: " + shootingAngle[2] + "}");
+            Destroy(thisRing, Constants.Value.ringSeconds);
 
             shootingAngle[0] += ((2 * Mathf.PI) / maxAmount);
         }
@@ -123,6 +120,36 @@ public class PlayerRingAmount : MonoBehaviour
         ringColliders = thisRingCollider;
         ringAmount[1] = maxAmount;
 
+        
         return 0;
+    }
+
+    private IEnumerator Damage()
+    {
+        transform.GetChild(0).gameObject.SetActive(true);
+        transform.GetChild(1).gameObject.SetActive(false);
+        GetComponent<PlayerMovement>().Boosting = true;
+        GetComponent<PlayerMovement>().Speed = 0;
+        GetComponent<PlayerJump>().enabled = false;
+        GetComponent<Rigidbody>().velocity = new Vector3(0, 0, 0);
+        GetComponent<Rigidbody>().AddForce(transform.up * flySpeed.y, ForceMode.Impulse);
+        GetComponent<Rigidbody>().AddForce(-transform.forward * flySpeed.x, ForceMode.Impulse);
+
+        yield return new WaitForSeconds(1);
+
+        while (!GetComponent<PlayerMovement>().Grounded)
+        {
+            yield return null;
+        }
+
+        yield return new WaitForSeconds(1);
+
+        GetComponent<PlayerMovement>().Boosting = false;
+        hit = false;
+        GetComponent<PlayerJump>().enabled = true;
+
+        yield return new WaitForSeconds(1);
+
+        invincible = false;        
     }
 }

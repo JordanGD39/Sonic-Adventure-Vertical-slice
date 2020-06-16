@@ -13,6 +13,8 @@ public class NormalCameraPosition : MonoBehaviour
     [SerializeField]
     protected Vector3 _offset;
 
+    public Vector3 Offset { get { return _offset; } set { _offset = value; } }
+
     protected float rotationSpeed = 3.0f;
     protected bool stop;
 
@@ -20,19 +22,20 @@ public class NormalCameraPosition : MonoBehaviour
 
     virtual protected void Start()
     {
+        _target = GameObject.FindGameObjectWithTag(Constants.Tags.player).transform;
+        Cursor.visible = false;
+        Cursor.lockState = CursorLockMode.Locked;
+
         transform.position = _target.position + _offset;
         stop = false;
     }
 
     virtual protected void Update()
     {
-        float turnHorizontal = Input.GetAxis("Mouse X");
-
-        _offset = Quaternion.AngleAxis(turnHorizontal * rotationSpeed, Vector3.up) * _offset;
-
-        if (!stop)
+        //Preventing Gimbal lock when dying
+        if (transform.rotation.eulerAngles.x < 89 || !GameManager.instance.Dying)
         {
-            transform.position = _target.position + _offset;
+            transform.LookAt(_target);
         }
     }
 }

@@ -5,19 +5,46 @@ using UnityEngine.SceneManagement;
 
 public class PlayerDeath : MonoBehaviour
 {
-    private GameObject fadeObject;
+    private GameObject fadeObjectOut;
+    private GameObject fadeObjectIn;
+    private Animator anim;
 
     private void Start()
     {
-        fadeObject = GameObject.FindGameObjectWithTag(Constants.Tags.canvas).transform.GetChild(0).gameObject;
-        fadeObject.SetActive(false);
+        fadeObjectOut = GameObject.FindGameObjectWithTag(Constants.Tags.canvas).transform.GetChild(GameObject.FindGameObjectWithTag(Constants.Tags.canvas).transform.childCount - 1).gameObject;
+        fadeObjectIn = GameObject.FindGameObjectWithTag(Constants.Tags.canvas).transform.GetChild(GameObject.FindGameObjectWithTag(Constants.Tags.canvas).transform.childCount - 2).gameObject;
+        fadeObjectIn.SetActive(true);
+        fadeObjectOut.SetActive(false);
+        GameManager.instance.Dying = false;
+        GameManager.instance.StopTimer = false;
+        anim = transform.GetChild(0).GetChild(0).GetComponent<Animator>();
+        anim.SetBool("Dead", false);        
     }
 
     public IEnumerator Die()
     {
+        AudioManager.instance.Play("No");
+        GameManager.instance.StopTimer = true;
+        anim.SetBool("Dead", true);
+        GetComponent<PlayerJump>().enabled = false;
+        if (Camera.main.GetComponent<AutoCamera>() != null)
+        {
+            Camera.main.GetComponent<AutoCamera>().Stop = true;
+        }        
         Camera.main.GetComponent<ThirdPersonCameraControl>().Stop = true;
-        fadeObject.SetActive(true);
-        yield return new WaitForSeconds(2);
-        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+        fadeObjectOut.SetActive(true);
+        GameManager.instance.Dying = true;        
+        yield return new WaitForSeconds(3);
+
+        if (GameManager.instance.Lives > 0)
+        {
+            GameManager.instance.Lives--;
+            SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+            GameManager.instance.StopTimer = false;
+        }
+        else if (GameManager.instance.Lives <= 0)
+        {
+            Application.Quit();
+        }
     }
 }

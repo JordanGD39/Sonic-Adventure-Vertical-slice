@@ -8,12 +8,15 @@ public class PlayerMovement : MonoBehaviour
     //Physics
     private Rigidbody rb;
     private PlayerJump playerJump;
+    private PlayerRingAmount playerRing;
 
     private Vector3 movement;
     private Vector3 movementForce;
 
     [SerializeField] private float speed = 3;
+    [SerializeField] private float maxSpeed = 35;
     [SerializeField] private float prevRot = 0;
+    [SerializeField] private float maxAnimSpeed = 30;
     [SerializeField] private bool loopTime = false;
     [SerializeField] private bool onLoop = false;
     [SerializeField] private bool offTheRamp = false;
@@ -23,8 +26,10 @@ public class PlayerMovement : MonoBehaviour
 
     private float boostSec = 0;
     private Transform boostTransform = null;
+    private Animator anim;
 
     public float Speed { get { return speed; }  set { speed = value; } }
+    public float MaxSpeed { get { return maxSpeed; } }
     public bool Boosting { get { return boosting; }  set { boosting = value; } }
     public bool Grounded { get { return grounded; } }
     public Vector3 Movement { get { return movement; } set { movement = value; } }
@@ -34,21 +39,39 @@ public class PlayerMovement : MonoBehaviour
     {
         rb = GetComponent<Rigidbody>();
         playerJump = GetComponent<PlayerJump>();
+        playerRing = GetComponent<PlayerRingAmount>();
+        anim = transform.GetChild(0).GetChild(0).GetComponent<Animator>();
     }
 
     // Update is called once per frame
     private void Update()
     {
+        anim.SetFloat("Speed", speed);
+        anim.SetBool("Grounded", grounded);
+        anim.SetBool("Hit", playerRing.Hit);
+
         float moveHorizontal = Input.GetAxis(Constants.Inputs.hori);
         float moveVertical = Input.GetAxis(Constants.Inputs.vert);
 
-        if (boosting)
+        if (boosting && !playerRing.Hit)
         {
             movement = new Vector3(0, 0, 1);
         }
-        else
+        else if (boosting && playerRing.Hit || GameManager.instance.Dying)
+        {
+            if (!grounded)
+            {
+                movement = new Vector3(0, 0, -1);
+            }
+            else
+            {
+                movement = new Vector3(0, 0, 0);
+            }            
+        }
+        else if(!boosting && !playerRing.Hit)
         {
             movement = new Vector3(moveHorizontal, 0, moveVertical);
+            movement.Normalize();
 
             if (!loopTime)
             {
@@ -61,7 +84,7 @@ public class PlayerMovement : MonoBehaviour
         }
 
         RaycastHit hit;
-        if (Physics.SphereCast(transform.position, 0.3f, -transform.up, out hit, 0.8f))
+        if (Physics.SphereCast(transform.position, 0.3f, -transform.up, out hit, 1.1f))
         {
             if (!hit.collider.isTrigger)
             {
@@ -80,10 +103,7 @@ public class PlayerMovement : MonoBehaviour
         else
         {
             grounded = false;
-            if (!playerJump.Jumping)
-            {
-                transform.rotation = new Quaternion(0, transform.rotation.y, 0, transform.rotation.w);
-            }
+            transform.rotation = new Quaternion(0, transform.rotation.y, 0, transform.rotation.w);
             speed -= 0.6f;
             if (speed < 7)
             {
@@ -155,11 +175,11 @@ public class PlayerMovement : MonoBehaviour
                     tempVect = Camera.main.transform.GetChild(0).TransformVector(movement);
                 }
 
-                tempVect *= speed * 0.75f;
+                tempVect *= speed;
                 rb.velocity = tempVect;
             }
 
-            if (speed < 12)
+            if (speed < maxSpeed * 0.4f)
             {
                 rb.useGravity = true;
                 transform.rotation = new Quaternion(0, transform.rotation.y, transform.rotation.z, transform.rotation.w);
@@ -178,8 +198,8 @@ public class PlayerMovement : MonoBehaviour
         else if (!grounded && !boosting && playerJump.Attacking && !playerJump.TargetAttack && rb.useGravity)
         {
             Vector3 tempVect = Camera.main.transform.TransformVector(movement);
-            tempVect *= speed * 80;
-            tempVect.y = rb.velocity.y;
+            tempVect *= speed * 20;
+            tempVect.y = 0;
             rb.AddForce(tempVect);
             if (rb.velocity.magnitude > 25)
             {
@@ -188,54 +208,73 @@ public class PlayerMovement : MonoBehaviour
                 rb.velocity = new Vector3(limitVect.x, rb.velocity.y, limitVect.z);                
             }
 
-            if (rb.velocity.y > 15)
+            if (rb.velocity.y > 4)
             {
-                rb.velocity = new Vector3(rb.velocity.x, 15, rb.velocity.z);
+                rb.velocity = new Vector3(rb.velocity.x, 4, rb.velocity.z);
             }
         }
 
         if (clingToGround && !playerJump.Jumping && grounded)
         {
-            rb.AddForce(-transform.up * 50);
+            rb.AddForce(-transform.up * (100 * (speed / (maxSpeed / 2))));
         }
     }
 
     private void Acceleration()
     {
-        if (rb.velocity.magnitude > 2.6f && rb.velocity.magnitude <= 14f)
+        float animSpeed = speed / maxAnimSpeed - 1;        
+
+        if (animSpeed > 1)
         {
-            if (speed < 16)
+            if (grounded)
             {
-                speed += 0.5f;
-            }
-        }
-        else if (rb.velocity.magnitude > 14f)
-        {
-            if (speed < 22)
-            {
-                speed += 0.5f;
+                anim.speed = animSpeed;
             }
             else
             {
-                if (boosting)
+                anim.speed = 1;
+            }
+        }
+        else
+        {
+            anim.speed = 1;
+        }
+
+        if (speed <= maxSpeed)
+        {
+            float acc = Mathf.Abs(movement.z) + Mathf.Abs(movement.x);
+
+            if (acc > 1)
+            {
+                acc = 1;
+            }
+            float accSpeed = 0.5f;
+            if (speed > 20)
+            {
+                accSpeed = 0.1f;
+            }
+
+            if (acc > 0.01f)
+            {                
+                speed += accSpeed * acc;
+            }
+            else
+            {
+                if (speed > 0)
                 {
-                    speed -= 1;
-                }
-                else
-                {
-                    speed = 22;
+                    speed = 0;
                 }
             }
         }
-        else if (rb.velocity.magnitude <= 2.6f)
+        else
         {
-            if (speed > 3)
+            if (boosting)
             {
-                speed -= 2;
+                speed -= 0.1f;
             }
-            else if (speed < 3)
+            else
             {
-                speed = 3;
+                speed = maxSpeed;
             }
         }
     }

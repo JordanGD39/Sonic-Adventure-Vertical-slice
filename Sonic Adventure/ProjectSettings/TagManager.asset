@@ -9,6 +9,9 @@ TagManager:
   - Canvas
   - Item
   - Hazard
+  - PlayerCol
+  - Trigger
+  - Wave
   layers:
   - Default
   - TransparentFX
@@ -19,9 +22,9 @@ TagManager:
   - 
   - 
   - Enemies
-  - CameraReference
-  - 
-  - 
+  - Player
+  - Rings
+  - Floater
   - 
   - 
   - 

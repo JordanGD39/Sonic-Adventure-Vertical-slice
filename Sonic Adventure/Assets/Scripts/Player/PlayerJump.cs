@@ -22,7 +22,7 @@ public class PlayerJump : MonoBehaviour
     [SerializeField] private LayerMask enemyLayer;
 
     public bool Jumping { get { return jumping; } set { jumping = value; } }
-    public bool Attacking { get { return attacking; } }
+    public bool Attacking { get { return attacking; } set { attacking = value; } }
     public bool HitHomingTarget { get { return hitHomingTarget; } set { hitHomingTarget = value; } }
     public bool TargetAttack { get { return targetAttack; } }
 
@@ -40,19 +40,19 @@ public class PlayerJump : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (Input.GetButtonDown("Jump"))
+        if (Input.GetButtonDown(Constants.Inputs.jump))
         {
             jumpPressed = true;
         }
-        if (Input.GetButtonUp("Jump"))
+        if (Input.GetButtonUp(Constants.Inputs.jump))
         {
             jumpPressed = false;
         }
 
-        if (Input.GetButton("Jump"))
+        if (Input.GetButton(Constants.Inputs.jump))
         {
             jumpHold = true;
-            extraJumpHeight += Input.GetAxis("Jump");
+            extraJumpHeight += Input.GetAxis(Constants.Inputs.jump);
             if (extraJumpHeight > maxJumpHeight)
             {
                 extraJumpHeight = maxJumpHeight;
@@ -83,12 +83,17 @@ public class PlayerJump : MonoBehaviour
             }
         }
 
-        if (!Input.GetButton("Jump") && playerMov.Grounded || Input.GetButton("Jump") && playerMov.Grounded && extraJumpHeight >= maxJumpHeight)
+        if (!Input.GetButton(Constants.Inputs.jump) && playerMov.Grounded || Input.GetButton(Constants.Inputs.jump) && playerMov.Grounded && extraJumpHeight >= maxJumpHeight)
         {
             extraJumpHeight = 1;
             transform.GetChild(0).gameObject.SetActive(true);
             transform.GetChild(1).gameObject.SetActive(false);
             jumping = false;
+        }
+
+        if (transform.GetChild(1).gameObject.activeSelf)
+        {
+            transform.GetChild(1).GetChild(0).Rotate(20, 0, 0);
         }
     }
 
@@ -101,13 +106,20 @@ public class PlayerJump : MonoBehaviour
             transform.GetChild(1).gameObject.SetActive(true);
             transform.GetChild(0).gameObject.SetActive(false);
             jumping = true;
+            AudioManager.instance.Play("Jump");
+            StartCoroutine("BallBlink");
             jumpPressed = false;
         }
         else if (jumpPressed && !playerMov.Grounded && homingReady)
         {
             transform.GetChild(0).gameObject.SetActive(false);
             transform.GetChild(1).gameObject.SetActive(true);
-            StartCoroutine("HomingAttack");    
+            AudioManager.instance.Play("HomingAttack");
+            if (homingReady)
+            {
+                StartCoroutine(BallBlink());
+                StartCoroutine("HomingAttack");
+            }            
         }
 
         if (jumpHold)
@@ -122,38 +134,37 @@ public class PlayerJump : MonoBehaviour
         {
             rb.AddForce(transform.up * 500);
             bouncing = false;
-        }
+        }        
     }
 
     private IEnumerator HomingAttack()
     {
-        if (homingReady)
+        attacking = true;
+        hitHomingTarget = false;
+        homingReady = false;
+        jumpPressed = false;
+        if (homingTarget != null)
         {
-            attacking = true;
-            hitHomingTarget = false;
-            homingReady = false;
-            jumpPressed = false;
-            if (homingTarget != null)
+            while (!hitHomingTarget)
             {
-                while (!hitHomingTarget)
-                {
-                    transform.LookAt(homingTarget);
-                    rb.velocity = transform.TransformVector(new Vector3(0, 0, homingSpeed));
-                    rb.useGravity = false;
-                    targetAttack = true;
-                    yield return new WaitForFixedUpdate();
-                }                
+                transform.LookAt(homingTarget);
+                rb.velocity = transform.TransformVector(new Vector3(0, 0, homingSpeed));
+                rb.useGravity = false;
+                targetAttack = true;
+                yield return new WaitForFixedUpdate();
+            }                
+        }
+        else
+        {                
+            rb.AddForce(transform.forward * homingSpeed, ForceMode.Impulse);
+            rb.velocity = new Vector3(rb.velocity.x, 0, rb.velocity.z);
+            targetAttack = false;
+            for (int i = 0; i < 10; i++)
+            {
+                yield return new WaitForFixedUpdate();
             }
-            else
-            {                
-                rb.AddForce(transform.forward * homingSpeed, ForceMode.Impulse);
-                rb.velocity = new Vector3(rb.velocity.x, 0, rb.velocity.z);
-                targetAttack = false;
-                for (int i = 0; i < 10; i++)
-                {
-                    yield return new WaitForFixedUpdate();
-                }          
-            }
+            transform.GetChild(0).gameObject.SetActive(true);
+            transform.GetChild(1).gameObject.SetActive(false);
         }
     }
 
@@ -202,6 +213,22 @@ public class PlayerJump : MonoBehaviour
             {
                 homingTarget = null;
             }
+        }
+    }
+
+    private IEnumerator BallBlink()
+    {
+        GameObject ball = transform.GetChild(1).GetChild(0).GetChild(0).gameObject;
+        GameObject sonicBallPose = transform.GetChild(1).GetChild(0).GetChild(1).gameObject;
+
+        while (jumping)
+        {
+            sonicBallPose.SetActive(false);
+            ball.SetActive(true);
+            yield return new WaitForSeconds(0.5f);
+            ball.SetActive(false);
+            sonicBallPose.SetActive(true);
+            yield return new WaitForSeconds(0.05f);
         }
     }
 

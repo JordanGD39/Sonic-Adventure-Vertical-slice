@@ -1,0 +1,118 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &7180603381498941991
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 7180603381498941985}
+  - component: {fileID: 7180603381498941984}
+  m_Layer: 0
+  m_Name: AudioManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &7180603381498941985
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7180603381498941991}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 3.4426875, y: -0.87959194, z: -0.21727718}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &7180603381498941984
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7180603381498941991}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9fd0a7e3e9191a44ab27614c618512ed, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  sounds:
+  - name: TestBG
+    clip: {fileID: 8300000, guid: 0f28a86f6722ee0429bcf3ced7fa14b1, type: 3}
+    volume: 0.5
+    pitch: 1
+    loop: 1
+    source: {fileID: 0}
+  - name: Stage1
+    clip: {fileID: 8300000, guid: 2da956a0cbb00054e9f2d276775ef6cf, type: 3}
+    volume: 0.5
+    pitch: 1
+    loop: 1
+    source: {fileID: 0}
+  - name: Jump
+    clip: {fileID: 8300000, guid: c66c0fe23728d3f45817831c5675cf5f, type: 3}
+    volume: 1
+    pitch: 1
+    loop: 0
+    source: {fileID: 0}
+  - name: HomingAttack
+    clip: {fileID: 8300000, guid: 10fd1773bdcc77140b751f5bc370872a, type: 3}
+    volume: 1
+    pitch: 1
+    loop: 0
+    source: {fileID: 0}
+  - name: Ring
+    clip: {fileID: 8300000, guid: bb8fae62dd2e30f4faaa24681f652826, type: 3}
+    volume: 1
+    pitch: 1
+    loop: 0
+    source: {fileID: 0}
+  - name: LosingRings
+    clip: {fileID: 8300000, guid: f3022c233740cc244b9fa7b4c11cc97f, type: 3}
+    volume: 1
+    pitch: 1
+    loop: 0
+    source: {fileID: 0}
+  - name: BoostPad
+    clip: {fileID: 8300000, guid: 80aee32048cbb15469db0a3492013b04, type: 3}
+    volume: 1
+    pitch: 1
+    loop: 0
+    source: {fileID: 0}
+  - name: Victory
+    clip: {fileID: 8300000, guid: c515a479e89ce0a4f9f7614932ee0279, type: 3}
+    volume: 1
+    pitch: 1
+    loop: 0
+    source: {fileID: 0}
+  - name: Bang
+    clip: {fileID: 8300000, guid: fc651c18a9bc2934ea37e4fc88af663e, type: 3}
+    volume: 1
+    pitch: 1
+    loop: 0
+    source: {fileID: 0}
+  - name: Yes
+    clip: {fileID: 8300000, guid: ef324dd53b69f5846b82515e906542f6, type: 3}
+    volume: 1
+    pitch: 1
+    loop: 0
+    source: {fileID: 0}
+  - name: No
+    clip: {fileID: 8300000, guid: 930a51bd9d4fd3640a6f0c8255eaba1c, type: 3}
+    volume: 1
+    pitch: 1
+    loop: 0
+    source: {fileID: 0}
+  - name: Credits
+    clip: {fileID: 8300000, guid: 947d8ef82c975cf4a89eb2026ea21c15, type: 3}
+    volume: 0.8
+    pitch: 1
+    loop: 0
+    source: {fileID: 0}

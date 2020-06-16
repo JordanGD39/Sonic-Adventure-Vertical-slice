@@ -11,7 +11,7 @@ public class PlayerCameraRelation : MonoBehaviour
     private bool wallHit;
     public bool WallHit { get { return wallHit; } set { wallHit = value; } }
     public RaycastHit Hit { get { return hit; } set { hit = value; } }
-    public Transform PlayerTransform { get { return transform; }}
+    public Transform PlayerTransform { get { return transform; } }
 
     void Update()
     {
@@ -22,7 +22,10 @@ public class PlayerCameraRelation : MonoBehaviour
         {
             Debug.DrawRay(transform.position, posDifference, Color.blue);
 
-            if (hit.collider.gameObject.tag == Constants.Tags.mainCamera || hit.collider.gameObject.tag == Constants.Tags.item)
+            if (hit.collider.gameObject.tag == Constants.Tags.mainCamera ||
+                hit.collider.gameObject.tag == Constants.Tags.item ||
+                hit.collider.gameObject.tag == Constants.Tags.trigger ||
+                hit.collider.gameObject.layer == 9)
             {
                 wallHit = false;
             }
