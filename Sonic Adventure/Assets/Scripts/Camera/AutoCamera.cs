@@ -26,7 +26,7 @@ public class AutoCamera : NormalCameraPosition
         {
             SetOffset(_player.Triggered, _player.CollidingObj);
 
-            if (_player.CollidingObj.name != Constants.Trigger.name[2])
+            if (_player.CollidingObj.name != Constants.Trigger.name_2)
             {
                 transform.position = _target.position + _offset;
             }
@@ -37,48 +37,49 @@ public class AutoCamera : NormalCameraPosition
 
     private void SetOffset(bool trigger, Collider collision)
     {
-        if (collision.name == Constants.Trigger.name[0])
+        switch(collision.name)
         {
-            if (_player.CurrentVel.z >= 0.0f)
-            {
-                //Slightly tilted camera angle when Sonic goes out of the cave
-                _offset = Vector3.MoveTowards(_offset, _offsetList[1], 40.0f * Time.deltaTime);
-            }
-            else if (_player.CurrentVel.z < 0.0f)
-            {
-                //Camera angle goes back to normal
-                _offset = Vector3.MoveTowards(_offset, _offsetList[0], 40.0f * Time.deltaTime);
-            }
-        }
-        else if (collision.name == Constants.Trigger.name[1])
-        {
-            if (_player.CurrentVel.z > 0.0f)
-            {
-                //Camera turns towards loop direction
-                _offset = Vector3.MoveTowards(_offset, _offsetList[2], 16.5f * (playerMovement.Speed / playerMovement.MaxSpeed) * Time.deltaTime);
-            }
+            case Constants.Trigger.name_0:
+                if (_player.CurrentVel.z >= 0.0f)
+                {
+                    //Slightly tilted camera angle when Sonic goes out of the cave
+                    _offset = Vector3.MoveTowards(_offset, _offsetList[1], 40.0f * Time.deltaTime);
+                }
+                else
+                {
+                    //Camera angle goes back to normal
+                    _offset = Vector3.MoveTowards(_offset, _offsetList[0], 40.0f * Time.deltaTime);
+                }
+                break;
 
-            if (_player.CurrentVel.x < 0.0f)
-            {
-                //Camera angle goes back to before
-                _offset = Vector3.MoveTowards(_offset, _offsetList[1], 16.5f * (playerMovement.Speed / playerMovement.MaxSpeed) * Time.deltaTime);
-            }
-        }
-        else if (collision.name == Constants.Trigger.name[3])
-        {
-            //Camera changes back to face bridge direction
-            _offset = Vector3.MoveTowards(_offset, _offsetList[2], 60.0f * Time.deltaTime);
-        }
-        else if (collision.name == Constants.Trigger.name[2])
-        {
-            //Camera is located outside the loop
-            _offset = _offsetList[3];
-            transform.position = _offsetList[3];
-        }
-        else
-        {
-            //Regular camera offset
-            _offset = _offsetList[0];
+            case Constants.Trigger.name_1:
+                if (_player.CurrentVel.z > 0.0f)
+                {
+                    //Camera turns towards loop direction
+                    _offset = Vector3.MoveTowards(_offset, _offsetList[2], 16.5f * (playerMovement.Speed / playerMovement.MaxSpeed) * Time.deltaTime);
+                }
+                else if (_player.CurrentVel.x < 0.0f)
+                {
+                    //Camera angle goes back to before
+                    _offset = Vector3.MoveTowards(_offset, _offsetList[1], 16.5f * (playerMovement.Speed / playerMovement.MaxSpeed) * Time.deltaTime);
+                }
+                break;
+
+            case Constants.Trigger.name_2:
+                //Camera is located outside the loop
+                _offset = _offsetList[3];
+                transform.position = _offsetList[3];
+                break;
+
+            case Constants.Trigger.name_3:
+                //Camera changes back to face bridge direction
+                _offset = Vector3.MoveTowards(_offset, _offsetList[2], 60.0f * Time.deltaTime);
+                break;
+
+            default:
+                //Regular camera offset
+                _offset = _offsetList[0];
+                break;
         }
     }
 }

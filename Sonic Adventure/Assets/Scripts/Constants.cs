@@ -31,8 +31,10 @@ public class Constants
 
     public class Trigger
     {
-        public static readonly string[] name =
-        { "CameraTrigger01", "CameraTrigger02", "CameraTrigger03", "CameraTrigger04"};
+        public const string name_0 = "CameraTrigger01";
+        public const string name_1 = "CameraTrigger02";
+        public const string name_2 = "CameraTrigger03";
+        public const string name_3 = "CameraTrigger04";
     }
 
     public class Value
