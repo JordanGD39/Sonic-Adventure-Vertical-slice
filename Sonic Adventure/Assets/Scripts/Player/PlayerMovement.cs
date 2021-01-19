@@ -83,7 +83,7 @@ public class PlayerMovement : MonoBehaviour
                 Quaternion rot;
                 rot = transform.rotation;
                 transform.LookAt(tempVect);
-                transform.rotation = new Quaternion(rot.x, transform.rotation.y, 0, transform.rotation.w);
+                transform.rotation = new Quaternion(rot.x, transform.rotation.y, rot.z, transform.rotation.w);
             }
         }
 
@@ -140,7 +140,7 @@ public class PlayerMovement : MonoBehaviour
     {
         Acceleration();
 
-        if (transform.rotation.x <= 0.35f && transform.rotation.x >= -0.35f && !playerJump.Jumping && !playerJump.Attacking)
+        if (transform.rotation.x <= 0.35f && transform.rotation.x >= -0.35f && transform.rotation.z <= 0.35f && transform.rotation.z >= -0.35f && !playerJump.Jumping && !playerJump.Attacking)
         {
             Camera.main.transform.GetChild(0).rotation = Camera.main.transform.localRotation;
             offTheRamp = false;
@@ -161,7 +161,7 @@ public class PlayerMovement : MonoBehaviour
             loopTime = false;
             rb.useGravity = true;
         }
-        else if(transform.rotation.x >= 0.35f || transform.rotation.x <= -0.35f && grounded)
+        else if(transform.rotation.x >= 0.35f || transform.rotation.x <= -0.35f || transform.rotation.z >= 0.35f || transform.rotation.z <= -0.35f && grounded)
         {
             if (!offTheRamp)
             {
@@ -175,7 +175,7 @@ public class PlayerMovement : MonoBehaviour
                 }
                 else
                 {
-                    Camera.main.transform.GetChild(0).rotation = new Quaternion(transform.rotation.x, Camera.main.transform.rotation.y, Camera.main.transform.GetChild(0).rotation.z, Camera.main.transform.GetChild(0).rotation.w);
+                    Camera.main.transform.GetChild(0).rotation = new Quaternion(transform.rotation.x, Camera.main.transform.rotation.y, transform.rotation.z, Camera.main.transform.GetChild(0).rotation.w);
                     tempVect = Camera.main.transform.GetChild(0).TransformVector(movement);
                 }
 
@@ -252,10 +252,11 @@ public class PlayerMovement : MonoBehaviour
             {
                 acc = 1;
             }
-            float accSpeed = 0.5f;
+            float accSpeed = 31 * Time.deltaTime;
+
             if (speed > 20)
             {
-                accSpeed = 0.1f;
+                accSpeed = 6 * Time.deltaTime;
             }
 
             if (acc > 0.01f)

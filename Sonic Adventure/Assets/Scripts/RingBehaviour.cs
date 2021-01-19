@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class RingBehaviour : MonoBehaviour
 {
-    const float ROTATION_SPEED = 10.0f;
+    const float ROTATION_SPEED = 625;
 
     private float thisRotation = 0.0f;
 
@@ -29,7 +29,7 @@ public class RingBehaviour : MonoBehaviour
 
     private void Update()
     {
-        thisRotation += ROTATION_SPEED;
+        thisRotation += ROTATION_SPEED * Time.deltaTime;
         transform.rotation = Quaternion.Euler(0.0f, thisRotation, 0.0f);
 
         if (droppedItem)
