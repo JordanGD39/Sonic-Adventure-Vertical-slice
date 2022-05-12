@@ -15,5 +15,3 @@ https://drive.google.com/file/d/15setKTJJr1cz1rF7mKh1-d5rYl3yxu29/view?usp=shari
 ```Link to Trello-board:```
 
 _https://trello.com/b/LvnAIHxu/sonic-game_
-
-Bro i wanna die
