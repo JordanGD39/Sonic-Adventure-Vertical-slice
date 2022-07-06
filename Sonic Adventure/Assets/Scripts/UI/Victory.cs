@@ -36,19 +36,29 @@ public class Victory : MonoBehaviour
     private IEnumerator WaitUntilPlayerIsGrounded(Collider other)
     {
         other.GetComponentInParent<PlayerJump>().enabled = false;
+        other.GetComponentInParent<Spindash>().enabled = false;
         other.transform.parent.GetChild(0).gameObject.SetActive(true);
         other.transform.parent.GetChild(1).gameObject.SetActive(false);
 
         if (other.GetComponent<SphereCollider>() != null)
         {
-            other = other.transform.parent.GetChild(0).GetComponent<BoxCollider>();
+            other = other.transform.parent.GetChild(0).GetComponent<CapsuleCollider>();
         }
 
-        while (!other.GetComponentInParent<PlayerMovement>().Grounded)
+        PlayerMovement playerMovement = other.GetComponentInParent<PlayerMovement>();
+        Rigidbody rb = other.GetComponentInParent<Rigidbody>();
+        SphereCollider sphereCollider = other.GetComponent<SphereCollider>();
+
+        if (!playerMovement.Grounded)
         {
-            other.GetComponentInParent<PlayerMovement>().Movement = new Vector3(0, 0, 0);
-            other.GetComponentInParent<Rigidbody>().velocity = new Vector3(0, other.GetComponentInParent<Rigidbody>().velocity.y, 0);
-            if (other.GetComponent<SphereCollider>() != null)
+            playerMovement.Movement = new Vector3(0, 0, 0);
+            rb.velocity = new Vector3(0, rb.velocity.y, 0);
+            playerMovement.LockedFall = true;
+        }
+
+        while (!playerMovement.Grounded)
+        {
+            if (sphereCollider != null)
             {
                 other.transform.GetChild(0).Rotate(20, 0, 0);
             }
@@ -56,7 +66,7 @@ public class Victory : MonoBehaviour
         }
 
         other.transform.GetComponentInChildren<Animator>().SetBool("Win", true);        
-        other.GetComponentInParent<PlayerMovement>().enabled = false;        
+        playerMovement.enabled = false;        
         other.transform.GetComponentInChildren<Animator>().SetBool("Grounded", true);
         other.GetComponentInParent<Rigidbody>().velocity = new Vector3(0, 0, 0);
         if (Camera.main.GetComponent<AutoCamera>() != null)
@@ -71,7 +81,7 @@ public class Victory : MonoBehaviour
         yield return new WaitForSeconds(4.5f);
         ui.parent.gameObject.SetActive(true);
         yield return new WaitForSeconds(0.5f);
-        other.GetComponentInParent<Rigidbody>().velocity = new Vector3(0, 0, 0);
+        rb.velocity = new Vector3(0, 0, 0);
         StartCoroutine("ShowResults");
     }
 

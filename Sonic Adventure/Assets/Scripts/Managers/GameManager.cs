@@ -9,9 +9,8 @@ public class GameManager : MonoBehaviour
     public static GameManager instance;
 
     [SerializeField] private GameObject player;
+    [SerializeField] private float gravity = 2;
     [SerializeField] private Transform ui;
-
-
 
     private float timer = 0;
 
@@ -56,6 +55,8 @@ public class GameManager : MonoBehaviour
         {
             ui.GetChild(5).GetComponent<Text>().text = lives.ToString("00");
         }
+
+        Physics.gravity *= gravity;
     }
 
     private void Update()

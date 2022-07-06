@@ -6,17 +6,26 @@ public class PlayerJump : MonoBehaviour
 {
     private Rigidbody rb;
     private PlayerMovement playerMov;
+    private LightSpeedDash lightSpeedDash;
+    private ModelManage modelManage;
+    private Spindash spindash;
+    private TrailRenderer trailRenderer;
 
     [SerializeField] private float jumpHeight;
     [SerializeField] private float homingSpeed;
+    [SerializeField] private float homingSpeedLoss = 2;
     [SerializeField] private float extraJumpHeight = 1; //How long you hold the button
     [SerializeField] private float maxJumpHeight = 2;
     [SerializeField] private bool jumping = false;
     [SerializeField] private bool homingReady = false;
     [SerializeField] private float homingRange = 5;
+    [SerializeField] private float bounceForce = 10;
+    [SerializeField] private float trailTime = 0.5f;
     [SerializeField] private bool attacking = false;
     [SerializeField] private bool hitHomingTarget = false;
     [SerializeField] private bool targetAttack = false;
+    [SerializeField] private Transform jumpBall;
+    private Vector3 homingVector;
 
     [SerializeField] private Transform homingTarget = null;
     [SerializeField] private LayerMask enemyLayer;
@@ -25,21 +34,34 @@ public class PlayerJump : MonoBehaviour
     public bool Attacking { get { return attacking; } set { attacking = value; } }
     public bool HitHomingTarget { get { return hitHomingTarget; } set { hitHomingTarget = value; } }
     public bool TargetAttack { get { return targetAttack; } }
+    public float BounceForce { get { return bounceForce; } }
+    public Vector3 HomingVector { get { return homingVector; } }
 
     private bool jumpPressed = false;
     private bool jumpHold = false;
-    private bool bouncing = false;
 
     // Start is called before the first frame update
     void Start()
     {
         rb = GetComponent<Rigidbody>();
         playerMov = GetComponent<PlayerMovement>();
+        lightSpeedDash = GetComponent<LightSpeedDash>();
+        modelManage = GetComponent<ModelManage>();
+        modelManage.ChangeToNormalModel();
+        spindash = GetComponent<Spindash>();
+        trailRenderer = GetComponentInChildren<TrailRenderer>();
+        trailRenderer.emitting = false;
     }
 
     // Update is called once per frame
     void Update()
     {
+        if (lightSpeedDash.Dashing || playerMov.Boosting)
+        {
+            attacking = false;
+            return;
+        }
+
         if (Input.GetButtonDown(Constants.Inputs.jump))
         {
             jumpPressed = true;
@@ -68,9 +90,15 @@ public class PlayerJump : MonoBehaviour
             homingReady = true;
             homingTarget = null;
             attacking = false;
+            homingVector = Vector3.zero;
         }
         else
         {
+            if (homingVector != Vector3.zero)
+            {
+                homingVector = Vector3.Lerp(homingVector, Vector3.zero, homingSpeedLoss * Time.deltaTime);
+            }
+
             Collider[] enemyCol = Physics.OverlapSphere(transform.position + transform.TransformVector(new Vector3(0, 0, 6)), homingRange, enemyLayer);
             if (enemyCol.Length != 0)
             {
@@ -83,38 +111,49 @@ public class PlayerJump : MonoBehaviour
             }
         }
 
-        if (!Input.GetButton(Constants.Inputs.jump) && playerMov.Grounded || Input.GetButton(Constants.Inputs.jump) && playerMov.Grounded && extraJumpHeight >= maxJumpHeight)
+        if (spindash.Spinning || spindash.InBall)
+        {
+            return;
+        }
+
+        if ((!jumpHold && playerMov.Grounded) || (jumpHold && playerMov.Grounded && extraJumpHeight >= maxJumpHeight))
         {
             extraJumpHeight = 1;
-            transform.GetChild(0).gameObject.SetActive(true);
-            transform.GetChild(1).gameObject.SetActive(false);
+            modelManage.ChangeToNormalModel();
             jumping = false;
         }
 
-        if (transform.GetChild(1).gameObject.activeSelf)
+        if (jumpBall.gameObject.activeSelf)
         {
-            transform.GetChild(1).GetChild(0).Rotate(20, 0, 0);
+            jumpBall.GetChild(0).Rotate(2000 * Time.deltaTime, 0, 0);
         }
     }
 
     private void FixedUpdate()
     {
+        if (lightSpeedDash.Dashing)
+        {
+            return;
+        }
+
         if (jumpPressed && playerMov.Grounded)
         {
             extraJumpHeight = 1;
-            rb.AddForce(transform.up * jumpHeight, ForceMode.VelocityChange);
-            transform.GetChild(1).gameObject.SetActive(true);
-            transform.GetChild(0).gameObject.SetActive(false);
             jumping = true;
+            rb.AddForce(transform.up * jumpHeight, ForceMode.VelocityChange);
+            modelManage.ChangeToBallModel();
+            StopCoroutine("BallBlink");
+            StartBallBlink();
             AudioManager.instance.Play("Jump");
-            StartCoroutine("BallBlink");
             jumpPressed = false;
+            playerMov.Speed *= 0.8f;
         }
         else if (jumpPressed && !playerMov.Grounded && homingReady)
         {
-            transform.GetChild(0).gameObject.SetActive(false);
-            transform.GetChild(1).gameObject.SetActive(true);
+            modelManage.ChangeToBallModel();
             AudioManager.instance.Play("HomingAttack");
+            trailRenderer.emitting = true;
+            Invoke(nameof(StopTrail), trailTime);
             if (homingReady)
             {
                 StartCoroutine(BallBlink());
@@ -128,23 +167,23 @@ public class PlayerJump : MonoBehaviour
             {
                 rb.AddForce(transform.up * jumpHeight, ForceMode.Acceleration);
             }
-        }
+        }   
+    }
 
-        if (bouncing)
-        {
-            rb.AddForce(transform.up * 500);
-            bouncing = false;
-        }        
+    private void StopTrail()
+    {
+        trailRenderer.emitting = false;
     }
 
     private IEnumerator HomingAttack()
     {
-        attacking = true;
         hitHomingTarget = false;
         homingReady = false;
         jumpPressed = false;
         if (homingTarget != null)
         {
+            attacking = true;
+
             while (!hitHomingTarget)
             {
                 transform.LookAt(homingTarget);
@@ -155,27 +194,39 @@ public class PlayerJump : MonoBehaviour
             }                
         }
         else
-        {                
-            rb.AddForce(transform.forward * homingSpeed, ForceMode.Impulse);
+        {
             rb.velocity = new Vector3(rb.velocity.x, 0, rb.velocity.z);
+            playerMov.Speed = homingSpeed;
+            homingVector = transform.GetChild(0).forward;
             targetAttack = false;
             for (int i = 0; i < 10; i++)
             {
                 yield return new WaitForFixedUpdate();
             }
-            transform.GetChild(0).gameObject.SetActive(true);
-            transform.GetChild(1).gameObject.SetActive(false);
+            modelManage.ChangeToNormalModel();
         }
     }
 
     public void BounceOfEnemy()
     {
-        rb.velocity = new Vector3(0, 0, 0);
+        if (homingTarget != null)
+        {
+            rb.velocity = new Vector3(0, 0, 0);
+            homingTarget = null;
+            playerMov.Speed = 0;
+        }
+
+        playerMov.Bounced = true;
+        homingVector = Vector3.zero;
         rb.useGravity = true;
         attacking = false;
-        homingTarget = null;
+        Invoke(nameof(ReadyHomingAttack), 0.1f);
+        //rb.AddForce(transform.up * bounceSpeed * (playerMov.Grounded ? 1.5f : 1), ForceMode.VelocityChange);
+    }
+
+    private void ReadyHomingAttack()
+    {
         homingReady = true;
-        bouncing = true;
     }
 
     private Transform GetClosestEnemy(Collider[] enemies)
@@ -216,12 +267,17 @@ public class PlayerJump : MonoBehaviour
         }
     }
 
+    public void StartBallBlink()
+    {
+        StartCoroutine("BallBlink");
+    }
+
     private IEnumerator BallBlink()
     {
-        GameObject ball = transform.GetChild(1).GetChild(0).GetChild(0).gameObject;
-        GameObject sonicBallPose = transform.GetChild(1).GetChild(0).GetChild(1).gameObject;
+        GameObject ball = jumpBall.GetChild(0).GetChild(0).gameObject;
+        GameObject sonicBallPose = jumpBall.GetChild(0).GetChild(1).gameObject;
 
-        while (jumping)
+        while (jumping || spindash.InBall)
         {
             sonicBallPose.SetActive(false);
             ball.SetActive(true);
@@ -232,8 +288,8 @@ public class PlayerJump : MonoBehaviour
         }
     }
 
-    private void OnDrawGizmos()
-    {
-        Gizmos.DrawWireSphere(transform.position + transform.TransformVector(new Vector3(0, 0, 6)), homingRange);
-    }
+    //private void OnDrawGizmos()
+    //{
+    //    Gizmos.DrawWireSphere(transform.position + transform.TransformVector(new Vector3(0, 0, 6)), homingRange);
+    //}
 }

@@ -8,10 +8,17 @@ public class Enemy : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
+        if (hit)
+        {
+            return;
+        }
+
         if (other.CompareTag(Constants.Tags.playerCol))
         {
             if (other.GetComponent<SphereCollider>() != null)
             {
+                hit = true;
+
                 PlayerJump playerJump = other.GetComponentInParent<PlayerJump>();
 
                 playerJump.HitHomingTarget = true;

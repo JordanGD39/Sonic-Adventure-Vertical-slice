@@ -116,3 +116,21 @@ MonoBehaviour:
     pitch: 1
     loop: 0
     source: {fileID: 0}
+  - name: Spindash
+    clip: {fileID: 8300000, guid: 5e888dcc623c03749b9ef4f9c708556a, type: 3}
+    volume: 1
+    pitch: 1
+    loop: 0
+    source: {fileID: 0}
+  - name: Ready
+    clip: {fileID: 8300000, guid: c9f64c3e274f8ad43844a85dc8ffb8d8, type: 3}
+    volume: 1
+    pitch: 1
+    loop: 0
+    source: {fileID: 0}
+  - name: Go
+    clip: {fileID: 8300000, guid: 6b48c1c2c2d48164c946a483aaf9f0f6, type: 3}
+    volume: 1
+    pitch: 1
+    loop: 0
+    source: {fileID: 0}

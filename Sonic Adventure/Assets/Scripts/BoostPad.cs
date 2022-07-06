@@ -14,19 +14,17 @@ public class BoostPad : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        if (other.gameObject.CompareTag(Constants.Tags.playerCol) && !other.transform.parent.GetComponent<PlayerMovement>().Boosting && other.transform.parent.GetComponent<PlayerJump>().enabled || other.gameObject.CompareTag(Constants.Tags.playerCol) && teleport)
+        if (other.gameObject.CompareTag(Constants.Tags.playerCol) && !other.GetComponentInParent<PlayerMovement>().Boosting && other.GetComponentInParent<PlayerJump>().enabled || other.gameObject.CompareTag(Constants.Tags.playerCol) && teleport)
         {
-            PlayerMovement mov = other.transform.parent.GetComponent<PlayerMovement>();
+            PlayerMovement mov = other.GetComponentInParent<PlayerMovement>();
 
             if (teleport)
-            {                
-                other.transform.parent.position = new Vector3(transform.position.x, transform.position.y + 0.8f, transform.position.z);
+            {
+                mov.transform.position = new Vector3(transform.position.x, transform.position.y + 0.8f, transform.position.z);
                 mov.StopBoost();
             }
 
-            playerRb = other.transform.parent.GetComponent<Rigidbody>();
-            other.transform.parent.GetComponent<PlayerJump>().Attacking = false;
-            other.transform.parent.GetComponent<PlayerJump>().enabled = false;            
+            playerRb = other.GetComponentInParent<Rigidbody>();
 
             if (mov.Grounded)
             {                
@@ -52,21 +50,30 @@ public class BoostPad : MonoBehaviour
 
     private IEnumerator WaitUntilPlayerIsGrounded(PlayerMovement mov, Rigidbody playerRb, GameObject other)
     {
-        while (!mov.Grounded)
+        if (!mov.Grounded)
         {
             mov.Movement = new Vector3(0, 0, 0);
             playerRb.velocity = new Vector3(0, playerRb.velocity.y, 0);
-            if (other.GetComponent<SphereCollider>() != null)
+            mov.LockedFall = true;
+        }
+
+        SphereCollider sphereCol = other.GetComponent<SphereCollider>();
+
+        while (!mov.Grounded)
+        {
+            if (sphereCol != null)
             {
                 other.transform.GetChild(0).Rotate(20, 0, 0);
             }
             yield return null;
         }
-        
+
+        mov.LockedFall = false;
+
         mov.Speed = speed;
         mov.BoostPad(secondsOutOfControl, transform);
         AudioManager.instance.Play("BoostPad");
-        if (other.GetComponent<SphereCollider>() != null)
+        if (sphereCol != null)
         {
             other.transform.parent.GetChild(0).gameObject.SetActive(true);
             other.SetActive(false);

@@ -74,7 +74,7 @@ public class RingBehaviour : MonoBehaviour
         {
             if (!alreadyGivingPlayer)
             {
-                PlayerRingAmount playerRings = other.gameObject.transform.parent.GetComponent<PlayerRingAmount>();
+                PlayerRingAmount playerRings = other.GetComponentInParent<PlayerRingAmount>();
 
                 if (!playerRings.Hit)
                 {

@@ -19,11 +19,11 @@ TagManager:
   - 
   - Water
   - UI
-  - 
-  - 
+  - NoWalk
+  - Rings
   - Enemies
   - Player
-  - Rings
+  - RingsDamage
   - Floater
   - 
   - 

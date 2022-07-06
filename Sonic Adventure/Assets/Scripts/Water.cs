@@ -8,7 +8,7 @@ public class Water : MonoBehaviour
     {
         if (other.gameObject.CompareTag(Constants.Tags.playerCol))
         {
-            StartCoroutine(other.transform.parent.GetComponent<PlayerDeath>().Die());
+            StartCoroutine(other.GetComponentInParent<PlayerDeath>().Die());
         }
     }
 }

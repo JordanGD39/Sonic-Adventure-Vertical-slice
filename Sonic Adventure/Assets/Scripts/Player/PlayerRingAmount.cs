@@ -25,8 +25,20 @@ public class PlayerRingAmount : MonoBehaviour
     private int count;
     private bool invincible = false;
 
+    private PlayerMovement playerMovement;
+    private Rigidbody rb;
+    private PlayerJump playerJump;
+    private PlayerDeath playerDeath;
+    private LightSpeedDash lightSpeedDash;
+
     void Start()
     {
+        rb = GetComponent<Rigidbody>();
+        playerMovement = GetComponent<PlayerMovement>();
+        playerJump = GetComponent<PlayerJump>();
+        playerDeath = GetComponent<PlayerDeath>();
+        lightSpeedDash = GetComponent<LightSpeedDash>();
+
         hit = false;
         count = 0;
         ringAmount[0] = 0;        
@@ -38,7 +50,7 @@ public class PlayerRingAmount : MonoBehaviour
         CheckIfHit();
     }
 
-    private void OnCollisionStay(Collision collision)
+    private void OnCollisionEnter(Collision collision)
     {
         if (collision.gameObject.CompareTag(Constants.Tags.hazard))
         {
@@ -69,7 +81,7 @@ public class PlayerRingAmount : MonoBehaviour
                 {
                     ringAmount[1] = 0;
                     StartCoroutine("Damage");
-                    StartCoroutine(GetComponent<PlayerDeath>().Die());
+                    StartCoroutine(playerDeath.Die());
                 }                
             }
         }
@@ -111,6 +123,7 @@ public class PlayerRingAmount : MonoBehaviour
             thisRing.GetComponent<RingBehaviour>().droppedItem = true;
 
             Rigidbody ringBehaviour = thisRing.GetComponent<Rigidbody>();
+            ringBehaviour.useGravity = true;
             ringBehaviour.AddForce((itemlist.transform.up * 2 + new Vector3(shootingAngle[1], 0.0f, shootingAngle[2])) * SHOOTING_RADIUS);
             Destroy(thisRing, Constants.Value.ringSeconds);
 
@@ -126,27 +139,36 @@ public class PlayerRingAmount : MonoBehaviour
 
     private IEnumerator Damage()
     {
-        transform.GetChild(0).gameObject.SetActive(true);
-        transform.GetChild(1).gameObject.SetActive(false);
-        GetComponent<PlayerMovement>().Boosting = true;
-        GetComponent<PlayerMovement>().Speed = 0;
-        GetComponent<PlayerJump>().enabled = false;
-        GetComponent<Rigidbody>().velocity = new Vector3(0, 0, 0);
-        GetComponent<Rigidbody>().AddForce(transform.up * flySpeed.y, ForceMode.Impulse);
-        GetComponent<Rigidbody>().AddForce(-transform.forward * flySpeed.x, ForceMode.Impulse);
+        transform.GetChild(0).GetChild(0).gameObject.SetActive(true);
+        transform.GetChild(0).GetChild(1).gameObject.SetActive(false);
+        playerJump.enabled = false;
+        lightSpeedDash.ResetDash();
+        rb.velocity = new Vector3(0, 0, 0);
+        rb.AddForce(transform.up * flySpeed.y, ForceMode.Impulse);
+        rb.AddForce(-transform.GetChild(0).forward * flySpeed.x, ForceMode.Impulse);
 
-        yield return new WaitForSeconds(1);
+        for (int i = 0; i < 60; i++)
+        {
+            if (!playerMovement.Grounded)
+            {
+                break;
+            }
 
-        while (!GetComponent<PlayerMovement>().Grounded)
+            yield return null;
+        }
+
+        while (!playerMovement.Grounded)
         {
             yield return null;
         }
 
+        playerMovement.Speed = 0;
+        rb.velocity = new Vector3(0, 0, 0);
+
         yield return new WaitForSeconds(1);
 
-        GetComponent<PlayerMovement>().Boosting = false;
         hit = false;
-        GetComponent<PlayerJump>().enabled = true;
+        playerJump.enabled = true;
 
         yield return new WaitForSeconds(1);
 
